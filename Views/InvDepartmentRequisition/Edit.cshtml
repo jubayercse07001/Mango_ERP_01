@@ -1,0 +1,348 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+@{
+    ViewBag.Title = "Edit Department Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>Home
+                </a>
+                <a href="@Url.Action("Index","InvDepartmentRequisition")" class="breadcrumb-item">
+                    Department Requisition
+                </a>
+                <span class="breadcrumb-item active">Edit</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content">
+    <form id="my-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Edit Department Requisition</h6>
+            </div>
+            <div class="card-body">
+                <h6 class="font-weight-bold">Requisition Header</h6>
+                <input type="hidden" name="RowId" id="RowId" value="@ViewBag.Requisition.RowId" />
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><span class="text-danger">*</span> Requisition Date</label>
+                            <input type="date" name="RequisitionDate" class="form-control"
+                                   value="@(ViewBag.Requisition.RequisitionDate.ToString("yyyy-MM-dd"))" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Requisition Code</label>
+                            <input type="text" name="RequisitionCode" class="form-control"
+                                   value="@ViewBag.Requisition.RequisitionCode" readonly />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><span class="text-danger">*</span> Department</label>
+                            <select name="DepartmentId" id="DepartmentId" class="form-control">
+                                <option value="">Select Department</option>
+                                @foreach (var item in ViewBag.DepartmentList)
+                                {
+                                    <option value="@item.RowId" @(item.RowId == ViewBag.Requisition.DepartmentId ? "selected" : "")>
+                                        @item.DepartmentName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><span class="text-danger">*</span> Requested By</label>
+                            <select name="RequestedBy" class="form-control">
+                                <option value="">Select Employee</option>
+                                @foreach (var item in ViewBag.EmployeeList)
+                                {
+                                    <option value="@item.RowId" @(item.RowId == ViewBag.Requisition.RequestedBy ? "selected" : "")>
+                                        @item.LastName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label><span class="text-danger">*</span> Requisition Name</label>
+                            <input type="text" name="RequisitionName" class="form-control"
+                                   placeholder="Enter requisition title"
+                                   value="@ViewBag.Requisition.RequisitionName" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Required For</label>
+                            <input type="text" name="RequiredFor" class="form-control"
+                                   placeholder="Enter required for"
+                                   value="@ViewBag.Requisition.RequiredFor" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Job No</label>
+                            <select name="JobId" id="JobId" class="form-control">
+                                <option value="">Select Job</option>
+                                @foreach (var item in ViewBag.JobList)
+                                {
+                                    <option value="@item.RowId"
+                                            data-jobno="@item.JobNo"
+                                            @(item.RowId == ViewBag.Requisition.JobId ? "selected" : "")>
+                                        @item.JobName
+                                    </option>
+                                }
+                            </select>
+                            <input type="hidden" name="JobNo" id="JobNo" value="@ViewBag.Requisition.JobNo" />
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <h6 class="font-weight-bold">Add Item</h6>
+                <div class="row align-items-end">
+                    <div class="col-md-3">
+                        <label><span class="text-danger">*</span> Item</label>
+                        <select id="ItemId" class="form-control">
+                            <option value="">Select Item</option>
+                            @foreach (var item in ViewBag.ItemList)
+                            {
+                                <option value="@item.RowId">@item.ItemName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Unit</label>
+                        <select id="UnitId" class="form-control">
+                            <option value="">Select Unit</option>
+                            @foreach (var item in ViewBag.UnitList)
+                            {
+                                <option value="@item.RowId">@item.MinUnitName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label><span class="text-danger">*</span> Quantity</label>
+                        <input type="number" id="Quantity" class="form-control" value="1" min="0" step="any" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Unit Price Est.</label>
+                        <input type="number" id="UnitPriceEst" class="form-control" value="0.00" min="0" step="any" />
+                    </div>
+                    <div class="col-md-2">
+                        <label>Remarks</label>
+                        <input type="text" id="Remarks" class="form-control" placeholder="Enter remarks" />
+                    </div>
+                    <div class="col-md-1">
+                        <button type="button" id="btnAddItem" class="btn btn-primary btn-block">
+                            <i class="icon-add"></i> Add
+                        </button>
+                    </div>
+                </div>
+                <hr />
+                <h6 class="font-weight-bold">Requisition Items</h6>
+                <table class="table table-bordered" id="ItemsGrid">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Item</th>
+                            <th>Unit</th>
+                            <th>Quantity</th>
+                            <th>Unit Price</th>
+                            <th>Total</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage"></div>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Index","InvDepartmentRequisition")" class="btn btn-light">
+                        Cancel
+                    </a>
+                    <button type="button" id="btnSubmit" class="btn bg-blue">
+                        Update Requisition <i class="icon-paperplane ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="card" id="successdiv" style="display:none">
+            <div class="card-header bg-white">
+                <h6 class="card-title">Requisition Updated Successfully</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="text-success">Requisition has been updated successfully.</h4>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Edit","InvDepartmentRequisition", new { id = ViewBag.Requisition.RowId })" class="btn btn-light">Edit Again</a>
+                    <a href="@Url.Action("Index","InvDepartmentRequisition")" class="btn btn-light">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@section ChildpageJavaScript
+{
+    <script>
+        var itemLines = [];
+
+        // Initialize existing items from server
+        @if (ViewBag.Requisition.Details != null)
+        {
+            <text>
+            itemLines = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
+                ((IEnumerable<dynamic>)ViewBag.Requisition.Details).Select(d => new {
+                    ItemId = d.ItemId,
+                    ItemName = d.ItemName,
+                    UnitId = d.UnitId,
+                    UnitName = d.MinUnitName,
+                    Quantity = d.Quantity,
+                    UnitPriceEst = d.UnitPriceEst,
+                    Remarks = d.Remarks
+                })
+            ));
+            </text>
+        }
+
+        function RenderGrid() {
+            var rows = "";
+            $.each(itemLines, function (i, line) {
+                var total = (line.Quantity * line.UnitPriceEst).toFixed(2);
+                rows +=
+                    "<tr>" +
+                    "<td>" + (i + 1) + "</td>" +
+                    "<td>" + line.ItemName + "</td>" +
+                    "<td>" + line.UnitName + "</td>" +
+                    "<td>" + line.Quantity + "</td>" +
+                    "<td>" + parseFloat(line.UnitPriceEst).toFixed(2) + "</td>" +
+                    "<td>" + total + "</td>" +
+                    "<td>" + (line.Remarks || "") + "</td>" +
+                    "<td><button type='button' class='btn btn-sm bg-danger btnRemoveItem' data-index='" + i + "'><i class='icon-cross'></i></button></td>" +
+                    "</tr>";
+            });
+            $("#ItemsGrid tbody").html(rows);
+        }
+
+        $(document).ready(function () {
+            // Render existing items on page load
+            RenderGrid();
+
+            $("#JobId").change(function () {
+                $("#JobNo").val($(this).find(":selected").data("jobno") || "");
+            });
+
+            $("#btnAddItem").click(function () {
+                var itemId = $("#ItemId").val();
+                var itemName = $("#ItemId option:selected").text();
+                var unitId = $("#UnitId").val();
+                var unitName = $("#UnitId option:selected").text();
+                var quantity = parseFloat($("#Quantity").val()) || 0;
+                var unitPriceEst = parseFloat($("#UnitPriceEst").val()) || 0;
+                var remarks = $("#Remarks").val();
+
+                if (!itemId || quantity <= 0) {
+                    alert("Please select an item and enter a valid quantity.");
+                    return;
+                }
+
+                itemLines.push({
+                    ItemId: itemId,
+                    ItemName: itemName,
+                    UnitId: unitId,
+                    UnitName: unitName,
+                    Quantity: quantity,
+                    UnitPriceEst: unitPriceEst,
+                    Remarks: remarks
+                });
+
+                RenderGrid();
+
+                $("#ItemId").val("");
+                $("#UnitId").val("");
+                $("#Quantity").val(1);
+                $("#UnitPriceEst").val("0.00");
+                $("#Remarks").val("");
+            });
+
+            $("#ItemsGrid").on("click", ".btnRemoveItem", function () {
+                var idx = $(this).data("index");
+                itemLines.splice(idx, 1);
+                RenderGrid();
+            });
+
+            $("#btnSubmit").click(function () {
+                if (itemLines.length === 0) {
+                    $("#errormessage").html("At least one item must be added.");
+                    $("#errordiv").show();
+                    return;
+                }
+
+                // Basic header validation
+                if (!$("input[name='RequisitionDate']").val()) {
+                    $("#errormessage").html("Please select Requisition Date.");
+                    $("#errordiv").show();
+                    return;
+                }
+                if (!$("#DepartmentId").val()) {
+                    $("#errormessage").html("Please select Department.");
+                    $("#errordiv").show();
+                    return;
+                }
+                if (!$("select[name='RequestedBy']").val()) {
+                    $("#errormessage").html("Please select Requested By.");
+                    $("#errordiv").show();
+                    return;
+                }
+                if (!$("input[name='RequisitionName']").val().trim()) {
+                    $("#errormessage").html("Please enter Requisition Name.");
+                    $("#errordiv").show();
+                    return;
+                }
+
+                var formData = $("#my-form").serialize()
+                    + "&DetailsJson=" + encodeURIComponent(JSON.stringify(itemLines));
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit", "InvDepartmentRequisition")',
+                    data: formData,
+                    success: function (data) {
+                        if (data.ResponseStatus == -1) {
+                            window.location.href = '@Url.Action("Logout","Login")';
+                        }
+                        else if (data.ResponseStatus == -2) {
+                            window.location.href = '@Url.Action("Index","InvDepartmentRequisition")';
+                        }
+                        else if (data.ResponseStatus == 0) {
+                            $("#errormessage").html(data.ResponseMessage);
+                            $("#errordiv").show();
+                        }
+                        else {
+                            $("#errordiv").hide();
+                            $("#maindiv").hide();
+                            $("#successdiv").show();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        $("#errormessage").html("An error occurred while processing your request: " + error);
+                        $("#errordiv").show();
+                    }
+                });
+            });
+        });
+    </script>
+}

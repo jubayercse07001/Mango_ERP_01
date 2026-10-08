@@ -1,0 +1,344 @@
+﻿
+@using ERP.Models.Inventory.InvDepartmentRequisition
+
+@model InvDepartmentRequisitionInfo
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Department Requisition";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <a href="@Url.Action("Index", "InvDepartmentRequisition2nd")"
+                   class="breadcrumb-item">
+                    Department Requisition
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Content area -->
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+            <!-- Header -->
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Delete Existing Requisition
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@Model.RowId" />
+
+            </div>
+
+
+            <!-- Warning -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+                            Are you sure you want to delete the following
+                            Requisition?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Requisition information -->
+            <div class="card-body">
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Req. ID:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.RequisitionId
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Requisition Code:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.RequisitionCode
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Requisition Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.RequisitionName
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Department:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.DepartmentName
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Requested By:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.RequestedByName
+                    </div>
+
+                </div>
+
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Job No:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @Model.JobNo
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Requisition has been deleted successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+
+                            <a href="@Url.Action("Index", "InvDepartmentRequisition2nd")"
+                               id="btnBack"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript {
+
+    <script>
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+
+            if (!confirm("Are you sure you want to delete this requisition?")) {
+                return;
+            }
+
+            $("#btnSubmit").prop("disabled", true);
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("Delete", "InvDepartmentRequisition2nd")',
+
+                data: $("#my-form").serialize(),
+
+                success: function (data) {
+
+                    if (data.ResponseStatus == -1) {
+
+                        window.location.href =
+                            '@Url.Action("Logout", "Login")';
+
+                    }
+                    else if (data.ResponseStatus == -2) {
+
+                        window.location.href =
+                            '@Url.Action("Index", "InvDepartmentRequisition2nd")';
+
+                    }
+                    else if (data.ResponseStatus == 0) {
+
+                        $("#errormessage")
+                            .html(data.ResponseMessage);
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+                        $("#btnSubmit")
+                            .prop("disabled", false);
+
+                    }
+                    else {
+
+                        $("#errormessage").html("");
+
+                        $("#errordiv").hide();
+
+                        $("#btnSubmit").hide();
+
+                        $("#successdiv").show();
+
+                        setTimeout(function () {
+
+                            window.location.href =
+                                '@Url.Action("Index", "InvDepartmentRequisition2nd")';
+
+                        }, 1500);
+
+                    }
+
+                },
+
+                error: function (xhr, status, error) {
+
+                    $("#errormessage")
+                        .html("An unexpected error occurred: " + error);
+
+                    $("#successdiv").hide();
+
+                    $("#errordiv").show();
+
+                    $("#btnSubmit")
+                        .prop("disabled", false);
+
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+}
+

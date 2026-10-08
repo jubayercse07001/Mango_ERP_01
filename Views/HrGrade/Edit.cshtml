@@ -1,0 +1,290 @@
+﻿@using ERP.Models.HR.Organization.HrGrade
+
+@{
+    ViewBag.Title = "Edit Grade";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index","HrGrade")"
+                   class="breadcrumb-item">
+                    HrGrade
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Grade
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.HrGrade.RowId" />
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Employee Type
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="EmployeeTypeId"
+                                        id="EmployeeTypeId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Employee Type
+                                    </option>
+
+                                    @foreach (var item in ViewBag.EmployeeTypeList)
+                                    {
+                                        <option value="@item.RowId"
+                                                @(item.RowId == ViewBag.HrGrade.EmployeeTypeId ? "selected" : "")>
+                                            @item.EmployeeTypeName
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Grade Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="GradeName"
+                                       class="form-control"
+                                       value="@ViewBag.HrGrade.GradeName"
+                                       placeholder="Grade Name" />
+
+                            </div>
+
+                        </div>
+
+                        @*<div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Pay Scale
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="PayScale"
+                                       class="form-control"
+                                       value="@ViewBag.HrGrade.PayScale"
+                                       placeholder="Pay Scale" />
+
+                            </div>
+
+                        </div>*@
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Rank
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="number"
+                                       name="Rank"
+                                       class="form-control"
+                                       value="@ViewBag.HrGrade.Rank" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Grade information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index","HrGrade")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+$(document).ready(function () {
+
+    $("#btnSubmit").click(function () {
+
+        var formData = new FormData($('#my-form')[0]);
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Edit", "HrGrade")',
+
+            data: formData,
+
+            processData: false,
+            contentType: false,
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","HrGrade")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errormessage").html("");
+
+                    $("#errordiv").hide();
+                    $("#successdiv").show();
+
+                }
+
+            },
+
+            error: function (xhr) {
+
+                $("#errormessage").html(
+                    xhr.responseText
+                );
+
+                $("#successdiv").hide();
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+}

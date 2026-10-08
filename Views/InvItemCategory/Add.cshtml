@@ -1,0 +1,333 @@
+﻿
+@using ERP.Models.Inventory.InvItemCategory
+
+@{
+    ViewBag.Title = "Add Item Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index", "InvItemCategory")"
+                   class="breadcrumb-item">
+                    InvItemCategory
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Add
+                </span>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <!-- Main Form -->
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">
+                    Add New Item Category
+                </h6>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Category Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Category Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="CategoryName"
+                                       id="CategoryName"
+                                       class="form-control"
+                                       placeholder="Category Name"
+                                       maxlength="200"
+                                       autocomplete="off" />
+
+                            </div>
+
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Description
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="Description"
+                                          id="Description"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Description"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-6">
+                        <!-- Reserved for future fields -->
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index", "InvItemCategory")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Success -->
+        <div class="card"
+             id="successdiv"
+             style="display:none">
+
+            <div class="card-header bg-white">
+
+                <h6 class="card-title">
+                    Item Category Added Successfully
+                </h6>
+
+            </div>
+
+            <div class="card-body">
+
+                <h4 class="text-success">
+                    Item category information has been added successfully.
+                </h4>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add", "InvItemCategory")"
+                       class="btn btn-light">
+
+                        Add Another
+
+                    </a>
+
+                    <a href="@Url.Action("Index", "InvItemCategory")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+    <script>
+
+        $(document).ready(function () {
+
+            // Submit
+            $("#btnSubmit").click(function () {
+
+                // Hide previous error
+                $("#errordiv").hide();
+                $("#errormessage").html("");
+
+                // Category Name validation
+                var categoryName =
+                    $.trim($("#CategoryName").val());
+
+                if (categoryName === "") {
+
+                    $("#errormessage").html(
+                        "Please enter Category Name."
+                    );
+
+                    $("#errordiv").show();
+
+                    $("#CategoryName").focus();
+
+                    return false;
+                }
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Add", "InvItemCategory")',
+
+                    data: $("#my-form").serialize(),
+
+                    beforeSend: function () {
+
+                        $("#btnSubmit")
+                            .prop("disabled", true)
+                            .html(
+                                'Saving... <i class="icon-spinner2 spinner ml-2"></i>'
+                            );
+
+                    },
+
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+
+                            // Session expired
+                            window.location.href =
+                                '@Url.Action("Logout", "Login")';
+
+                        }
+                        else if (data.ResponseStatus == -2) {
+
+                            // No permission
+                            window.location.href =
+                                '@Url.Action("Index", "InvItemCategory")';
+
+                        }
+                        else if (data.ResponseStatus == 0) {
+
+                            // Validation / server error
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#errordiv").show();
+
+                            $("#btnSubmit")
+                                .prop("disabled", false)
+                                .html(
+                                    'Submit <i class="icon-paperplane ml-2"></i>'
+                                );
+
+                        }
+                        else {
+
+                            // Success
+                            $("#errordiv").hide();
+
+                            $("#maindiv").hide();
+
+                            $("#successdiv").show();
+
+                        }
+
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        $("#errormessage").html(
+                            "An unexpected error occurred while saving the item category."
+                        );
+
+                        $("#errordiv").show();
+
+                        $("#btnSubmit")
+                            .prop("disabled", false)
+                            .html(
+                                'Submit <i class="icon-paperplane ml-2"></i>'
+                            );
+
+                        console.log(
+                            "InvItemCategory Add Error:",
+                            error
+                        );
+
+                    }
+
+                });
+
+            });
+
+            // Remove error when user starts typing
+            $("#CategoryName").on("input", function () {
+
+                if ($.trim($(this).val()) !== "") {
+
+                    $("#errordiv").hide();
+                    $("#errormessage").html("");
+
+                }
+
+            });
+
+        });
+
+    </script>
+}
+

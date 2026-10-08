@@ -1,0 +1,280 @@
+﻿@using ERP.Models.HR.Organization.HrMainDivisionDesignationMap
+
+@{
+    ViewBag.Title = "Add Main Division Designation Map";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <a href="@Url.Action("Index","HrMainDivisionDesignationMap")" class="breadcrumb-item">
+                    Main Division Designation Map
+                </a>
+
+                <span class="breadcrumb-item active">Add</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white">
+                <h6 class="card-title">Add Main Division - Designation Mapping</h6>
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group row">
+
+                    <label class="col-lg-2 col-form-label">
+                        <span class="text-danger">*</span> Main Division
+                    </label>
+
+                    <div class="col-lg-6">
+
+                        <select name="MainDivisionId" id="MainDivisionId" class="form-control">
+                            <option value="">Select Main Division</option>
+
+                            @foreach (var item in ViewBag.MainDivisionList)
+                            {
+                                <option value="@item.RowId">
+                                    @item.MainDivisionName
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between mb-2">
+
+                    <h6>Designations</h6>
+
+                    <button type="button" class="btn btn-sm btn-success" id="btnAddRow">
+                        + Add Designation
+                    </button>
+
+                </div>
+
+                <input type="hidden" id="DesignationId" name="DesignationId" />
+
+                <table class="table table-bordered" id="tblDesignation">
+
+                    <thead>
+                        <tr>
+                            <th>Designation</th>
+                            <th style="width:100px;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+
+                                <select name="DesignationIds" class="form-control designation-ddl">
+                                    <option value="">Select Designation</option>
+
+                                    @foreach (var item in ViewBag.DesignationList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DesignationName
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </td>
+
+                            <td>
+                                <button type="button" class="btn btn-danger btnRemove">
+                                    Remove
+                                </button>
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button" id="btnSubmit" class="btn bg-blue">
+                        Submit <i class="icon-paperplane ml-2"></i>
+                    </button>
+
+                    <a href="@Url.Action("Index","HrMainDivisionDesignationMap")" class="btn btn-light">
+                        Back To List
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card" id="successdiv" style="display:none">
+
+            <div class="card-header bg-white">
+                <h6 class="card-title">Main Division Designation Map Added Successfully</h6>
+            </div>
+
+            <div class="card-body">
+                <h4 class="text-success">
+                    Main Division Designation Mapping has been added successfully.
+                </h4>
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add","HrMainDivisionDesignationMap")" class="btn btn-light">
+                        Add Another
+                    </a>
+
+                    <a href="@Url.Action("Index","HrMainDivisionDesignationMap")" class="btn btn-light">
+                        Back To List
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+    $(document).ready(function () {
+
+        // ➕ Add Row
+        $("#btnAddRow").click(function () {
+
+            var row = `
+            <tr>
+                <td>
+                    <select name="DesignationIds" class="form-control designation-ddl">
+                        <option value="">Select Designation</option>
+                        @foreach (var item in ViewBag.DesignationList)
+                        {
+                            <option value="@item.RowId">@item.DesignationName</option>
+                        }
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btnRemove">Remove</button>
+                </td>
+            </tr>`;
+
+            $("#tblDesignation tbody").append(row);
+
+        });
+
+        // ❌ Remove Row
+        $(document).on("click", ".btnRemove", function () {
+
+            if ($("#tblDesignation tbody tr").length > 1) {
+                $(this).closest("tr").remove();
+            }
+
+        });
+
+        // 🚀 Submit
+        $("#btnSubmit").click(function () {
+
+            var designationIds = [];
+
+            $(".designation-ddl").each(function () {
+
+                var val = $(this).val();
+
+                if (val != "") {
+                    designationIds.push(val);
+                }
+
+            });
+
+            $("#DesignationId").val(designationIds.join(','));
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("Add","HrMainDivisionDesignationMap")',
+
+                data: $("#my-form").serialize(),
+
+                success: function (data) {
+
+                    if (data.ResponseStatus == -1) {
+
+                        window.location.href = '@Url.Action("Logout","Login")';
+
+                    }
+                    else if (data.ResponseStatus == 0) {
+
+                        $("#errormessage").html(data.ResponseMessage);
+                        $("#errordiv").show();
+
+                    }
+                    else {
+
+                        $("#errordiv").hide();
+                        $("#maindiv").hide();
+                        $("#successdiv").show();
+
+                    }
+
+                }
+
+            });
+
+        });
+
+    });
+    </script>
+}

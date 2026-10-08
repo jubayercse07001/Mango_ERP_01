@@ -1,0 +1,701 @@
+﻿```cshtml
+@using ERP.Models.Inventory.InvUnitConversion
+
+@{
+    ViewBag.Title = "Edit Unit Conversion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var conversion = ViewBag.InvUnitConversion;
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index","InvUnitConversion")"
+                   class="breadcrumb-item">
+
+                    InvUnitConversion
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <!-- =====================================================
+                 HEADER
+                 ===================================================== -->
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Unit Conversion
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       id="RowId"
+                       value="@conversion.RowId" />
+
+            </div>
+
+
+            <!-- =====================================================
+                 BODY
+                 ===================================================== -->
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- =================================================
+                         LEFT COLUMN
+                         ================================================= -->
+
+                    <div class="col-md-6">
+
+
+                        <!-- First Unit -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                First Unit
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="FirstUnitId"
+                                        id="FirstUnitId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select First Unit
+                                    </option>
+
+                                    @foreach (var item in ViewBag.UnitList)
+                                    {
+                                        string itemRowId =
+                                            Convert.ToString(item.RowId);
+
+                                        string selectedFirstUnit =
+                                            Convert.ToString(conversion.FirstUnitId);
+
+                                        <option value="@itemRowId"
+                                                data-unit-name="@item.MinUnitName"
+                                                @(itemRowId == selectedFirstUnit ? "selected" : "")>
+
+                                            @item.MinUnitName
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Second Unit -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Second Unit
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="SecondUnitId"
+                                        id="SecondUnitId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Second Unit
+                                    </option>
+
+                                    @foreach (var item in ViewBag.UnitList)
+                                    {
+                                        string itemRowId =
+                                            Convert.ToString(item.RowId);
+
+                                        string selectedSecondUnit =
+                                            Convert.ToString(conversion.SecondUnitId);
+
+                                        <option value="@itemRowId"
+                                                data-unit-name="@item.MinUnitName"
+                                                @(itemRowId == selectedSecondUnit ? "selected" : "")>
+
+                                            @item.MinUnitName
+
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Conversion Rate -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Conversion Rate
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="number"
+                                       name="ConversionRate"
+                                       id="ConversionRate"
+                                       class="form-control"
+                                       value="@conversion.ConversionRate.ToString("0.00")"
+                                       min="0.000001"
+                                       step="0.01"
+                                       placeholder="Conversion Rate" />
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- =================================================
+                         RIGHT COLUMN
+                         ================================================= -->
+
+                    <div class="col-md-6">
+
+                        <div class="alert alert-light border">
+
+                            <h6 class="font-weight-semibold">
+                                Conversion
+                            </h6>
+
+                            <div id="conversionExample"
+                                 class="font-weight-semibold text-primary">
+
+                                1 First Unit = 1 Second Unit
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 ERROR
+                 ===================================================== -->
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 SUCCESS
+                 ===================================================== -->
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Unit conversion information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 BUTTONS
+                 ===================================================== -->
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+
+                    <a href="@Url.Action("Index","InvUnitConversion")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+$(document).ready(function () {
+
+
+    // =========================================================
+    // GET SELECTED UNIT NAME
+    // =========================================================
+
+    function getSelectedUnitName(selector, defaultName) {
+
+        var selectedOption =
+            $(selector).find("option:selected");
+
+        if (!selectedOption ||
+            selectedOption.val() === "") {
+
+            return defaultName;
+        }
+
+        var unitName =
+            selectedOption.attr("data-unit-name");
+
+        if (!unitName) {
+
+            unitName =
+                selectedOption.text();
+        }
+
+        unitName =
+            $.trim(unitName);
+
+        if (!unitName) {
+
+            return defaultName;
+        }
+
+        return unitName;
+    }
+
+
+    // =========================================================
+    // UPDATE CONVERSION EXAMPLE
+    // =========================================================
+
+    function updateConversionExample() {
+
+        var firstUnit =
+            getSelectedUnitName(
+                "#FirstUnitId",
+                "First Unit"
+            );
+
+
+        var secondUnit =
+            getSelectedUnitName(
+                "#SecondUnitId",
+                "Second Unit"
+            );
+
+
+        var rateValue =
+            parseFloat(
+                $("#ConversionRate").val()
+            );
+
+        var rate = "1.00";
+
+        if (!isNaN(rateValue) && rateValue > 0) {
+            rate = rateValue.toFixed(2);
+        }
+
+
+        if (!rate ||
+            isNaN(parseFloat(rate)) ||
+            parseFloat(rate) <= 0) {
+
+            rate = "1";
+        }
+
+
+        $("#conversionExample").html(
+
+            "1 " +
+            firstUnit +
+            " = " +
+            rate +
+            " " +
+            secondUnit
+
+        );
+
+    }
+
+
+    // =========================================================
+    // FIRST UNIT CHANGE
+    // =========================================================
+
+    $("#FirstUnitId").on("change", function () {
+
+        updateConversionExample();
+
+    });
+
+
+    // =========================================================
+    // SECOND UNIT CHANGE
+    // =========================================================
+
+    $("#SecondUnitId").on("change", function () {
+
+        updateConversionExample();
+
+    });
+
+
+    // =========================================================
+    // CONVERSION RATE CHANGE
+    // =========================================================
+
+    $("#ConversionRate").on(
+        "keyup change input",
+        function () {
+
+            updateConversionExample();
+
+        }
+    );
+
+
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+
+    // This is important for Edit.
+    // It displays the existing selected units immediately.
+
+    updateConversionExample();
+
+
+    // =========================================================
+    // SUBMIT
+    // =========================================================
+
+    $("#btnSubmit").click(function () {
+
+
+        // =====================================================
+        // HIDE PREVIOUS MESSAGES
+        // =====================================================
+
+        $("#errordiv").hide();
+
+        $("#successdiv").hide();
+
+        $("#errormessage").html("");
+
+
+        // =====================================================
+        // GET VALUES
+        // =====================================================
+
+        var rowId =
+            $.trim(
+                $("#RowId").val()
+            );
+
+
+        var firstUnitId =
+            $("#FirstUnitId").val();
+
+
+        var secondUnitId =
+            $("#SecondUnitId").val();
+
+
+        var conversionRate =
+            $("#ConversionRate").val();
+
+
+        // =====================================================
+        // VALIDATE ROW ID
+        // =====================================================
+
+        if (!rowId) {
+
+            $("#errormessage").html(
+                "Invalid Unit Conversion information."
+            );
+
+            $("#errordiv").show();
+
+            return;
+        }
+
+
+        // =====================================================
+        // VALIDATE FIRST UNIT
+        // =====================================================
+
+        if (!firstUnitId) {
+
+            $("#errormessage").html(
+                "Please select First Unit."
+            );
+
+            $("#errordiv").show();
+
+            return;
+        }
+
+
+        // =====================================================
+        // VALIDATE SECOND UNIT
+        // =====================================================
+
+        if (!secondUnitId) {
+
+            $("#errormessage").html(
+                "Please select Second Unit."
+            );
+
+            $("#errordiv").show();
+
+            return;
+        }
+
+
+        // =====================================================
+        // SAME UNIT VALIDATION
+        // =====================================================
+
+        if (firstUnitId === secondUnitId) {
+
+            $("#errormessage").html(
+                "First Unit and Second Unit cannot be the same."
+            );
+
+            $("#errordiv").show();
+
+            return;
+        }
+
+
+        // =====================================================
+        // VALIDATE CONVERSION RATE
+        // =====================================================
+
+        if (!conversionRate ||
+            isNaN(parseFloat(conversionRate)) ||
+            parseFloat(conversionRate) <= 0) {
+
+            $("#errormessage").html(
+                "Please enter a valid Conversion Rate."
+            );
+
+            $("#errordiv").show();
+
+            return;
+        }
+
+
+        // =====================================================
+        // FORM DATA
+        // =====================================================
+
+        var formData =
+            new FormData(
+                $("#my-form")[0]
+            );
+
+
+        // =====================================================
+        // AJAX POST
+        // =====================================================
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Edit", "InvUnitConversion")',
+
+            data: formData,
+
+            processData: false,
+
+            contentType: false,
+
+
+            // =================================================
+            // SUCCESS
+            // =================================================
+
+            success: function (data) {
+
+
+                // ---------------------------------------------
+                // LOGIN EXPIRED
+                // ---------------------------------------------
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // NO PERMISSION
+                // ---------------------------------------------
+
+                if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","InvUnitConversion")';
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // ERROR
+                // ---------------------------------------------
+
+                if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+
+                    $("#errordiv").show();
+
+                    return;
+                }
+
+
+                // ---------------------------------------------
+                // SUCCESS
+                // ---------------------------------------------
+
+                $("#errormessage").html("");
+
+                $("#errordiv").hide();
+
+                $("#successdiv").show();
+
+            },
+
+
+            // =================================================
+            // AJAX ERROR
+            // =================================================
+
+            error: function (xhr) {
+
+                var message =
+                    xhr.responseText;
+
+                if (!message) {
+
+                    message =
+                        "An unexpected error occurred while updating Unit Conversion.";
+                }
+
+                $("#errormessage").html(
+                    message
+                );
+
+                $("#successdiv").hide();
+
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}
+}

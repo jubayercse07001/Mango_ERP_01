@@ -1,0 +1,160 @@
+﻿@using ERP.Models.Inventory.InvDepartment
+
+@{
+    ViewBag.Title = "Edit Inventory Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <a href="@Url.Action("Index","InvDepartment")" class="breadcrumb-item">
+                    Inventory Department
+                </a>
+                <span class="breadcrumb-item active">Edit</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <form id="my-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Edit Inventory Department</h6>
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvDepartment.RowId" />
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Department Name -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Department Name
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="DepartmentName"
+                                       id="DepartmentName"
+                                       class="form-control"
+                                       value="@ViewBag.InvDepartment.DepartmentName"
+                                       placeholder="Enter Department Name" />
+                            </div>
+                        </div>
+
+                        <!-- Short Department Name -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Short Name
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="ShortDeptName"
+                                       id="ShortDeptName"
+                                       class="form-control"
+                                       value="@ViewBag.InvDepartment.ShortDeptName"
+                                       placeholder="Enter Short Name" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Reserved for layout balance) -->
+                    <div class="col-md-6">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Message Div -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Message Div -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-success">
+                        <h4>
+                            Inventory Department information has been updated successfully.
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons Footer -->
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+                        Submit <i class="icon-paperplane ml-2"></i>
+                    </button>
+
+                    <a href="@Url.Action("Index","InvDepartment")"
+                       class="btn btn-light">
+                        Back To List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                var formData = new FormData($('#my-form')[0]);
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Edit", "InvDepartment")',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        if (data.ResponseStatus == -1) {
+                            window.location.href = '@Url.Action("Logout","Login")';
+                        }
+                        else if (data.ResponseStatus == -2) {
+                            window.location.href = '@Url.Action("Index","InvDepartment")';
+                        }
+                        else if (data.ResponseStatus == 0) {
+                            $("#errormessage").html(data.ResponseMessage);
+                            $("#successdiv").hide();
+                            $("#errordiv").show();
+                        }
+                        else {
+                            $("#errormessage").html("");
+                            $("#errordiv").hide();
+                            $("#successdiv").show();
+                        }
+                    },
+                    error: function (xhr) {
+                        $("#errormessage").html(
+                            xhr.responseText || "An unexpected error occurred. Please try again."
+                        );
+                        $("#successdiv").hide();
+                        $("#errordiv").show();
+                    }
+                });
+            });
+        });
+    </script>
+}

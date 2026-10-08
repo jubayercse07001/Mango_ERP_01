@@ -1,0 +1,188 @@
+﻿@using ERP.Models.HR.Organization.HrDepartmentDesignationMap;
+
+@{
+    ViewBag.Title = "Department Designation Map";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <span class="breadcrumb-item active">
+                    Department Designation Map
+                </span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+
+        <div class="header-elements d-none">
+            <div class="breadcrumb justify-content-center">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">
+                List of Department Designation Maps
+            </h5>
+
+            <div class="header-elements">
+                <button type="button" onclick="$('#my-form').toggle()" class="btn btn-light mr-3 text-success">
+                    <i class="icon-search4 mr-2"></i> Advance Search
+                </button>
+
+                <a href="@Url.Action("Index", "HrDepartmentDesignationMap")" class="btn btn-light mr-3 text-danger-300">
+                    <i class="icon-reset mr-2"></i> Reset Search
+                </a>
+
+                <a href="@Url.Action("Add", "HrDepartmentDesignationMap")" class="btn btn-light">
+                    <i class="icon-add mr-2"></i> Add New
+                </a>
+            </div>
+        </div>
+
+        <form id="my-form" style="display:none" onsubmit="event.preventDefault(); ReloadDataTable();">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Department Name</label>
+                            <input type="text" name="DepartmentName" id="SearchDepartmentName" class="form-control" placeholder="Search by Department..." />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Designation Name</label>
+                            <input type="text" name="DesignationName" id="SearchDesignationName" class="form-control" placeholder="Search by Designation..." />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-12 ml-lg-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" onclick="$('#my-form').toggle();" class="btn btn-light text-brown-300">
+                                Close Search Panel
+                            </button>
+
+                            <div>
+                                <button type="button" onclick="ResetSearch();" class="btn btn-light text-danger-300 mr-2">
+                                    Clear Inputs
+                                </button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="icon-search4 mr-2"></i> Execute Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </form>
+
+        <table class="table dataTable datatable-column-search-inputs" id="DepartmentDesignationMapItemList">
+            <thead>
+                <tr>
+                    <th>Map ID</th>
+                    <th>Department</th>
+                    <th>Designation</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td>Map ID</td>
+                    <td>Department</td>
+                    <td>Designation</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+        var dtTable;
+
+        function ReloadDataTable() {
+            // Serializes filtering elements into query-string arguments for the dynamic pipeline load
+            var urlWithParams = "@Url.Action("GetHrDepartmentDesignationMapItemList", "HrDepartmentDesignationMap")?" + $("#my-form").serialize();
+            dtTable.ajax.url(urlWithParams).load();
+        }
+
+        function ResetSearch() {
+            $("#my-form").trigger("reset");
+            ReloadDataTable();
+        }
+
+        function UpdateDataTable() {
+            dtTable = $('#DepartmentDesignationMapItemList').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    "url": "@Url.Action("GetHrDepartmentDesignationMapItemList", "HrDepartmentDesignationMap")",
+                    "type": "GET",
+                    "data": function (d) {
+                        // Combines DataTables pagination parameters with form values safely
+                        var formArray = $("#my-form").serializeArray();
+                        for (var i = 0; i < formArray.length; i++) {
+                            d[formArray[i].name] = formArray[i].value;
+                        }
+                    },
+                    "error": function (xhr, error, thrown) {
+                        console.log("XHR Status: " + xhr.status);
+                        console.log("Thrown Error: " + thrown);
+                        alert("Backend structural breakdown. Look into your Browser Developer Tools Console tab for the full error trace.");
+                    }
+                },
+                "columns": [
+                    { "data": "MapId" },
+                    { "data": "DepartmentName" },
+                    { "data": "DesignationName" },
+                    {
+                        "data": "RowId",
+                        "orderable": false,
+                        "searchable": false,
+                        "className": "text-center",
+                        "render": function (data, type, row) {
+                            return "<div class='list-icons'>" +
+                                       "<div class='dropdown'>" +
+                                           "<a href='#' class='list-icons-item' data-toggle='dropdown'>" +
+                                               "<i class='icon-menu9'></i>" +
+                                           "</a>" +
+                                           "<div class='dropdown-menu dropdown-menu-right'>" +
+                                               "<a href='@Url.Action("Edit", "HrDepartmentDesignationMap")/" + data + "' class='dropdown-item text-blue'>" +
+                                                   "<i class='icon-pencil7'></i> Edit Information" +
+                                               "</a>" +
+                                               "<a href='@Url.Action("Delete", "HrDepartmentDesignationMap")/" + data + "' class='dropdown-item text-danger'>" +
+                                                   "<i class='icon-cross'></i> Delete Information" +
+                                               "</a>" +
+                                           "</div>" +
+                                       "</div>" +
+                                   "</div>";
+                        }
+                    }
+                ]
+            });
+        }
+
+        $(document).ready(function () {
+            UpdateDataTable();
+        });
+    </script>
+}

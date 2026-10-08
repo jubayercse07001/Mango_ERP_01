@@ -1,0 +1,424 @@
+﻿@using Mango_ERP.Models
+
+@{
+    ViewBag.Title = "Add Item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <a href="@Url.Action("Index","InvItem")" class="breadcrumb-item">
+                    Inventory Items
+                </a>
+                <span class="breadcrumb-item active">Add</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <form id="my-form" enctype="multipart/form-data">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Inventory Item</h6>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Category -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Category
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="CategoryId" id="CategoryId" class="form-control" required>
+                                    <option value="">Select Category</option>
+                                    @if (ViewBag.CategoryList != null)
+                                    {
+                                        foreach (var item in ViewBag.CategoryList)
+                                        {
+                                            <option value="@item.RowId">@item.CategoryName</option>
+                                        }
+                                    }
+                                </select>
+
+                            </div>
+                        </div>
+                        <!-- Group -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label"> Group </label>
+                            <div class="col-lg-8">
+                                <select name="GroupId" id="GroupId" class="form-control">
+                                    <option value="">Select Group</option>
+                                    @if (ViewBag.GroupList != null)
+                                    {
+                                        foreach (var item in ViewBag.GroupList)
+                                        {
+                                            <option value="@item.RowId" @(ViewBag.InvItem != null && Convert.ToString(item.RowId) == Convert.ToString(ViewBag.InvItem.GroupId) ? "selected" : "")>
+                                                @item.GroupName
+                                            </option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Class -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Class</label>
+                            <div class="col-lg-8">
+                                <select name="ClassId" id="ClassId" class="form-control">
+                                    <option value="">Select Class</option>
+                                    @if (ViewBag.ClassList != null)
+                                    {
+                                        foreach (var item in ViewBag.ClassList)
+                                        {
+                                            <option value="@item.RowId">@item.ClassName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Family -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Family</label>
+                            <div class="col-lg-8">
+                                <select name="FamilyId" id="FamilyId" class="form-control">
+                                    <option value="">Select Family</option>
+                                    @if (ViewBag.FamilyList != null)
+                                    {
+                                        foreach (var item in ViewBag.FamilyList)
+                                        {
+                                            <option value="@item.RowId">@item.FamilyName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Sub-Family -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Sub-Family</label>
+                            <div class="col-lg-8">
+                                <select name="SubFamilyId" id="SubFamilyId" class="form-control">
+                                    <option value="">Select Sub Family</option>
+                                    @if (ViewBag.SubFamilyList != null)
+                                    {
+                                        foreach (var item in ViewBag.SubFamilyList)
+                                        {
+                                            <option value="@item.RowId">@item.SubFamilyName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Item Code -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Item Code
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text" name="ItemCode" id="ItemCode" class="form-control" placeholder="Item Code" required />
+                            </div>
+                        </div>
+                        <!-- Old Item Code -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Old Item Code</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="OldItemCode" class="form-control" placeholder="Old Item Code" />
+                            </div>
+                        </div>
+                        <!-- Item Name -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Item Name
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="text" name="ItemName" class="form-control" placeholder="Item Name" required />
+                            </div>
+                        </div>
+                        <!-- Description -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Description</label>
+                            <div class="col-lg-8">
+                                <textarea name="ItemDescription" rows="2" class="form-control" placeholder="Item Details"></textarea>
+                            </div>
+                        </div>
+                        <!-- Manufacturer -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Manufacturer</label>
+                            <div class="col-lg-8">
+                                <select name="ManufacturerId" class="form-control">
+                                    <option value="">Select Manufacturer</option>
+                                    @if (ViewBag.ManufacturerList != null)
+                                    {
+                                        foreach (var item in ViewBag.ManufacturerList)
+                                        {
+                                            <option value="@item.RowId">@item.ManufacturerName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Serial Number -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Serial Number</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="SerialNumber" class="form-control" placeholder="Serial Number" />
+                            </div>
+                        </div>
+                        <!-- Model Number -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Model Number</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="ModelNumber" class="form-control" placeholder="Model Number" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <!-- Re-Order Levels -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Min Re-Order Level</label>
+                            <div class="col-lg-8">
+                                <input type="number" step="0.01" name="MinimumReOrderLevel" class="form-control" value="0" />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Max Re-Order Level</label>
+                            <div class="col-lg-8">
+                                <input type="number" step="0.01" name="MaximumReOrderLevel" class="form-control" value="0" />
+                            </div>
+                        </div>
+                        <!-- Country -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Country of Origin</label>
+                            <div class="col-lg-8">
+                                <select name="CountryId" class="form-control">
+                                    <option value="">Select Country</option>
+                                    @if (ViewBag.CountryList != null)
+                                    {
+                                        foreach (var item in ViewBag.CountryList)
+                                        {
+                                            <option value="@item.RowId">@item.CountryName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Units -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Sale Unit</label>
+                            <div class="col-lg-8">
+                                <select name="SaleUnitId" class="form-control">
+                                    <option value="">Select Sale Unit</option>
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">@item.MinUnitName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Purchase Unit</label>
+                            <div class="col-lg-8">
+                                <select name="PurchaseUnitId" class="form-control">
+                                    <option value="">Select Purchase Unit</option>
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">@item.MinUnitName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Registered Unit</label>
+                            <div class="col-lg-8">
+                                <select name="RegisteredUnitId" class="form-control">
+                                    <option value="">Select Registered Unit</option>
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">@item.MinUnitName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Minimum Unit</label>
+                            <div class="col-lg-8">
+                                <select name="MinimumUnitId" class="form-control">
+                                    <option value="">Select Minimum Unit</option>
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">@item.MinUnitName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <!-- Batch Number -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Batch Number</label>
+                            <div class="col-lg-8">
+                                <input type="text" name="BatchNumber" class="form-control" placeholder="Batch Number" />
+                            </div>
+                        </div>
+                        <!-- Is Stock Item Checkbox -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Stock Item?</label>
+                            <div class="col-lg-8 d-flex align-items-center">
+                                <div class="form-check form-check-switchery">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" id="IsStockItemChk" class="form-check-input-styled" checked />
+                                        <input type="hidden" name="IsStockItem" id="IsStockItem" value="1" />
+                                        Is Stock Item
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Item Image File Input & Preview -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Item Image</label>
+                            <div class="col-lg-8">
+                                <input type="file" name="ImageFile" id="ImageFile" class="form-control-plaintext" accept="image/*" onchange="previewImage(this, 'avatarPreview')" />
+                                <div class="mt-2">
+                                    <img id="avatarPreview" src="~/global_assets/images/placeholder_avatar.jpg" style="width:120px; height:120px; object-fit:cover;" class="rounded border" alt="Preview" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Message Div -->
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage"></div>
+                </div>
+            </div>
+
+            <!-- Form Buttons -->
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <button type="button" id="btnSubmit" class="btn bg-blue">
+                        Submit <i class="icon-paperplane ml-2"></i>
+                    </button>
+                    <a href="@Url.Action("Index","InvItem")" class="btn btn-light">Back To List</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message Div -->
+        <div class="card" id="successdiv" style="display:none">
+            <div class="card-header bg-white">
+                <h6 class="card-title">Item Added Successfully</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="text-success">Item information has been registered successfully.</h4>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Add","InvItem")" class="btn btn-light">Add Another</a>
+                    <a href="@Url.Action("Index","InvItem")" class="btn btn-light">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+        $(document).ready(function () {
+
+            // Sync Stock Checkbox with hidden int value (1/0)
+            $("#IsStockItemChk").change(function () {
+                $("#IsStockItem").val($(this).is(":checked") ? 1 : 0);
+            });
+
+            // Cascading Dropdown: Load Sub-Family based on Family
+            $("#FamilyId").change(function () {
+                var familyId = $(this).val();
+                if (!familyId) {
+                    $("#SubFamilyId").html('<option value="">Select Sub-Family</option>');
+                    return;
+                }
+                // Preview images
+                function previewImage(input, previewId) {
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#' + previewId).attr('src', e.target.result);
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
+                $.ajax({
+                    url: '@Url.Action("GetSubFamilyByFamily", "InvItem")',
+                    type: 'GET',
+                    data: { FamilyId: familyId },
+                    success: function (data) {
+                        var html = '<option value="">Select Sub-Family</option>';
+                        $.each(data, function (i, item) {
+                            html += '<option value="' + item.RowId + '">' + item.SubFamilyName + '</option>';
+                        });
+                        $("#SubFamilyId").html(html);
+                    }
+                });
+            });
+
+            // Form Submit via AJAX (Supports Image Upload via FormData)
+            $("#btnSubmit").click(function () {
+                var form = $('#my-form')[0];
+                var formData = new FormData(form);
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Add", "InvItem")',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data.ResponseStatus == -1) {
+                            window.location.href = '@Url.Action("Logout", "Login")';
+                        }
+                        else if (data.ResponseStatus == -2) {
+                            window.location.href = '@Url.Action("Index", "InvItem")';
+                        }
+                        else if (data.ResponseStatus == 0) {
+                            $("#errormessage").html(data.ResponseMessage);
+                            $("#errordiv").show();
+                        }
+                        else {
+                            $("#errordiv").hide();
+                            $("#maindiv").hide();
+                            $("#successdiv").show();
+                        }
+                    },
+                    error: function () {
+                        $("#errormessage").html("An unexpected error occurred while saving.");
+                        $("#errordiv").show();
+                    }
+                });
+            });
+        });
+    </script>
+}

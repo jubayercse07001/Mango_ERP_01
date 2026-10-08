@@ -1,0 +1,403 @@
+﻿@using ERP.Models.HR.Organization.HrDepartment
+
+@{
+    ViewBag.Title = "Add Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+ 
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index","HrDepartment")"
+                   class="breadcrumb-item">
+
+                    HrDepartment
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Add
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</div>
+
+<div class="content">
+
+   
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Add New Department
+                </h6>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <!-- Division -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Division
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="DivisionId"
+                                        id="DivisionId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Division
+                                    </option>
+
+                                    @foreach (var item in ViewBag.DivisionList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DivisionName
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Branch -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Branch
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="BranchId"
+                                        id="BranchId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Branch
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+                        <!-- Department Group -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Department Group
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="DepartmentGroupId"
+                                        id="DepartmentGroupId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Department Group
+                                    </option>
+
+                                    @foreach (var item in ViewBag.DepartmentGroupList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DepartmentGroupName
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- Department Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Department Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="DepartmentName"
+                                       class="form-control"
+                                       placeholder="Department Name" />
+
+                            </div>
+
+                        </div>
+
+                        <!-- Short Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Short Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="ShortDeptName"
+                                       class="form-control"
+                                       placeholder="Short Department Name" />
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Rank
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="number"
+                                       name="Rank"
+                                       class="form-control"
+                                       value="0" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index","HrDepartment")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card"
+             id="successdiv"
+             style="display:none">
+
+            <div class="card-header bg-white">
+
+                <h6 class="card-title">
+                    Department Added Successfully
+                </h6>
+
+            </div>
+
+            <div class="card-body">
+
+                <h4 class="text-success">
+                    Department information has been added successfully.
+                </h4>
+
+            </div>
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add","HrDepartment")"
+                       class="btn btn-light">
+
+                        Add Another
+
+                    </a>
+
+                    <a href="@Url.Action("Index","HrDepartment")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+            </div>
+
+</form>
+    
+
+</div>
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+$(document).ready(function () {
+
+    // Division Change
+    $("#DivisionId").change(function () {
+
+        var divisionId = $(this).val();
+
+        $.ajax({
+
+            url: '@Url.Action("GetBranchByDivision","HrDepartment")',
+
+            type: 'GET',
+
+            data: {
+                DivisionId: divisionId
+            },
+
+            success: function (data) {
+
+                var html =
+                    '<option value="">Select Branch</option>';
+
+                $.each(data, function (i, item) {
+
+                    html +=
+                        '<option value="' +
+                        item.RowId +
+                        '">' +
+                        item.BranchName +
+                        '</option>';
+
+                });
+
+                $("#BranchId").html(html);
+
+            }
+
+        });
+
+    });
+
+    $("#btnSubmit").click(function () {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Add", "HrDepartment")',
+
+            data: $("#my-form").serialize(),
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","HrDepartment")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errordiv").hide();
+
+                    $("#maindiv").hide();
+
+                    $("#successdiv").show();
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

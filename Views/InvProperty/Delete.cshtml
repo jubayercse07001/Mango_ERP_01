@@ -1,0 +1,267 @@
+﻿@using ERP.Models.Inventory.InvProperty
+
+@{
+    ViewBag.Title = "Delete Property";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index", "InvProperty")"
+                   class="breadcrumb-item">
+                    InvProperty
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Content area -->
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Delete Existing Property
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvProperty.RowId" />
+
+            </div>
+
+            <!-- WARNING -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+                            Are you sure you want to delete the following Property?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Property ID:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.InvProperty.PropertyId
+                    </div>
+
+                </div>
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Property Group:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.InvProperty.GroupName
+                    </div>
+
+                </div>
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Property Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.InvProperty.PropertyName
+                    </div>
+
+                </div>
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Property Description:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.InvProperty.PropertyDescription
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ERROR DIV -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SUCCESS DIV -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Property has been deleted successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+                            <a href="@Url.Action("Index", "InvProperty")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript{
+
+    <script>
+
+$(document).ready(function () {
+
+    $("#btnSubmit").click(function () {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Delete", "InvProperty")',
+
+            data: $("#my-form").serialize(),
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout", "Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index", "InvProperty")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(data.ResponseMessage);
+
+                    $("#successdiv").hide();
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errormessage").html("");
+
+                    $("#errordiv").hide();
+
+                    $("#btnSubmit").hide();
+
+                    $("#successdiv").show();
+
+                }
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

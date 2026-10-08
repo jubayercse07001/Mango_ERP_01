@@ -1,0 +1,367 @@
+﻿@using ERP.Models.Inventory.InvRefferenceInformation
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Reference Information";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvRefferenceInformation")"
+                   class="breadcrumb-item">
+
+                    Inventory Reference Information
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+            <!-- Card Header -->
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Delete Existing Reference Information
+                </h6>
+
+                <!-- RowId -->
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvRefferenceInformation.RowId" />
+
+            </div>
+
+
+            <!-- Warning -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+                            Are you sure you want to delete the following
+                            Reference Information?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Information -->
+            <div class="card-body">
+
+                <!-- Reference ID -->
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Reference ID:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvRefferenceInformation.RefferenceId
+
+                    </div>
+
+                </div>
+
+
+                <!-- Reference Name -->
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Reference Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvRefferenceInformation.RefferenceName
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Reference Information has been deleted successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- Delete -->
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+
+                            <!-- Back -->
+                            <a href="@Url.Action(
+                                        "Index",
+                                        "InvRefferenceInformation")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+<!-- /content area -->
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            // ========================================================
+            // Delete
+            // ========================================================
+            $("#btnSubmit").click(function () {
+
+
+                // ----------------------------------------------------
+                // Prevent multiple clicks
+                // ----------------------------------------------------
+                $("#btnSubmit")
+                    .prop("disabled", true);
+
+
+                // ----------------------------------------------------
+                // AJAX Delete
+                // ----------------------------------------------------
+                $.ajax({
+
+                    type: "POST",
+
+                    url:
+                        '@Url.Action(
+                            "Delete",
+                            "InvRefferenceInformation"
+                        )',
+
+                    data:
+                        $("#my-form").serialize(),
+
+
+                    // ------------------------------------------------
+                    // Success
+                    // ------------------------------------------------
+                    success: function (data) {
+
+
+                        // --------------------------------------------
+                        // Not Logged In
+                        // --------------------------------------------
+                        if (data.ResponseStatus == -1) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Logout",
+                                    "Login"
+                                )';
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Not Authorized
+                        // --------------------------------------------
+                        else if (data.ResponseStatus == -2) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Index",
+                                    "InvRefferenceInformation"
+                                )';
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Error
+                        // --------------------------------------------
+                        else if (data.ResponseStatus == 0) {
+
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#successdiv").hide();
+
+                            $("#errordiv").show();
+
+                            $("#btnSubmit")
+                                .prop("disabled", false);
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Success
+                        // --------------------------------------------
+                        else {
+
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+
+                            $("#btnSubmit").hide();
+
+                            $("#successdiv").show();
+
+                        }
+
+                    },
+
+
+                    // ------------------------------------------------
+                    // AJAX Error
+                    // ------------------------------------------------
+                    error: function (xhr) {
+
+                        var message =
+                            xhr.responseText;
+
+                        if (!message) {
+
+                            message =
+                                "Unable to delete reference information.";
+
+                        }
+
+                        $("#errormessage").html(
+                            "<ul>" +
+                            "<li>" +
+                            message +
+                            "</li>" +
+                            "</ul>"
+                        );
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+                        $("#btnSubmit")
+                            .prop("disabled", false);
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}

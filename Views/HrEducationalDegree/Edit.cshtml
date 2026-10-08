@@ -1,0 +1,128 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light ">
+
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="@Url.Action("Index", "HrEducationalDegree")" class="breadcrumb-item">Degree</a>  <span class="breadcrumb-item active">Edit</span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <!-- Individual column searching (text inputs) -->
+
+
+    <form action="#" id="my-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Edit Existing Educational Degree</h6>
+                <input type="hidden" name="RowId" value="@ViewBag.HrEducationalDegree.RowId" />
+            </div>
+
+            <div class="card-body">
+
+
+
+                <div class="form-group row ">
+                    <label class="col-form-label col-lg-2">Degree Name:</label>
+                    <div class="col-lg-2">
+                        <input type="text" name="DegreeName" class="form-control" placeholder="Degree Name" value="@ViewBag.HrEducationalDegree.DegreeName">
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="col-form-label col-lg-2">Rank:</label>
+                    <div class="col-lg-2">
+                        <input type="text" name="Rank" class="form-control" placeholder="Rank" value="@ViewBag.HrEducationalDegree.Rank">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage">
+                        there
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white" id="successdiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-success">
+                        <h2>  Degree has been updated successfully. </h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" id="btnSubmit" class="btn bg-blue ml-3">Submit <i class="icon-paperplane ml-2"></i></button>
+                            <button type="button" class="btn btn-light"> <a href="@Url.Action("Index", "HrEducationalDegree")">Back to List</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <!-- /individual column searching (text inputs) -->
+
+
+
+</div>
+<!-- /content area -->
+
+
+@section ChildpageJavaScript{
+    <script>
+
+        $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            $.ajax(
+            {
+                type: "POST",
+                url:  "@Url.Action("Edit", "HrEducationalDegree")",
+                data: $("#my-form").serialize(),
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+                            window.location.href =  "@Url.Action("Logout", "Login")";
+                        } else if (data.ResponseStatus == -2) {
+                            window.location.href =  "@Url.Action("Index", "HrEducationalDegree")";
+                        } else if (data.ResponseStatus == 0) {
+                            $("#errormessage").html(data.ResponseMessage);
+                            $("#successdiv").hide();
+                            $("#errordiv").show();
+                        }
+                        else {
+                            $("#errormessage").html("");
+                            $("#errordiv").hide();
+                            $("#successdiv").show();
+                            }
+
+                    }
+                });
+            });
+    });
+
+
+
+    </script>
+}
+
+

@@ -1,0 +1,1543 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+@using ERP.Models.Inventory.InvDepartmentRequisitionDetail
+
+@{
+    ViewBag.Title = "Issue Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var requisition =
+        ViewBag.Requisition as InvDepartmentRequisitionInfo;
+
+    if (requisition == null)
+    {
+        Response.Redirect(
+            Url.Action(
+                "Index",
+                "InvDepartmentTransactionIssue"));
+
+        return;
+    }
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvDepartmentTransactionIssue")"
+                   class="breadcrumb-item">
+
+                    Department Transaction Issue
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Issue Requisition
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <div class="card">
+
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
+
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+
+                Issue Requisition
+
+                <span class="text-muted font-weight-normal ml-2">
+                    (@requisition.RequisitionCode)
+                </span>
+
+            </h5>
+
+
+            <div class="header-elements">
+
+                <a href="@Url.Action("Index", "InvDepartmentTransactionIssue")"
+                   class="btn btn-light">
+
+                    <i class="icon-arrow-left13 mr-2"></i>
+
+                    Back to List
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <!-- =================================================
+                 REQUISITION INFORMATION
+                 ================================================= -->
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requisition Code
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequisitionCode"
+                           readonly />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requisition Date
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@(requisition.RequisitionDate == DateTime.MinValue
+                                    ? ""
+                                    : requisition.RequisitionDate.ToString("dd-MM-yyyy"))"
+                           readonly />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requested By
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequestedByName"
+                           readonly />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Job No
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.JobNo"
+                           readonly />
+
+                </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Status
+                    </label>
+
+                    <input type="text"
+                           class="form-control text-success"
+                           value="APPROVED"
+                           readonly />
+
+                </div>
+
+
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Original Department
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.DepartmentName"
+                           readonly />
+
+                </div>
+
+
+                <div class="col-md-6">
+
+                    <label class="font-weight-semibold">
+                        Requisition Name
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequisitionName"
+                           readonly />
+
+                </div>
+
+            </div>
+
+
+            <hr />
+
+
+            <!-- =================================================
+                 FROM / TO / REMARKS
+                 ================================================= -->
+
+            <div class="row mb-3">
+
+                <!-- FROM -->
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label class="font-weight-semibold">
+
+                            From Department
+
+                            <span class="text-danger">*</span>
+
+                            <small class="text-muted">
+                                (Issuing Store)
+                            </small>
+
+                        </label>
+
+
+                        <select id="FromDepartmentId"
+                                class="form-control">
+
+                            <option value="">
+                                -- Select Issuing Store --
+                            </option>
+
+                            @if (ViewBag.DepartmentList != null)
+                            {
+                                foreach (var dept
+                                    in ViewBag.DepartmentList)
+                                {
+                                    <option value="@dept.RowId">
+                                        @dept.DepartmentName
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TO -->
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label class="font-weight-semibold">
+
+                            To Department
+
+                            <span class="text-danger">*</span>
+
+                            <small class="text-muted">
+                                (Receiving)
+                            </small>
+
+                        </label>
+
+
+                        <select id="ToDepartmentId"
+                                class="form-control">
+
+                            <option value="">
+                                -- Select To Department --
+                            </option>
+
+                            @if (ViewBag.DepartmentList != null)
+                            {
+                                foreach (var dept
+                                    in ViewBag.DepartmentList)
+                                {
+                                    <option value="@dept.RowId"
+                                            @(Convert.ToString(dept.RowId) == Convert.ToString( requisition.DepartmentId) ? "selected" : "")>
+
+                                        @dept.DepartmentName
+
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+                </div>
+
+
+                <!-- REMARKS -->
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label class="font-weight-semibold">
+                            Remarks
+                        </label>
+
+                        <input type="text"
+                               id="Remarks"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="Optional issue remarks" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 DETAIL TABLE
+                 ================================================= -->
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped table-sm"
+                       id="IssueDetailTable">
+
+                    <thead class="bg-light">
+                        <tr>
+                            <th style="width:40px;" class="text-center">#</th>
+                            <th style="min-width:180px;">Item</th>
+                            <th class="text-right" style="width:90px;">Requested</th>
+                            <th class="text-right" style="width:90px;">Approved</th>
+                            <th class="text-right" style="width:100px;">Already Issued</th>
+                            <th class="text-right" style="width:90px;">Remaining</th>
+                            <th style="width:100px;">Requested Unit</th>
+                            <th style="min-width:130px;">Issue Unit</th>
+                            <!-- WIDER Issue Qty column -->
+                            <th class="text-right" style="width:150px; min-width:150px;">
+                                Issue Qty
+                            </th>
+                            <th class="text-right" style="width:95px;">Conv. Rate</th>
+                            <th class="text-right" style="width:100px;">Conv. Price</th>
+                            <th class="text-right" style="width:110px;">Conv. Total</th>
+                        </tr>
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (requisition.Details != null &&
+                             requisition.Details.Count > 0)
+                        {
+                            int i = 1;
+
+                            foreach (var line
+                                in requisition.Details)
+                            {
+                                decimal approved =
+                                    line.ApprovedQuantity;
+
+                                decimal alreadyIssued =
+                                    line.IssuedQuantity;
+
+                                decimal remaining =
+                                    approved -
+                                    alreadyIssued;
+
+                                if (remaining < 0)
+                                {
+                                    remaining = 0;
+                                }
+
+
+                                <tr data-rowid="@line.RowId"
+                                    data-itemid="@line.ItemId"
+                                    data-unit-price="@line.UnitPriceEst">
+
+                                    <td class="text-center">
+                                        @i
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong>
+                                            @line.ItemName
+                                        </strong>
+
+                                        <input type="hidden"
+                                               class="detail-row-id"
+                                               value="@line.RowId" />
+
+                                        <input type="hidden"
+                                               class="item-id"
+                                               value="@line.ItemId" />
+
+                                    </td>
+
+
+                                    <td class="text-right">
+
+                                        @line.Quantity.ToString("0.####")
+
+                                    </td>
+
+
+                                    <td class="text-right">
+
+                                        @approved.ToString("0.####")
+
+                                    </td>
+
+
+                                    <td class="text-right">
+
+                                        @alreadyIssued.ToString("N2")
+
+                                    </td>
+
+
+                                    <td class="text-right">
+
+                                        <span class="remaining-qty font-weight-semibold">
+
+                                            @remaining.ToString("N2")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- REQUESTED UNIT -->
+
+                                    <td>
+
+                                        <span class="requested-unit-name">
+
+                                            @line.MinUnitName
+
+                                        </span>
+
+                                        <input type="hidden"
+                                               class="requested-unit-id"
+                                               value="@line.UnitId" />
+
+                                    </td>
+
+
+                                    <!-- ISSUE UNIT -->
+
+                                    <td>
+
+                                        <select class="form-control form-control-sm issue-unit">
+
+                                            <option value="">
+                                                -- Select Unit --
+                                            </option>
+
+                                            @if (ViewBag.UnitList != null)
+                                            {
+                                                foreach (var unit
+                                                    in ViewBag.UnitList)
+                                                {
+                                                    <option value="@unit.RowId"
+                                                            @(Convert.ToString( unit.RowId) == Convert.ToString( line.UnitId) ? "selected" : "")>
+
+                                                        @unit.MinUnitName
+
+                                                    </option>
+                                                }
+                                            }
+
+                                        </select>
+
+                                    </td>
+
+
+                                    <!-- ISSUE QTY -->
+
+                                    <td>
+
+                                        @*<input type="number"
+        class="form-control form-control-sm text-right issued-qty"
+        min="0"
+        step="0.0001"
+        value="0"
+        data-remaining="@remaining" />*@
+                                        <input type="number"
+                                               class="form-control form-control-sm text-right issued-qty"
+                                               style="font-size: 12px;"
+                                               min="0"
+                                               step="0.0001"
+                                               value="0"
+                                               data-remaining="@remaining" />
+                                    </td>
+
+
+                                    <!-- RATE -->
+
+                                    <td class="text-right">
+                                        <span class="conversion-rate">1.00</span>
+
+                                        <input type="hidden"
+                                               class="unit-conversion-id"
+                                               value="" />
+                                    </td>
+
+
+                                    <!-- PRICE -->
+
+                                    <td class="text-right">
+
+                                        <span class="conversion-price">
+
+                                            @line.UnitPriceEst.ToString("N2")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- TOTAL -->
+
+                                    <td class="text-right">
+
+                                        <span class="conversion-total">
+                                            0.00
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- REMARKS -->
+
+                                    @*<td>
+
+                                        <input type="text"
+                                               class="form-control form-control-sm line-remarks"
+                                               maxlength="250"
+                                               placeholder="Remarks" />
+
+                                    </td>*@
+
+                                </tr>
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="13"
+                                    class="text-center text-muted">
+
+                                    No items found in this requisition.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             FOOTER
+             ===================================================== -->
+
+        <div class="card-footer bg-white">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <div id="issueError"
+                         class="alert alert-danger"
+                         style="display:none;">
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 text-right">
+
+                    <a href="@Url.Action("Index", "InvDepartmentTransactionIssue")"
+                       class="btn btn-light">
+
+                        <i class="icon-cross2 mr-2"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button type="button"
+                            id="btnIssue"
+                            class="btn btn-success">
+
+                        <i class="icon-checkmark3 mr-2"></i>
+
+                        Issue Requisition
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script type="text/javascript">
+
+    // =========================================================
+    // HELPERS
+    // =========================================================
+
+    function toDecimal(value) {
+
+        var n = parseFloat(value);
+
+        return isNaN(n) ? 0 : n;
+    }
+
+
+    function formatDecimal(
+        value,
+        places) {
+
+        return toDecimal(value)
+            .toFixed(places);
+    }
+
+
+    // =========================================================
+    // LOAD CONVERSION
+    // =========================================================
+
+    function loadConversion($row) {
+
+        var requestedUnitId =
+            $row.find(".requested-unit-id").val();
+
+        var issueUnitId =
+            $row.find(".issue-unit").val();
+
+        var unitPrice =
+            toDecimal(
+                $row.attr("data-unit-price"));
+
+        var issueQuantity =
+            toDecimal(
+                $row.find(".issued-qty").val());
+
+
+        var $rate =
+            $row.find(".conversion-rate");
+
+        var $price =
+            $row.find(".conversion-price");
+
+        var $total =
+            $row.find(".conversion-total");
+
+        var $convId =
+            $row.find(".unit-conversion-id");
+
+        var $equivalent =
+            $row.find(".requested-equivalent");
+
+
+        if (!issueUnitId) {
+
+            $rate.text("0.00");
+
+            $price.text("0.00");
+
+            $total.text("0.00");
+
+            $equivalent.text(
+                "Equivalent: 0");
+
+            $convId.val("");
+
+            return $.Deferred()
+                    .resolve()
+                    .promise();
+        }
+
+
+        // =====================================================
+        // SERVER CALCULATION
+        // =====================================================
+
+        $rate.html(
+            "<span class='text-muted'>...</span>");
+
+        $price.html(
+            "<span class='text-muted'>...</span>");
+
+        $total.html(
+            "<span class='text-muted'>...</span>");
+
+        $equivalent.html(
+            "<span class='text-muted'>Calculating...</span>");
+
+
+        return $.ajax({
+
+            url:
+                "@Url.Action(
+                    "GetUnitConversion",
+                    "InvDepartmentTransactionIssue")",
+
+            type: "GET",
+
+            data: {
+
+                requestedUnitId:
+                    requestedUnitId,
+
+                issueUnitId:
+                    issueUnitId,
+
+                unitPriceEst:
+                    unitPrice,
+
+                issueQuantity:
+                    issueQuantity
+
+            }
+
+        })
+
+        .done(function (res) {
+
+            if (!res ||
+                !res.success) {
+
+                $rate.html(
+                    "<span class='text-danger'>N/A</span>");
+
+                $price.html(
+                    "<span class='text-danger'>N/A</span>");
+
+                $total.html(
+                    "<span class='text-danger'>N/A</span>");
+
+                $equivalent.html(
+                    "<span class='text-danger'>" +
+                    (res && res.message
+                        ? res.message
+                        : "Conversion not found") +
+                    "</span>");
+
+                $convId.val("");
+
+                $row.data(
+                    "conversion-valid",
+                    false);
+
+                return;
+            }
+
+
+            var rate =
+                toDecimal(
+                    res.conversionRate);
+
+            var price =
+                toDecimal(
+                    res.conversionPrice);
+
+            var total =
+                toDecimal(
+                    res.conversionTotal);
+
+            var equivalent =
+                toDecimal(
+                    res.requestedEquivalentQuantity);
+
+
+            // =================================================
+            // DISPLAY CALCULATED VALUES
+            // =================================================
+
+            $rate.text(
+                formatDecimal(
+                    rate,
+                    2));
+
+            $price.text(
+                formatDecimal(
+                    price,
+                    2));
+
+            $total.text(
+                formatDecimal(
+                    total,
+                    2));
+
+            $equivalent.text(
+                "Equivalent: " +
+                formatDecimal(
+                    equivalent,
+                    4));
+
+            $convId.val(
+                res.unitConversionId || "");
+
+
+            $row.data(
+                "conversion-valid",
+                true);
+
+            $row.data(
+                "requested-equivalent",
+                equivalent);
+
+
+            validateRow(
+                $row,
+                false);
+        })
+
+        .fail(function () {
+
+            $rate.html(
+                "<span class='text-danger'>Error</span>");
+
+            $price.html(
+                "<span class='text-danger'>Error</span>");
+
+            $total.html(
+                "<span class='text-danger'>Error</span>");
+
+            $equivalent.html(
+                "<span class='text-danger'>" +
+                "Conversion service error" +
+                "</span>");
+
+            $convId.val("");
+
+            $row.data(
+                "conversion-valid",
+                false);
+        });
+    }
+
+
+    // =========================================================
+    // VALIDATE ROW
+    // =========================================================
+
+    function validateRow(
+        $row,
+        requireConversion) {
+
+        if (typeof requireConversion === "undefined") {
+            requireConversion = true;
+        }
+
+
+        var qty =
+            toDecimal(
+                $row.find(".issued-qty").val());
+
+        var remaining =
+            toDecimal(
+                $row.find(".remaining-qty").text());
+
+        var issueUnit =
+            $row.find(".issue-unit").val();
+
+        var $qty =
+            $row.find(".issued-qty");
+
+        var $unit =
+            $row.find(".issue-unit");
+
+        var $error =
+            $row.find(".quantity-error");
+
+
+        $qty.removeClass(
+            "border-danger");
+
+        $unit.removeClass(
+            "border-danger");
+
+        $error.hide().text("");
+
+
+        if (qty < 0) {
+
+            $qty.addClass(
+                "border-danger");
+
+            $error.text(
+                "Quantity cannot be negative.")
+                .show();
+
+            return false;
+        }
+
+
+        if (qty > 0 &&
+            !issueUnit) {
+
+            $unit.addClass(
+                "border-danger");
+
+            $error.text(
+                "Please select Issue Unit.")
+                .show();
+
+            return false;
+        }
+
+
+        if (qty <= 0) {
+            return true;
+        }
+
+
+        // =====================================================
+        // CHECK CONVERSION
+        // =====================================================
+
+        if (requireConversion &&
+            !$row.data("conversion-valid")) {
+
+            $error.text(
+                "Please wait for unit conversion calculation.")
+                .show();
+
+            return false;
+        }
+
+
+        var equivalent =
+            toDecimal(
+                $row.data(
+                    "requested-equivalent"));
+
+
+        // =====================================================
+        // IMPORTANT:
+        //
+        // Compare converted quantity with remaining
+        // requested-unit quantity.
+        // =====================================================
+
+        if (equivalent >
+            remaining + 0.01) {
+
+            $qty.addClass(
+                "border-danger");
+
+            $error.text(
+                "Issue quantity is equivalent to " +
+                formatDecimal(
+                    equivalent,
+                    4) +
+                " " +
+                $row.find(
+                    ".requested-unit-name")
+                    .text() +
+                ", but only " +
+                formatDecimal(
+                    remaining,
+                    4) +
+                " remains.")
+                .show();
+
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+    // =========================================================
+    // UNIT CHANGE
+    // =========================================================
+
+    $(document).on(
+        "change",
+        ".issue-unit",
+        function () {
+
+            var $row =
+                $(this)
+                    .closest(
+                        "tr[data-rowid]");
+
+
+            $row.data(
+                "conversion-valid",
+                false);
+
+
+            loadConversion(
+                $row);
+        });
+
+
+    // =========================================================
+    // QUANTITY CHANGE
+    // =========================================================
+
+    $(document).on(
+        "input change",
+        ".issued-qty",
+        function () {
+
+            var $row =
+                $(this)
+                    .closest(
+                        "tr[data-rowid]");
+
+
+            $row.data(
+                "conversion-valid",
+                false);
+
+
+            loadConversion(
+                $row);
+        });
+
+
+    // =========================================================
+    // ISSUE BUTTON
+    // =========================================================
+
+    $("#btnIssue").on(
+        "click",
+        function () {
+
+            var $button =
+                $(this);
+
+            var $error =
+                $("#issueError");
+
+
+            $error.hide().text("");
+
+
+            // =================================================
+            // FROM DEPARTMENT
+            // =================================================
+
+            var fromDepartmentId =
+                $("#FromDepartmentId").val();
+
+
+            if (!fromDepartmentId) {
+
+                $error.text(
+                    "Please select From Department.")
+                    .show();
+
+                $("#FromDepartmentId")
+                    .focus();
+
+                return;
+            }
+
+
+            // =================================================
+            // TO DEPARTMENT
+            // =================================================
+
+            var toDepartmentId =
+                $("#ToDepartmentId").val();
+
+
+            if (!toDepartmentId) {
+
+                $error.text(
+                    "Please select To Department.")
+                    .show();
+
+                $("#ToDepartmentId")
+                    .focus();
+
+                return;
+            }
+
+
+            var rows =
+                $("#IssueDetailTable tbody tr[data-rowid]");
+
+
+            var requests = [];
+
+            var issueLines = [];
+
+            var hasPositiveQty = false;
+
+
+            // =================================================
+            // FIRST VALIDATION
+            // =================================================
+
+            var hasError = false;
+
+
+            rows.each(
+                function () {
+
+                    var $row =
+                        $(this);
+
+                    var qty =
+                        toDecimal(
+                            $row.find(
+                                ".issued-qty")
+                                .val());
+
+
+                    if (qty <= 0)
+                        return;
+
+
+                    hasPositiveQty = true;
+
+
+                    if (!validateRow(
+                        $row,
+                        false)) {
+
+                        hasError = true;
+
+                        return false;
+                    }
+
+
+                    // =================================================
+                    // RECALCULATE FROM SERVER BEFORE SUBMIT
+                    // =================================================
+
+                    var requestedUnitId =
+                        $row.find(
+                            ".requested-unit-id")
+                            .val();
+
+                    var issueUnitId =
+                        $row.find(
+                            ".issue-unit")
+                            .val();
+
+                    var unitPrice =
+                        toDecimal(
+                            $row.attr(
+                                "data-unit-price"));
+
+
+                    requests.push(
+
+                        $.ajax({
+
+                            url:
+                                "@Url.Action(
+                                    "GetUnitConversion",
+                                    "InvDepartmentTransactionIssue")",
+
+                            type: "GET",
+
+                            data: {
+
+                                requestedUnitId:
+                                    requestedUnitId,
+
+                                issueUnitId:
+                                    issueUnitId,
+
+                                unitPriceEst:
+                                    unitPrice,
+
+                                issueQuantity:
+                                    qty
+                            }
+
+                        }).then(
+                            function (res) {
+
+                                if (!res ||
+                                    !res.success) {
+
+                                    throw (
+                                        res &&
+                                        res.message
+                                            ? res.message
+                                            : "Unit conversion failed."
+                                    );
+                                }
+
+
+                                var equivalent =
+                                    toDecimal(
+                                        res.requestedEquivalentQuantity);
+
+                                var remaining =
+                                    toDecimal(
+                                        $row.find(
+                                            ".remaining-qty")
+                                            .text());
+
+
+                                if (equivalent >
+                                    remaining + 0.01) {
+
+                                    throw (
+                                        "Issue quantity for " +
+                                        $row.find(
+                                            ".requested-unit-name")
+                                            .text() +
+                                        " exceeds remaining approved quantity."
+                                    );
+                                }
+
+
+                                // Store fresh values
+                                $row.find(
+                                    ".conversion-rate")
+                                    .text(
+                                        formatDecimal(
+                                            res.conversionRate,
+                                            2));
+
+                                $row.find(
+                                    ".conversion-price")
+                                    .text(
+                                        formatDecimal(
+                                            res.conversionPrice,
+                                            2));
+
+                                $row.find(
+                                    ".conversion-total")
+                                    .text(
+                                        formatDecimal(
+                                            res.conversionTotal,
+                                            2));
+
+                                $row.find(
+                                    ".unit-conversion-id")
+                                    .val(
+                                        res.unitConversionId || "");
+
+
+                                $row.data(
+                                    "conversion-valid",
+                                    true);
+
+                                $row.data(
+                                    "requested-equivalent",
+                                    equivalent);
+
+
+                                issueLines.push({
+
+                                    RowId:
+                                        $row.find(
+                                            ".detail-row-id")
+                                            .val(),
+
+                                    IssuedQuantity:
+                                        qty,
+
+                                    IssueUnitId:
+                                        issueUnitId,
+
+                                    UnitConversionId:
+                                        res.unitConversionId || null,
+
+                                    ConversionRate:
+                                        toDecimal(
+                                            res.conversionRate),
+
+                                    ConversionPrice:
+                                        toDecimal(
+                                            res.conversionPrice),
+
+                                    ConversionTotal:
+                                        toDecimal(
+                                            res.conversionTotal),
+
+                                    Remarks:
+                                        $row.find(
+                                            ".line-remarks")
+                                            .val()
+                                });
+                            }
+                        )
+                    );
+                });
+
+
+            if (hasError) {
+
+                $error.text(
+                    "Please correct the highlighted issue items.")
+                    .show();
+
+                return;
+            }
+
+
+            if (!hasPositiveQty) {
+
+                $error.text(
+                    "Please enter at least one Issue Quantity greater than zero.")
+                    .show();
+
+                return;
+            }
+
+
+            if (!confirm(
+                "Are you sure you want to issue this requisition?")) {
+
+                return;
+            }
+
+
+            $button
+                .prop(
+                    "disabled",
+                    true)
+                .html(
+                    "<i class='icon-spinner2 spinner mr-2'></i>" +
+                    " Calculating...");
+
+
+            // =================================================
+            // WAIT FOR ALL CONVERSION CALCULATIONS
+            // =================================================
+
+            $.when.apply(
+                $,
+                requests)
+
+                .done(
+                    function () {
+
+                        $button.html(
+                            "<i class='icon-spinner2 spinner mr-2'></i>" +
+                            " Processing...");
+
+
+                        // =========================================
+                        // POST
+                        // =========================================
+
+                        $.ajax({
+
+                            url:
+                                "@Url.Action(
+                                    "Issue",
+                                    "InvDepartmentTransactionIssue")",
+
+                            type:
+                                "POST",
+
+                            data: {
+
+                                id:
+                                    "@requisition.RowId",
+
+                                fromDepartmentId:
+                                    fromDepartmentId,
+
+                                toDepartmentId:
+                                    toDepartmentId,
+
+                                remarks:
+                                    $("#Remarks").val(),
+
+                                IssuedLinesJson:
+                                    JSON.stringify(
+                                        issueLines)
+                            },
+
+                            success:
+                                function (response) {
+
+                                    if (
+                                        response &&
+                                        response.ResponseStatus === 1) {
+
+                                        alert(
+                                            response.ResponseMessage ||
+                                            "Requisition issued successfully.");
+
+                                        window.location.href =
+                                            "@Url.Action(
+                                                "Index",
+                                                "InvDepartmentTransactionIssue")";
+
+                                        return;
+                                    }
+
+
+                                    alert(
+                                        response &&
+                                        response.ResponseMessage
+                                            ? response.ResponseMessage
+                                            : "Issue failed.");
+
+
+                                    $button
+                                        .prop(
+                                            "disabled",
+                                            false)
+                                        .html(
+                                            "<i class='icon-checkmark3 mr-2'></i>" +
+                                            " Issue Requisition");
+                                },
+
+                            error:
+                                function (xhr) {
+
+                                    console.error(
+                                        xhr);
+
+                                    var message =
+                                        "An unexpected error occurred while issuing the requisition.";
+
+
+                                    if (
+                                        xhr.responseJSON &&
+                                        xhr.responseJSON.ResponseMessage) {
+
+                                        message =
+                                            xhr.responseJSON.ResponseMessage;
+                                    }
+
+
+                                    alert(
+                                        message);
+
+
+                                    $button
+                                        .prop(
+                                            "disabled",
+                                            false)
+                                        .html(
+                                            "<i class='icon-checkmark3 mr-2'></i>" +
+                                            " Issue Requisition");
+                                }
+                        });
+                    })
+
+                .fail(
+                    function (xhr) {
+
+                        var message =
+                            "Unable to calculate unit conversion.";
+
+
+                        if (
+                            typeof xhr === "string") {
+
+                            message =
+                                xhr;
+                        }
+                        else if (
+                            xhr &&
+                            xhr.responseJSON &&
+                            xhr.responseJSON.message) {
+
+                            message =
+                                xhr.responseJSON.message;
+                        }
+
+
+                        $error
+                            .text(message)
+                            .show();
+
+
+                        $button
+                            .prop(
+                                "disabled",
+                                false)
+                            .html(
+                                "<i class='icon-checkmark3 mr-2'></i>" +
+                                " Issue Requisition");
+                    });
+        });
+
+
+    // =========================================================
+    // INITIAL LOAD
+    // =========================================================
+
+    $(document).ready(
+        function () {
+
+            $("#IssueDetailTable tbody tr[data-rowid]")
+                .each(
+                    function () {
+
+                        var $row =
+                            $(this);
+
+                        loadConversion(
+                            $row);
+                    });
+        });
+
+    </script>
+
+}

@@ -1,0 +1,531 @@
+﻿@using ERP.Models.Inventory.InvUnitConversion
+
+@{
+    ViewBag.Title = "Add Unit Conversion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index","InvUnitConversion")"
+                   class="breadcrumb-item">
+
+                    InvUnitConversion
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Add
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form id="my-form">
+
+        <!-- Main Form -->
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Add New Unit Conversion
+                </h6>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+
+                        <!-- First Unit -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                First Unit
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="FirstUnitId"
+                                        id="FirstUnitId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select First Unit
+                                    </option>
+
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">
+                                                @item.MinUnitName
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Second Unit -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Second Unit
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="SecondUnitId"
+                                        id="SecondUnitId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Second Unit
+                                    </option>
+
+                                    @if (ViewBag.UnitList != null)
+                                    {
+                                        foreach (var item in ViewBag.UnitList)
+                                        {
+                                            <option value="@item.RowId">
+                                                @item.MinUnitName
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Conversion Rate -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Conversion Rate
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="number"
+                                       name="ConversionRate"
+                                       id="ConversionRate"
+                                       class="form-control"
+                                       placeholder="Conversion Rate"
+                                       min="0.000001"
+                                       step="0.000001"
+                                       value="1" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+
+                        <div class="alert alert-light border">
+
+                            <h6 class="font-weight-semibold">
+                                Conversion 
+                            </h6>
+
+                            <div id="conversionExample"
+                                 class="font-weight-semibold text-primary">
+
+                                1 First Unit = 1 Second Unit
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+
+                    <a href="@Url.Action("Index","InvUnitConversion")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Success -->
+        <div class="card"
+             id="successdiv"
+             style="display:none">
+
+            <div class="card-header bg-white">
+
+                <h6 class="card-title">
+                    Unit Conversion Added Successfully
+                </h6>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <h4 class="text-success">
+
+                    Unit conversion information has been
+                    added successfully.
+
+                </h4>
+
+            </div>
+
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add","InvUnitConversion")"
+                       class="btn btn-light">
+
+                        Add Another
+
+                    </a>
+
+
+                    <a href="@Url.Action("Index","InvUnitConversion")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+$(document).ready(function () {
+
+
+    // =========================================================
+    // UPDATE CONVERSION EXAMPLE
+    // =========================================================
+
+    function updateConversionExample() {
+
+        var firstUnit =
+            $("#FirstUnitId option:selected").text();
+
+        var secondUnit =
+            $("#SecondUnitId option:selected").text();
+
+        var rate =
+            $("#ConversionRate").val();
+
+
+        if (!firstUnit ||
+            firstUnit === "Select First Unit") {
+
+            firstUnit = "First Unit";
+        }
+
+
+        if (!secondUnit ||
+            secondUnit === "Select Second Unit") {
+
+            secondUnit = "Second Unit";
+        }
+
+
+        if (!rate || parseFloat(rate) <= 0) {
+
+            rate = "1";
+        }
+
+
+        $("#conversionExample").html(
+
+            "1 " +
+            firstUnit +
+            " = " +
+            rate +
+            " " +
+            secondUnit
+
+        );
+
+    }
+
+
+    $("#FirstUnitId").change(function () {
+
+        updateConversionExample();
+
+    });
+
+
+    $("#SecondUnitId").change(function () {
+
+        updateConversionExample();
+
+    });
+
+
+    $("#ConversionRate").on(
+        "keyup change",
+        function () {
+
+            updateConversionExample();
+
+        }
+    );
+
+
+    // =========================================================
+    // SUBMIT
+    // =========================================================
+
+    $("#btnSubmit").click(function () {
+
+
+        // Clear previous error
+        $("#errormessage").html("");
+        $("#errordiv").hide();
+
+
+        var firstUnitId =
+            $("#FirstUnitId").val();
+
+        var secondUnitId =
+            $("#SecondUnitId").val();
+
+        var conversionRate =
+            $("#ConversionRate").val();
+
+
+        // =====================================================
+        // CLIENT SIDE VALIDATION
+        // =====================================================
+
+        if (!firstUnitId) {
+
+            $("#errormessage").html(
+                "Please select First Unit."
+            );
+
+            $("#errordiv").show();
+
+            return;
+
+        }
+
+
+        if (!secondUnitId) {
+
+            $("#errormessage").html(
+                "Please select Second Unit."
+            );
+
+            $("#errordiv").show();
+
+            return;
+
+        }
+
+
+        if (firstUnitId === secondUnitId) {
+
+            $("#errormessage").html(
+                "First Unit and Second Unit cannot be the same."
+            );
+
+            $("#errordiv").show();
+
+            return;
+
+        }
+
+
+        if (!conversionRate ||
+            parseFloat(conversionRate) <= 0) {
+
+            $("#errormessage").html(
+                "Conversion Rate must be greater than zero."
+            );
+
+            $("#errordiv").show();
+
+            return;
+
+        }
+
+
+        // =====================================================
+        // AJAX SUBMIT
+        // =====================================================
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Add", "InvUnitConversion")',
+
+            data: $("#my-form").serialize(),
+
+            success: function (data) {
+
+
+                // Session expired
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+
+                // No permission
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","InvUnitConversion")';
+
+                }
+
+                // Validation / database error
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#errordiv").show();
+
+                }
+
+                // Success
+                else {
+
+                    $("#errordiv").hide();
+
+                    $("#maindiv").hide();
+
+                    $("#successdiv").show();
+
+                }
+
+            },
+
+            error: function () {
+
+                $("#errormessage").html(
+                    "An unexpected error occurred while saving unit conversion."
+                );
+
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

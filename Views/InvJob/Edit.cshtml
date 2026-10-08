@@ -1,0 +1,599 @@
+﻿@using ERP.Models.Inventory.InvJob
+
+@{
+    ViewBag.Title = "Edit Inventory Job";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index","InvJob")"
+                   class="breadcrumb-item">
+
+                    InvJob
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <!-- Card Header -->
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Inventory Job
+                </h6>
+
+                <!-- Hidden Fields -->
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvJob.RowId" />
+
+                <input type="hidden"
+                       name="JobId"
+                       value="@ViewBag.InvJob.JobId" />
+
+            </div>
+
+
+            <!-- Card Body -->
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+
+                        <!-- Job No -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Job No
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="JobNo"
+                                       id="JobNo"
+                                       class="form-control"
+                                       value="@ViewBag.InvJob.JobNo"
+                                       placeholder="Job No" readonly/>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Job Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Job Name
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="JobName"
+                                       id="JobName"
+                                       class="form-control"
+                                       value="@ViewBag.InvJob.JobName"
+                                       placeholder="Job Name" />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Department -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Department
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="DepartmentId"
+                                        id="DepartmentId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Department
+                                    </option>
+
+                                    @if (ViewBag.DepartmentList != null)
+                                    {
+                                        foreach (var item in ViewBag.DepartmentList)
+                                        {
+                                            <option value="@item.RowId"
+                                                    @(item.RowId == ViewBag.InvJob.DepartmentId ? "selected" : "")>
+
+                                                @item.DepartmentName
+
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Start Date -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                Start Date
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="date"
+                                       name="StartDate"
+                                       id="StartDate"
+                                       class="form-control"
+                                       value="@(ViewBag.InvJob.StartDate != null ? ((DateTime)ViewBag.InvJob.StartDate).ToString("yyyy-MM-dd") : "")" />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- End Date -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                End Date
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="date"
+                                       name="EndDate"
+                                       id="EndDate"
+                                       class="form-control"
+                                       value="@(ViewBag.InvJob.EndDate != null ? ((DateTime)ViewBag.InvJob.EndDate).ToString("yyyy-MM-dd") : "")" />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Status -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Status
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="Status"
+                                        id="Status"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Status
+                                    </option>
+
+                                    <option value="1"
+                                            @(ViewBag.InvJob.Status == 1 ? "selected" : "")>
+                                        Open
+                                    </option>
+
+                                    <option value="2"
+                                            @(ViewBag.InvJob.Status == 2 ? "selected" : "")>
+                                        In Progress
+                                    </option>
+
+                                    <option value="3"
+                                            @(ViewBag.InvJob.Status == 3 ? "selected" : "")>
+                                        Completed
+                                    </option>
+
+                                    <option value="4"
+                                            @(ViewBag.InvJob.Status == 4 ? "selected" : "")>
+                                        Cancelled
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+
+                        <!-- Job Description -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                Job Description
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="JobDescription"
+                                          id="JobDescription"
+                                          class="form-control"
+                                          rows="8"
+                                          placeholder="Job Description">@ViewBag.InvJob.JobDescription</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Inventory Job information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Footer -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+
+                    <a href="@Url.Action("Index","InvJob")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+
+            /*
+             * Clear previous messages
+             */
+            $("#errormessage").html("");
+            $("#errordiv").hide();
+            $("#successdiv").hide();
+
+
+            /*
+             * Basic Validation
+             */
+            var jobNo = $.trim($("#JobNo").val());
+            var jobName = $.trim($("#JobName").val());
+            var departmentId = $("#DepartmentId").val();
+            var status = $("#Status").val();
+
+
+            if (jobNo === "") {
+
+                $("#errormessage").html(
+                    "Please enter Job No."
+                );
+
+                $("#errordiv").show();
+
+                $("#JobNo").focus();
+
+                return false;
+            }
+
+
+            if (jobName === "") {
+
+                $("#errormessage").html(
+                    "Please enter Job Name."
+                );
+
+                $("#errordiv").show();
+
+                $("#JobName").focus();
+
+                return false;
+            }
+
+
+            if (departmentId === "") {
+
+                $("#errormessage").html(
+                    "Please select Department."
+                );
+
+                $("#errordiv").show();
+
+                $("#DepartmentId").focus();
+
+                return false;
+            }
+
+
+            if (status === "") {
+
+                $("#errormessage").html(
+                    "Please select Status."
+                );
+
+                $("#errordiv").show();
+
+                $("#Status").focus();
+
+                return false;
+            }
+
+
+            /*
+             * Date Validation
+             */
+            var startDate = $("#StartDate").val();
+            var endDate = $("#EndDate").val();
+
+
+            if (startDate !== "" &&
+                endDate !== "" &&
+                endDate < startDate) {
+
+                $("#errormessage").html(
+                    "End Date cannot be earlier than Start Date."
+                );
+
+                $("#errordiv").show();
+
+                $("#EndDate").focus();
+
+                return false;
+            }
+
+
+            /*
+             * Form Data
+             */
+            var formData = new FormData(
+                $('#my-form')[0]
+            );
+
+
+            /*
+             * AJAX Request
+             */
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("Edit", "InvJob")',
+
+                data: formData,
+
+                processData: false,
+
+                contentType: false,
+
+
+                beforeSend: function () {
+
+                    $("#btnSubmit")
+                        .prop("disabled", true)
+                        .html(
+                            'Updating... <i class="icon-spinner2 spinner ml-2"></i>'
+                        );
+
+                },
+
+
+                success: function (data) {
+
+                    /*
+                     * Login/session expired
+                     */
+                    if (data.ResponseStatus == -1) {
+
+                        window.location.href =
+                            '@Url.Action("Logout","Login")';
+
+                        return;
+                    }
+
+
+                    /*
+                     * Permission denied / redirect
+                     */
+                    else if (data.ResponseStatus == -2) {
+
+                        window.location.href =
+                            '@Url.Action("Index","InvJob")';
+
+                        return;
+                    }
+
+
+                    /*
+                     * Validation / business error
+                     */
+                    else if (data.ResponseStatus == 0) {
+
+                        $("#errormessage").html(
+                            data.ResponseMessage
+                        );
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+                    }
+
+
+                    /*
+                     * Successful update
+                     */
+                    else {
+
+                        $("#errormessage").html("");
+
+                        $("#errordiv").hide();
+
+                        $("#successdiv").show();
+
+                    }
+
+                },
+
+
+                error: function (xhr) {
+
+                    var message =
+                        xhr.responseText;
+
+                    if (!message) {
+
+                        message =
+                            "An unexpected error occurred while updating the Inventory Job.";
+
+                    }
+
+
+                    $("#errormessage").html(
+                        message
+                    );
+
+                    $("#successdiv").hide();
+
+                    $("#errordiv").show();
+
+                },
+
+
+                complete: function () {
+
+                    $("#btnSubmit")
+                        .prop("disabled", false)
+                        .html(
+                            'Submit <i class="icon-paperplane ml-2"></i>'
+                        );
+
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+}

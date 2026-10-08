@@ -1,0 +1,445 @@
+﻿
+@using ERP.Models.Inventory.InvUnitConversion
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Unit Conversion";
+}
+
+<!-- Page header -->
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvUnitConversion")"
+                   class="breadcrumb-item">
+
+                    InvUnitConversion
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Content area -->
+
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+
+            <!-- =====================================================
+                 HEADER
+                 ===================================================== -->
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+
+                    Delete Existing Unit Conversion
+
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvUnitConversion.RowId" />
+
+            </div>
+
+
+            <!-- =====================================================
+                 WARNING
+                 ===================================================== -->
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+
+                            Are you sure you want to delete the following
+                            Unit Conversion?
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 INFORMATION
+                 ===================================================== -->
+
+            <div class="card-body">
+
+
+                <!-- Conversion ID -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Conversion ID:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvUnitConversion.InvUnitConversionId
+
+                    </div>
+
+                </div>
+
+
+                <!-- First Unit -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        First Unit:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvUnitConversion.FirstUnitName
+
+                    </div>
+
+                </div>
+
+
+                <!-- Second Unit -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Second Unit:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvUnitConversion.SecondUnitName
+
+                    </div>
+
+                </div>
+
+
+                <!-- Conversion Rate -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Conversion Rate:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvUnitConversion.ConversionRate.ToString("0.00")
+
+                    </div>
+
+                </div>
+
+
+                <!-- Conversion Example -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Conversion:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2 font-weight-semibold text-primary">
+
+                        1 @ViewBag.InvUnitConversion.FirstUnitName
+                        =
+                        @ViewBag.InvUnitConversion.ConversionRate.ToString("0.00")
+                        @ViewBag.InvUnitConversion.SecondUnitName
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- =====================================================
+                 ERROR
+                 ===================================================== -->
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 SUCCESS
+                 ===================================================== -->
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+
+                            Unit conversion has been deleted
+                            successfully.
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 BUTTONS
+                 ===================================================== -->
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+
+                            <!-- DELETE -->
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+
+                            <!-- BACK -->
+
+                            <a href="@Url.Action("Index", "InvUnitConversion")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript{
+
+    <script>
+
+$(document).ready(function () {
+
+
+    // =========================================================
+    // DELETE BUTTON
+    // =========================================================
+
+    $("#btnSubmit").click(function () {
+
+
+        // =====================================================
+        // OPTIONAL CONFIRMATION
+        // =====================================================
+
+        if (!confirm(
+            "Are you sure you want to delete this Unit Conversion?"
+        )) {
+
+            return;
+
+        }
+
+
+        // =====================================================
+        // AJAX DELETE
+        // =====================================================
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Delete", "InvUnitConversion")',
+
+            data: $("#my-form").serialize(),
+
+
+            success: function (data) {
+
+
+                // =================================================
+                // LOGIN EXPIRED
+                // =================================================
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout", "Login")';
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // NO PERMISSION
+                // =================================================
+
+                if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index", "InvUnitConversion")';
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // ERROR
+                // =================================================
+
+                if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+
+                    $("#errordiv").show();
+
+                    return;
+
+                }
+
+
+                // =================================================
+                // SUCCESS
+                // =================================================
+
+                $("#errormessage").html("");
+
+                $("#errordiv").hide();
+
+                $("#btnSubmit").hide();
+
+                $("#successdiv").show();
+
+            },
+
+
+            // =====================================================
+            // AJAX ERROR
+            // =====================================================
+
+            error: function (xhr) {
+
+                var message =
+                    xhr.responseText;
+
+                if (!message) {
+
+                    message =
+                        "An unexpected error occurred while deleting Unit Conversion.";
+
+                }
+
+                $("#errormessage").html(
+                    message
+                );
+
+                $("#successdiv").hide();
+
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

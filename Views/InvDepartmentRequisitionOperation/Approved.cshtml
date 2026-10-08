@@ -1,0 +1,882 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+@using ERP.Models.Inventory.InvDepartmentRequisitionDetail
+
+@{
+    ViewBag.Title = "Approve Department Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var r = ViewBag.Requisition as InvDepartmentRequisitionInfo;
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvDepartmentRequisitionOperation")"
+                   class="breadcrumb-item">
+
+                    Department Requisition
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Approve Requisition
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@if (r == null)
+{
+    <div class="content">
+
+        <div class="alert alert-danger">
+            Requisition information could not be loaded.
+        </div>
+
+    </div>
+}
+else
+{
+    <div class="content">
+
+        <div class="card">
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h5 class="card-title">
+
+                    <i class="icon-checkmark3 mr-2 text-success"></i>
+
+                    Approve Department Requisition
+
+                </h5>
+
+            </div>
+
+
+            <!-- =====================================================
+                 BODY
+            ====================================================== -->
+
+            <div class="card-body">
+
+
+                <!-- =================================================
+                     REQUISITION INFORMATION
+                ================================================== -->
+
+                <div class="mb-3">
+
+                    <h6 class="font-weight-semibold mb-2">
+
+                        <i class="icon-file-text2 mr-2"></i>
+
+                        Requisition Information
+
+                    </h6>
+
+
+                    <div class="row">
+
+                        <!-- COLUMN 1 -->
+
+                        <div class="col-md-4">
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Requisition ID:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+                                    @r.RequisitionId
+                                </span>
+
+                            </div>
+
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Requisition Code:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+                                    @r.RequisitionCode
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COLUMN 2 -->
+
+                        <div class="col-md-4">
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Requisition Date:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+
+                                    @(r.RequisitionDate == null
+                                        ? ""
+                                        : Convert.ToDateTime(
+                                            r.RequisitionDate
+                                          ).ToString("dd-MM-yyyy"))
+
+                                </span>
+
+                            </div>
+
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Requisition Name:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+                                    @r.RequisitionName
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- COLUMN 3 -->
+
+                        <div class="col-md-4">
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Requested By:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+                                    @r.RequestedByName
+                                </span>
+
+                            </div>
+
+
+                            <div class="mb-2">
+
+                                <span class="text-muted">
+                                    Job No:
+                                </span>
+
+                                <span class="font-weight-semibold ml-1">
+                                    @r.JobNo
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <hr class="mt-2 mb-3" />
+
+                </div>
+
+
+                <!-- =================================================
+                     DEPARTMENT
+                ================================================== -->
+
+                <div class="mb-4">
+
+                    <h6 class="font-weight-semibold mb-2">
+
+                        <i class="icon-office mr-2"></i>
+
+                        Department Information
+
+                    </h6>
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+
+                            <div class="form-group mb-2">
+
+                                <label>
+                                    From Department
+                                </label>
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@r.DepartmentName"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <div class="form-group mb-2">
+
+                                <label for="ToDepartmentId">
+
+                                    To Department
+                                    <span class="text-danger">*</span>
+
+                                </label>
+
+
+                                <select id="ToDepartmentId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        -- Select To Department --
+                                    </option>
+
+
+                                    @if (ViewBag.DepartmentList != null)
+                                    {
+                                        foreach (var item in ViewBag.DepartmentList)
+                                        {
+                                            <option value="@item.RowId">
+                                                @item.DepartmentName
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     ITEM INFORMATION
+                ================================================== -->
+
+                <div class="mb-4">
+
+                    <h6 class="font-weight-semibold mb-2">
+
+                        <i class="icon-cart mr-2"></i>
+
+                        Requisition Item Information
+
+                    </h6>
+
+
+                    <div class="table-responsive">
+
+                        <table class="table table-bordered table-striped"
+                               id="approveGrid">
+
+                            <thead class="bg-light">
+
+                                <tr>
+
+                                    <th style="width:5%">
+                                        SL
+                                    </th>
+
+                                    <th>
+                                        Item
+                                    </th>
+
+                                    <th>
+                                        Unit
+                                    </th>
+
+                                    <th class="text-right">
+                                        Requested Qty
+                                    </th>
+
+                                    <th class="text-right"
+                                        style="width:150px">
+
+                                        Approved Qty
+
+                                    </th>
+
+                                    <th class="text-right">
+                                        Unit Price Est.
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+                                @if (r.Details != null &&
+                                     r.Details.Count > 0)
+                                {
+                                    int sl = 1;
+
+                                    foreach (var d in r.Details)
+                                    {
+                                        <tr data-rowid="@d.RowId"
+                                            data-max="@d.Quantity">
+
+                                            <td>
+                                                @sl
+                                            </td>
+
+
+                                            <td>
+                                                @d.ItemName
+                                            </td>
+
+
+                                            <td>
+                                                @d.MinUnitName
+                                            </td>
+
+
+                                            <td class="text-right">
+                                                @d.Quantity
+                                            </td>
+
+
+                                            <td>
+                                                <input type="number"
+                                                       class="form-control approved-qty text-right"
+                                                       max="@d.Quantity"
+                                                       step="any"
+                                                       min="0"
+                                                       value="@((d.ApprovedQuantity != 0 ? d.ApprovedQuantity : d.Quantity).ToString("0.##"))" />
+                                            </td>
+
+
+                                            <td class="text-right">
+
+                                                @d.UnitPriceEst.ToString("0.00")
+
+                                            </td>
+
+                                        </tr>
+
+                                        sl++;
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+
+                                        <td colspan="6"
+                                            class="text-center text-muted">
+
+                                            No requisition items found.
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     REMARKS
+                ================================================== -->
+
+                <div class="mb-3">
+
+                    <h6 class="font-weight-semibold mb-2">
+
+                        <i class="icon-comment-discussion mr-2"></i>
+
+                        Approval Remarks
+
+                    </h6>
+
+
+                    <textarea id="remarks"
+                              class="form-control"
+                              rows="3"
+                              maxlength="1000"
+                              placeholder="Enter approval remarks"></textarea>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 FOOTER
+            ====================================================== -->
+
+            <div class="card-footer bg-white d-flex justify-content-between">
+
+                <a href="@Url.Action(
+                            "Index",
+                            "InvDepartmentRequisitionOperation")"
+                   class="btn btn-light">
+
+                    <i class="icon-arrow-left8 mr-1"></i>
+
+                    Cancel
+
+                </a>
+
+
+                <button type="button"
+                        id="btnApprove"
+                        class="btn btn-success">
+
+                    <i class="icon-checkmark3 mr-1"></i>
+
+                    Approve Requisition
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+}
+
+
+@section ChildpageJavaScript {
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        // ============================================================
+        // APPROVE BUTTON
+        // ============================================================
+
+        $("#btnApprove").click(function () {
+
+            var button = $(this);
+
+
+            // ========================================================
+            // 1. TO DEPARTMENT
+            // ========================================================
+
+            var toDepartmentId =
+                $("#ToDepartmentId").val();
+
+
+            if (!toDepartmentId) {
+
+                alert("Please select To Department.");
+
+                $("#ToDepartmentId").focus();
+
+                return;
+            }
+
+
+            // ========================================================
+            // 2. APPROVAL LINES
+            // ========================================================
+
+            var lines = [];
+
+            var valid = true;
+
+
+            $("#approveGrid tbody tr[data-rowid]").each(function () {
+
+                var row = $(this);
+
+                var rowId =
+                    row.attr("data-rowid");
+
+                var maxQty =
+                    parseFloat(
+                        row.attr("data-max")
+                    );
+
+                var input =
+                    row.find(".approved-qty");
+
+                var rawQty =
+                    input.val();
+
+
+                // ----------------------------------------------------
+                // Empty quantity
+                // ----------------------------------------------------
+
+                if ($.trim(rawQty) === "") {
+
+                    alert(
+                        "Please enter approved quantity for every item."
+                    );
+
+                    input.focus();
+
+                    valid = false;
+
+                    return false;
+                }
+
+
+                var qty =
+                    parseFloat(rawQty);
+
+
+                // ----------------------------------------------------
+                // Invalid quantity
+                // ----------------------------------------------------
+
+                if (isNaN(qty) ||
+                    isNaN(maxQty) ||
+                    qty < 0 ||
+                    qty > maxQty) {
+
+                    alert(
+                        "Approved quantity must be between 0 and requested quantity."
+                    );
+
+                    input.focus();
+
+                    valid = false;
+
+                    return false;
+                }
+
+
+                // ----------------------------------------------------
+                // Add line
+                // ----------------------------------------------------
+
+                lines.push({
+                    RowId: rowId,
+                    ApprovedQuantity: qty
+                });
+
+            });
+
+
+            if (!valid) {
+                return;
+            }
+
+
+            // ========================================================
+            // 3. CHECK ITEMS
+            // ========================================================
+
+            if (lines.length === 0) {
+
+                alert(
+                    "No requisition items were found."
+                );
+
+                return;
+            }
+
+
+            // ========================================================
+            // 4. AT LEAST ONE APPROVED QTY
+            // ========================================================
+
+            var hasApprovedQty =
+                lines.some(function (x) {
+
+                    return x.ApprovedQuantity > 0;
+
+                });
+
+
+            if (!hasApprovedQty) {
+
+                alert(
+                    "At least one approved quantity must be greater than zero."
+                );
+
+                return;
+            }
+
+
+            // ========================================================
+            // 5. CONFIRMATION
+            // ========================================================
+
+            if (!confirm(
+                "Are you sure you want to approve this requisition?"
+            )) {
+
+                return;
+            }
+
+
+            // ========================================================
+            // 6. DISABLE BUTTON
+            // ========================================================
+
+            button.prop("disabled", true);
+
+            button.html(
+                '<i class="icon-spinner2 spinner mr-1"></i>' +
+                ' Approving...'
+            );
+
+
+            // ========================================================
+            // 7. AJAX
+            // ========================================================
+
+            $.ajax({
+
+                url:
+                    '@Url.Action(
+                        "Approved",
+                        "InvDepartmentRequisitionOperation"
+                    )',
+
+                type: "POST",
+
+                dataType: "json",
+
+                data: {
+
+                    id:
+                        '@r.RowId',
+
+                    toDepartmentId:
+                        toDepartmentId,
+
+                    remarks:
+                        $("#remarks").val(),
+
+                    ApprovedLinesJson:
+                        JSON.stringify(lines)
+                },
+
+
+                // ====================================================
+                // SUCCESS
+                // ====================================================
+
+                success: function (res) {
+
+                    console.log(
+                        "Approval response:",
+                        res
+                    );
+
+
+                    if (res &&
+                        res.ResponseStatus == 1) {
+
+                        alert(
+                            res.ResponseMessage ||
+                            "Requisition approved successfully."
+                        );
+
+
+                        window.location.href =
+                            '@Url.Action(
+                                "Index",
+                                "InvDepartmentRequisitionOperation"
+                            )';
+
+                        return;
+                    }
+
+
+                    // ------------------------------------------------
+                    // Session expired
+                    // ------------------------------------------------
+
+                    if (res &&
+                        res.ResponseStatus == -1) {
+
+                        alert(
+                            res.ResponseMessage ||
+                            "Your session has expired."
+                        );
+
+
+                        window.location.href =
+                            '@Url.Action(
+                                "Logout",
+                                "Login"
+                            )';
+
+                        return;
+                    }
+
+
+                    // ------------------------------------------------
+                    // Other server response
+                    // ------------------------------------------------
+
+                    alert(
+                        (res &&
+                         res.ResponseMessage)
+                        ||
+                        "Approval failed."
+                    );
+
+
+                    resetApproveButton();
+
+                },
+
+
+                // ====================================================
+                // ERROR
+                // ====================================================
+
+                error: function (xhr, textStatus, errorThrown) {
+
+                    console.error(
+                        "Approval request failed."
+                    );
+
+                    console.error(
+                        "HTTP status:",
+                        xhr.status
+                    );
+
+                    console.error(
+                        "Text status:",
+                        textStatus
+                    );
+
+                    console.error(
+                        "Error:",
+                        errorThrown
+                    );
+
+                    console.error(
+                        "Response:",
+                        xhr.responseText
+                    );
+
+
+                    var message =
+                        "An error occurred while approving the requisition.";
+
+
+                    // ------------------------------------------------
+                    // JSON response from MVC
+                    // ------------------------------------------------
+
+                    if (xhr.responseJSON &&
+                        xhr.responseJSON.ResponseMessage) {
+
+                        message =
+                            xhr.responseJSON.ResponseMessage;
+                    }
+
+
+                    // ------------------------------------------------
+                    // 404
+                    // ------------------------------------------------
+
+                    else if (xhr.status === 404) {
+
+                        message =
+                            "The Approved action was not found. " +
+                            "Please check the controller route.";
+                    }
+
+
+                    // ------------------------------------------------
+                    // 500
+                    // ------------------------------------------------
+
+                    else if (xhr.status === 500) {
+
+                        message =
+                            "Server error while approving requisition. " +
+                            "Please check the server exception details.";
+                    }
+
+
+                    // ------------------------------------------------
+                    // Parser error
+                    // ------------------------------------------------
+
+                    else if (textStatus === "parsererror") {
+
+                        message =
+                            "The server response was not valid JSON.";
+                    }
+
+
+                    alert(message);
+
+
+                    resetApproveButton();
+
+                }
+
+            });
+
+        });
+
+
+        // ============================================================
+        // RESET APPROVE BUTTON
+        // ============================================================
+
+        function resetApproveButton() {
+
+            $("#btnApprove").prop(
+                "disabled",
+                false
+            );
+
+            $("#btnApprove").html(
+                '<i class="icon-checkmark3 mr-1"></i>' +
+                ' Approve Requisition'
+            );
+
+        }
+
+    });
+
+    </script>
+
+}

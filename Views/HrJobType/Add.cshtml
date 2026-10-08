@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light ">
+
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="@Url.Action("Index", "HrJobType")" class="breadcrumb-item">HrJobType</a>  <span class="breadcrumb-item active">Add</span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+        </div>
+
+
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <!-- Individual column searching (text inputs) -->
+
+
+    <form action="#" id="my-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Job Type</h6>
+
+            </div>
+
+            <div class="card-body">
+
+
+                <div class="form-group row ">
+                    <label class="col-form-label col-lg-2">Job Type:</label>
+                    <div class="col-lg-2">
+                        <input type="text" name="JobType" class="form-control" placeholder="Job Type" value="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage">
+                        there
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" id="btnSubmit" class="btn bg-blue ml-3">Submit <i class="icon-paperplane ml-2"></i></button>
+                            <button type="button" class="btn btn-light"> <a href="@Url.Action("Index", "HrJobType")">Back to List</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="display:none" id="successdiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Job Type</h6>
+
+            </div>
+
+            <div class="card-body">
+                <div class="form-group row">
+
+                    <div class="col-lg-12 color-selector-active text-success">
+                        <h2>Job Type has been added successfully. </h2>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-12 ml-lg-auto">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" class="btn btn-light"> <a href="@Url.Action("Add", "HrJobType")">Add Another</a></button>
+                            <button type="button" class="btn btn-light"> <a href="@Url.Action("Index", "HrJobType")">Back to List</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- /individual column searching (text inputs) -->
+
+
+
+</div>
+<!-- /content area -->
+
+
+@section ChildpageJavaScript{
+    <script>
+
+        $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            $.ajax(
+            {
+                type: "POST",
+                url:  "@Url.Action("Add", "HrJobType")",
+                data: $("#my-form").serialize(),
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+                            window.location.href =  "@Url.Action("Logout", "Login")";
+                        } else if (data.ResponseStatus == -2) {
+                            window.location.href =  "@Url.Action("Index", "HrJobType")";
+                        } else if (data.ResponseStatus == 0) {
+                            $("#errormessage").html(data.ResponseMessage);
+                            $("#errordiv").show();
+                        }
+                        else {
+                            $("#errormessage").html("");
+                            $("#errordiv").hide();
+                            $("#maindiv").hide();
+                            $("#successdiv").show();
+                            }
+
+                    }
+                });
+            });
+    });
+
+
+
+    </script>
+}

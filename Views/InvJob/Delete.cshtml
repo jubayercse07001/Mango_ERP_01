@@ -1,0 +1,541 @@
+﻿@using ERP.Models.Inventory.InvJob
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Inventory Job";
+}
+
+<!-- Page header -->
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvJob")"
+                   class="breadcrumb-item">
+
+                    InvJob
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Content area -->
+
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+
+            <!-- Header -->
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+
+                    Delete Existing Inventory Job
+
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvJob.RowId" />
+
+                <input type="hidden"
+                       name="JobId"
+                       value="@ViewBag.InvJob.JobId" />
+
+            </div>
+
+
+            <!-- Warning -->
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+
+                            Are you sure you want to delete the following Inventory Job?
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Job Information -->
+
+            <div class="card-body">
+
+
+                <!-- Job ID -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Job ID:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.JobId
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job No -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Job No:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.JobNo
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job Name -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Job Name:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.JobName
+
+                    </div>
+
+                </div>
+
+
+                <!-- Job Description -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Job Description:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.JobDescription
+
+                    </div>
+
+                </div>
+
+
+                <!-- Department -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Department:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.DepartmentName
+
+                    </div>
+
+                </div>
+
+
+                <!-- Start Date -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Start Date:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @if (ViewBag.InvJob.StartDate != null)
+                        {
+                            @(((DateTime)ViewBag.InvJob.StartDate).ToString("dd-MMM-yyyy"))
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- End Date -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        End Date:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @if (ViewBag.InvJob.EndDate != null)
+                        {
+                            @(((DateTime)ViewBag.InvJob.EndDate).ToString("dd-MMM-yyyy"))
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+
+                        Status:
+
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvJob.StatusName
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- Error -->
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+
+                            Inventory Job has been deleted successfully.
+
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+
+                            <!-- Delete -->
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+
+                            <!-- Back -->
+
+                            <a href="@Url.Action("Index", "InvJob")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+$(document).ready(function () {
+
+
+    /*
+     * Delete button
+     */
+
+    $("#btnSubmit").click(function () {
+
+
+        /*
+         * Confirmation
+         */
+
+        if (!confirm(
+            "Are you sure you want to delete this Inventory Job?"
+        )) {
+
+            return false;
+
+        }
+
+
+        /*
+         * Disable button
+         */
+
+        $("#btnSubmit")
+            .prop("disabled", true)
+            .html(
+                'Deleting... <i class="icon-spinner2 spinner ml-2"></i>'
+            );
+
+
+        /*
+         * Hide previous messages
+         */
+
+        $("#errormessage").html("");
+
+        $("#errordiv").hide();
+
+        $("#successdiv").hide();
+
+
+        /*
+         * AJAX Delete
+         */
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Delete", "InvJob")',
+
+            data: $("#my-form").serialize(),
+
+
+            success: function (data) {
+
+
+                /*
+                 * Session expired
+                 */
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout", "Login")';
+
+                    return;
+
+                }
+
+
+                /*
+                 * Permission denied
+                 */
+
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index", "InvJob")';
+
+                    return;
+
+                }
+
+
+                /*
+                 * Delete failed
+                 */
+
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+
+                    $("#errordiv").show();
+
+                    $("#btnSubmit")
+                        .prop("disabled", false)
+                        .html(
+                            'Delete <i class="icon-cross ml-2"></i>'
+                        );
+
+                    return;
+
+                }
+
+
+                /*
+                 * Delete successful
+                 */
+
+                else {
+
+                    $("#errormessage").html("");
+
+                    $("#errordiv").hide();
+
+                    $("#btnSubmit").hide();
+
+                    $("#successdiv").show();
+
+                }
+
+            },
+
+
+            /*
+             * AJAX error
+             */
+
+            error: function (xhr) {
+
+                var message =
+                    xhr.responseText;
+
+
+                if (!message) {
+
+                    message =
+                        "An unexpected error occurred while deleting the Inventory Job.";
+
+                }
+
+
+                $("#errormessage").html(message);
+
+                $("#successdiv").hide();
+
+                $("#errordiv").show();
+
+
+                $("#btnSubmit")
+                    .prop("disabled", false)
+                    .html(
+                        'Delete <i class="icon-cross ml-2"></i>'
+                    );
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

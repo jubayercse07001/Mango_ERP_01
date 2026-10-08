@@ -1,0 +1,504 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+
+@{
+    ViewBag.Title = "Forward Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var r =
+        ViewBag.Requisition as InvDepartmentRequisitionInfo;
+
+    var departmentList =
+        ViewBag.DepartmentList;
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index")"
+                   class="breadcrumb-item">
+
+                    Department Requisition
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Forward
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <div class="card">
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <div class="card-header bg-white">
+
+            <h6 class="card-title mb-0">
+                Forward Requisition -
+                @r.RequisitionCode
+            </h6>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <!-- ================================================= -->
+            <!-- REQUISITION INFORMATION - READ ONLY -->
+            <!-- ================================================= -->
+
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Requisition
+                    </div>
+
+                    <div>
+                        @r.RequisitionCode
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Department
+                    </div>
+
+                    <div>
+                        @r.DepartmentName
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Requested By
+                    </div>
+
+                    <div>
+                        @r.RequestedByName
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Requisition Date
+                    </div>
+
+                    <div>
+                        @r.RequisitionDate.ToString("dd-MM-yyyy")
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Requisition Name
+                    </div>
+
+                    <div>
+                        @r.RequisitionName
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="font-weight-semibold">
+                        Status
+                    </div>
+
+                    <div>
+                        <span class="badge badge-warning">
+                            New
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- TO DEPARTMENT - EDITABLE -->
+            <!-- ================================================= -->
+
+            <div class="form-group row">
+
+                <label class="col-md-2 col-form-label font-weight-semibold">
+                    To Department
+                    <span class="text-danger">*</span>
+                </label>
+
+                <div class="col-md-6">
+
+                    <select id="toDepartmentId"
+                            class="form-control">
+
+                        <option value="">
+                            -- Select Department --
+                        </option>
+
+                        @if (departmentList != null)
+                        {
+                            foreach (var item in departmentList)
+                            {
+                                <option value="@item.RowId">
+                                    @item.DepartmentName
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- REQUISITION ITEMS - READ ONLY -->
+            <!-- ================================================= -->
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-sm">
+
+                    <thead class="thead-light">
+
+                        <tr>
+
+                            <th style="width:50px;">
+                                #
+                            </th>
+
+                            <th>
+                                Item
+                            </th>
+
+                            <th>
+                                Unit
+                            </th>
+
+                            <th class="text-right">
+                                Quantity
+                            </th>
+
+                            <th class="text-right">
+                                Unit Price
+                            </th>
+
+                            <th>
+                                Remarks
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (r.Details != null &&
+                             r.Details.Count > 0)
+                        {
+                            int sl = 1;
+
+                            foreach (var d in r.Details)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @sl
+                                    </td>
+
+                                    <td>
+                                        @d.ItemName
+                                    </td>
+
+                                    <td>
+                                        @d.MinUnitName
+                                    </td>
+
+                                    <td class="text-right">
+                                        @d.Quantity
+                                    </td>
+
+                                    <td class="text-right">
+                                        @d.UnitPriceEst.ToString("0.00")
+                                    </td>
+
+                                    <td>
+                                        @d.Remarks
+                                    </td>
+
+                                </tr>
+
+                                sl++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="6"
+                                    class="text-center text-muted">
+
+                                    No requisition items found.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- REMARKS - EDITABLE -->
+            <!-- ================================================= -->
+
+            <div class="form-group mt-3">
+
+                <label class="font-weight-semibold">
+                    Remarks
+                </label>
+
+                <textarea id="remarks"
+                          class="form-control"
+                          rows="3"
+                          maxlength="500"></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FOOTER -->
+        <!-- ================================================= -->
+
+        <div class="card-footer bg-white">
+
+            <div class="d-flex justify-content-between">
+
+                <a href="@Url.Action("Index")"
+                   class="btn btn-light">
+
+                    <i class="icon-arrow-left8 mr-1"></i>
+                    Cancel
+
+                </a>
+
+
+                <button type="button"
+                        id="btnForward"
+                        class="btn btn-warning">
+
+                    <i class="icon-paperplane mr-1"></i>
+                    Forward
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section ChildpageJavaScript {
+
+    <script>
+
+    $(document).ready(function () {
+
+        // =====================================================
+        // FORWARD BUTTON
+        // =====================================================
+
+        $("#btnForward").click(function () {
+
+            var toDepartmentId =
+                $("#toDepartmentId").val();
+
+            var remarks =
+                $("#remarks").val();
+
+
+            // -------------------------------------------------
+            // Validate To Department
+            // -------------------------------------------------
+
+            if (!toDepartmentId) {
+
+                alert("Please select To Department.");
+
+                $("#toDepartmentId").focus();
+
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // Confirmation
+            // -------------------------------------------------
+
+            if (!confirm(
+                "Forward this requisition to the selected department?"
+            )) {
+                return;
+            }
+
+
+            // -------------------------------------------------
+            // Disable button
+            // -------------------------------------------------
+
+            var btn = $("#btnForward");
+
+            btn.prop("disabled", true);
+
+            btn.html(
+                '<i class="icon-spinner2 spinner mr-1"></i> Forwarding...'
+            );
+
+
+            // -------------------------------------------------
+            // AJAX
+            // -------------------------------------------------
+
+            $.ajax({
+
+                url: '@Url.Action("Forward")',
+
+                type: 'POST',
+
+                data: {
+
+                    id: '@r.RowId',
+
+                    toDepartmentId:
+                        toDepartmentId,
+
+                    remarks:
+                        remarks
+                },
+
+                success: function (res) {
+
+                    if (res.ResponseStatus == 1) {
+
+                        alert(
+                            res.ResponseMessage
+                        );
+
+                        window.location.href =
+                            '@Url.Action("Index")';
+
+                    }
+                    else if (
+                        res.ResponseStatus == -1
+                    ) {
+
+                        window.location.href =
+                            '@Url.Action("Logout", "Login")';
+
+                    }
+                    else {
+
+                        alert(
+                            res.ResponseMessage ||
+                            "Forward failed."
+                        );
+
+                        btn.prop(
+                            "disabled",
+                            false
+                        );
+
+                        btn.html(
+                            '<i class="icon-paperplane mr-1"></i> Forward'
+                        );
+                    }
+                },
+
+                error: function (xhr) {
+
+                    var message =
+                        "Forward failed.";
+
+                    if (
+                        xhr.responseJSON &&
+                        xhr.responseJSON.ResponseMessage
+                    ) {
+
+                        message =
+                            xhr.responseJSON.ResponseMessage;
+                    }
+
+                    alert(message);
+
+                    btn.prop(
+                        "disabled",
+                        false
+                    );
+
+                    btn.html(
+                        '<i class="icon-paperplane mr-1"></i> Forward'
+                    );
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+}

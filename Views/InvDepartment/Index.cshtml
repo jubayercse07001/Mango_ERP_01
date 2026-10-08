@@ -1,0 +1,441 @@
+﻿@using ERP.Models.Inventory.InvDepartment;
+
+@{
+    ViewBag.Title = "Inventory Department";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Inventory Department
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="header-elements d-none">
+
+            <div class="breadcrumb justify-content-center">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <div class="card">
+
+        <!-- Card Header -->
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+                List of Inventory Departments
+            </h5>
+
+
+            <div class="header-elements">
+
+                <!-- Advance Search -->
+                <a href="Javascript:$('#my-form').toggle()">
+
+                    <button type="button"
+                            class="btn btn-light mr-3 text-success">
+
+                        <i class="icon-search4 mr-2"></i>
+                        Advance Search
+
+                    </button>
+
+                </a>
+
+
+                <!-- Reset Search -->
+                <a href="@Url.Action("Index", "InvDepartment")">
+
+                    <button type="button"
+                            class="btn btn-light mr-3 text-danger-300">
+
+                        <i class="icon-reset mr-2"></i>
+                        Reset Search
+
+                    </button>
+
+                </a>
+
+
+                <!-- Add New -->
+                <button type="button"
+                        class="btn btn-light">
+
+                    <a href="@Url.Action("Add", "InvDepartment")">
+
+                        <i class="icon-add mr-2"></i>
+                        Add New
+
+                    </a>
+
+                </button>
+
+            </div>
+
+        </div>
+        <!-- /card header -->
+        <!-- Advance Search Form -->
+        <form id="my-form"
+              style="display:none">
+
+            <div class="card-body row">
+
+                <!-- Department ID -->
+                <div class="form-group col-lg-4">
+
+                    <label>
+                        Department ID
+                    </label>
+
+                    <input type="text"
+                           name="DepartmentId"
+                           id="DepartmentId"
+                           class="form-control"
+                           placeholder="Department ID" />
+
+                </div>
+
+
+                <!-- Department Name -->
+                <div class="form-group col-lg-4">
+
+                    <label>
+                        Department Name
+                    </label>
+
+                    <input type="text"
+                           name="DepartmentName"
+                           id="DepartmentName"
+                           class="form-control"
+                           placeholder="Department Name" />
+
+                </div>
+
+
+                <!-- Short Department Name -->
+                <div class="form-group col-lg-4">
+
+                    <label>
+                        Short Department Name
+                    </label>
+
+                    <input type="text"
+                           name="ShortDeptName"
+                           id="ShortDeptName"
+                           class="form-control"
+                           placeholder="Short Department Name" />
+
+                </div>
+
+            </div>
+
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- Close -->
+                            <a href="Javascript:$('#my-form').toggle();">
+
+                                <button type="button"
+                                        class="btn btn-light text-brown-300">
+
+                                    Close Search Panel
+
+                                </button>
+
+                            </a>
+
+
+                            <!-- Reset -->
+                            <a href="javascript:ResetSearch();">
+
+                                <button type="button"
+                                        class="btn btn-light text-danger-300">
+
+                                    Reset Search
+
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+        </form>
+        <!-- /advance search form -->
+        <!-- Department DataTable -->
+        <table class="table dataTable datatable-column-search-inputs"
+               id="InvDepartmentItemList">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Department ID
+                    </th>
+
+                    <th>
+                        Department Name
+                    </th>
+
+                    <th>
+                        Short Department Name
+                    </th>
+
+                    <th class="text-center">
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+            </tbody>
+
+
+            <tfoot>
+
+                <tr>
+
+                    <td>
+                        Department ID
+                    </td>
+
+                    <td>
+                        Department Name
+                    </td>
+
+                    <td>
+                        Short Department Name
+                    </td>
+
+                    <td>
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+        <!-- /department DataTable -->
+
+    </div>
+
+</div>
+<!-- /content -->
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+        var dtTable;
+
+
+        // ============================================================
+        // Reload DataTable
+        // ============================================================
+        function ReloadDataTable() {
+
+            dtTable.ajax.url(
+
+                "@Url.Action("GetInvDepartmentItemList", "InvDepartment")?"
+                + $("#my-form").serialize()
+
+            ).load();
+
+        }
+
+
+        // ============================================================
+        // Reset Search
+        // ============================================================
+        function ResetSearch() {
+
+            $("#my-form").trigger("reset");
+
+            ReloadDataTable();
+
+        }
+
+
+        // ============================================================
+        // Initialize DataTable
+        // ============================================================
+        function UpdateDataTable() {
+
+            dtTable = $('#InvDepartmentItemList').DataTable({
+
+                "processing": true,
+
+                "serverSide": true,
+
+                "method": "GET",
+
+
+                // ----------------------------------------------------
+                // AJAX
+                // ----------------------------------------------------
+                "ajax":
+
+                    "@Url.Action("GetInvDepartmentItemList", "InvDepartment")?"
+                    + $("#my-form").serialize(),
+
+
+                // ----------------------------------------------------
+                // Columns
+                // ----------------------------------------------------
+                columns: [
+
+                    {
+                        data: 'DepartmentId'
+                    },
+
+
+                    {
+                        data: 'DepartmentName'
+                    },
+
+
+                    {
+                        data: 'ShortDeptName'
+                    },
+
+
+                    // ------------------------------------------------
+                    // Actions
+                    // ------------------------------------------------
+                    {
+
+                        "mData": "RowId",
+
+                        "mRender": function (data, type, row) {
+
+                            var retVal =
+
+                                "<div class='list-icons'>" +
+
+                                "<div class='dropdown'>" +
+
+
+                                // Menu
+                                "<a href='#' " +
+                                "class='list-icons-item' " +
+                                "data-toggle='dropdown'>" +
+
+                                "<i class='icon-menu9'></i>" +
+
+                                "</a>" +
+
+
+                                "<div class='dropdown-menu dropdown-menu-right'>" +
+
+
+                                // Edit
+                                "<a href='@Url.Action("Edit", "InvDepartment")/"
+                                + data +
+                                "' class='dropdown-item text-blue'>" +
+
+                                "<i class='icon-pencil7'></i> " +
+
+                                "Edit Information" +
+
+                                "</a>" +
+
+
+                                // Delete
+                                "<a href='@Url.Action("Delete", "InvDepartment")/"
+                                + data +
+                                "' class='dropdown-item text-danger'>" +
+
+                                "<i class='icon-cross'></i> " +
+
+                                "Delete Information" +
+
+                                "</a>" +
+
+
+                                "</div>" +
+
+                                "</div>" +
+
+                                "</div>";
+
+
+                            return retVal;
+
+                        }
+
+                    }
+
+                ]
+
+            });
+
+        }
+
+
+        // ============================================================
+        // Document Ready
+        // ============================================================
+        $(document).ready(function () {
+
+            UpdateDataTable();
+
+        });
+
+    </script>
+
+}

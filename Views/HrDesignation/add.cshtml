@@ -1,0 +1,345 @@
+﻿@using ERP.Models.HR.Organization.HrDesignation
+
+@{
+    ViewBag.Title = "Add Designation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index","HrDesignation")"
+                   class="breadcrumb-item">
+                    HrDesignation
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Add
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Add New Designation
+                </h6>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+
+                        @*<input type="hidden" name="MainDivisionId" value="null" />
+        <input type="hidden" name="DivisionId" value="null" />
+        <input type="hidden" name="DepartmentId" value="null" />
+        <input type="hidden" name="EmployeeTypeId" value="null" />*@
+
+
+
+                        <!-- Designation Group -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Designation Group
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="DesignationGroupId"
+                                        id="DesignationGroupId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Designation Group
+                                    </option>
+
+                                    @foreach (var item in ViewBag.DesignationGroupList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DesignationGroup
+                                        </option>
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Designation Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="DesignationName"
+                                       class="form-control" />
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Short Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="ShortDesignationName"
+                                       class="form-control" />
+
+                            </div>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Rank</label>
+                            <div class="col-lg-8">
+                                <input type="number"
+                                       id="Rank"
+                                       name="Rank"
+                                       class="form-control"
+                                       value="@ViewBag.NextRank"
+                                       readonly="readonly" />
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-6">
+                       
+                        
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Job Description
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="JobDescription"
+                                          rows="3"
+                                          class="form-control"></textarea>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Job Specification
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="JobSpecification"
+                                          rows="3"
+                                          class="form-control"></textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div id="errormessage"
+                     class="text-danger">
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index","HrDesignation")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="card"
+             id="successdiv"
+             style="display:none">
+
+            <div class="card-body">
+
+                <h4 class="text-success">
+                    Designation information has been added successfully.
+                </h4>
+
+            </div>
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add","HrDesignation")"
+                       class="btn btn-light">
+
+                        Add Another
+
+                    </a>
+
+                    <a href="@Url.Action("Index","HrDesignation")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+$(document).ready(function () {
+
+
+    $("#MainDivisionId").change(function () {
+
+        $.get('@Url.Action("GetDivisionByMainDivision","HrDesignation")',
+        {
+            MainDivisionId: $(this).val()
+        },
+        function (data) {
+
+            var html =
+                '<option value="">Select Division</option>';
+
+            $.each(data, function (i, item) {
+
+                html += '<option value="' +
+                        item.RowId +
+                        '">' +
+                        item.DivisionName +
+                        '</option>';
+
+            });
+
+            $("#DivisionId").html(html);
+
+        });
+
+    });
+
+    
+
+    $("#btnSubmit").click(function () {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Add","HrDesignation")',
+
+            data: $("#my-form").serialize(),
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","HrDesignation")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errordiv").hide();
+                    $("#maindiv").hide();
+                    $("#successdiv").show();
+
+                }
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+}

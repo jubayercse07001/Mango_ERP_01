@@ -1,0 +1,420 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+
+@{
+    ViewBag.Title = "Reject Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var r =
+        ViewBag.Requisition as InvDepartmentRequisitionInfo;
+}
+
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index")"
+                   class="breadcrumb-item">
+
+                    Department Requisition
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Reject
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <div class="card">
+
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
+
+        <div class="card-header bg-white">
+
+            <h6 class="card-title mb-0">
+                Reject – @r.RequisitionCode
+            </h6>
+
+        </div>
+
+
+        <!-- =====================================================
+             BODY
+             ===================================================== -->
+
+        <div class="card-body">
+
+
+            <!-- =================================================
+                 REQUISITION INFORMATION
+                 READ ONLY
+                 ================================================= -->
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Requisition Code
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.RequisitionCode"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Requisition Name
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.RequisitionName"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Department
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.DepartmentName"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Requested By
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.RequestedByName"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Job No
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.JobNo"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <div class="form-group">
+
+                        <label>
+                            Required For
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               value="@r.RequiredFor"
+                               readonly />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 REJECTION REASON
+                 ONLY EDITABLE FIELD
+                 ================================================= -->
+
+            <div class="row">
+
+                <div class="col-md-12">
+
+                    <div class="form-group mb-0">
+
+                        <label>
+                            <span class="text-danger">*</span>
+                            Rejection Reason
+                        </label>
+
+                        <textarea id="remarks"
+                                  class="form-control"
+                                  rows="4"
+                                  maxlength="1000"
+                                  placeholder="Enter rejection reason"></textarea>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =====================================================
+             FOOTER
+             ===================================================== -->
+
+        <div class="card-footer bg-white d-flex justify-content-between">
+
+            <a href="@Url.Action("Index")"
+               class="btn btn-light">
+
+                <i class="icon-arrow-left8 mr-1"></i>
+                Cancel
+
+            </a>
+
+
+            <button type="button"
+                    id="btnReject"
+                    class="btn btn-danger">
+
+                <i class="icon-cross2 mr-1"></i>
+                Reject
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section ChildpageJavaScript {
+
+    <script>
+
+    $(document).ready(function () {
+
+        // =========================================================
+        // REJECT BUTTON
+        // =========================================================
+
+        $("#btnReject").click(function () {
+
+            var remarks =
+                $("#remarks").val();
+
+
+            // -----------------------------------------------------
+            // Validate remarks
+            // -----------------------------------------------------
+
+            if (!remarks || !remarks.trim()) {
+
+                alert(
+                    "Rejection reason is required."
+                );
+
+                $("#remarks").focus();
+
+                return;
+            }
+
+
+            // -----------------------------------------------------
+            // Confirmation
+            // -----------------------------------------------------
+
+            if (!confirm(
+                "Are you sure you want to reject this requisition?"
+            )) {
+                return;
+            }
+
+
+            // -----------------------------------------------------
+            // Disable button
+            // -----------------------------------------------------
+
+            $("#btnReject")
+                .prop("disabled", true)
+                .html(
+                    '<i class="icon-spinner2 spinner mr-1"></i> Rejecting...'
+                );
+
+
+            // -----------------------------------------------------
+            // AJAX POST
+            // -----------------------------------------------------
+
+            $.ajax({
+
+                url: '@Url.Action("Reject")',
+
+                type: 'POST',
+
+                data: {
+
+                    id: '@r.RowId',
+
+                    remarks: remarks
+
+                },
+
+                success: function (res) {
+
+                    // ---------------------------------------------
+                    // Session expired
+                    // ---------------------------------------------
+
+                    if (res.ResponseStatus == -1) {
+
+                        window.location =
+                            '@Url.Action("Logout", "Login")';
+
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // Unauthorized
+                    // ---------------------------------------------
+
+                    if (res.ResponseStatus == -2) {
+
+                        alert(
+                            res.ResponseMessage
+                        );
+
+                        $("#btnReject")
+                            .prop("disabled", false)
+                            .html(
+                                '<i class="icon-cross2 mr-1"></i> Reject'
+                            );
+
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // SUCCESS
+                    // ---------------------------------------------
+
+                    if (res.ResponseStatus == 1) {
+
+                        alert(
+                            res.ResponseMessage
+                        );
+
+                        window.location =
+                            '@Url.Action("Index")';
+
+                        return;
+                    }
+
+
+                    // ---------------------------------------------
+                    // FAILED
+                    // ---------------------------------------------
+
+                    alert(
+                        res.ResponseMessage ||
+                        "Requisition rejection failed."
+                    );
+
+
+                    $("#btnReject")
+                        .prop("disabled", false)
+                        .html(
+                            '<i class="icon-cross2 mr-1"></i> Reject'
+                        );
+                },
+
+
+                error: function () {
+
+                    alert(
+                        "An unexpected error occurred while rejecting the requisition."
+                    );
+
+
+                    $("#btnReject")
+                        .prop("disabled", false)
+                        .html(
+                            '<i class="icon-cross2 mr-1"></i> Reject'
+                        );
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+}

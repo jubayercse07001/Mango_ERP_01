@@ -1,0 +1,921 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+
+@{
+    ViewBag.Title = "Department Requisition Operations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i> Home
+
+                </a>
+
+                <span class="breadcrumb-item">
+                    Inventory
+                </span>
+
+                <span class="breadcrumb-item active">
+                    Department Requisition Operations
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+        <div class="header-elements d-none">
+
+            <div class="breadcrumb justify-content-center">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <div class="card">
+
+        <!-- Card header -->
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+                List of Department Requisitions
+            </h5>
+
+            <div class="header-elements">
+
+                <!-- Advance Search -->
+                <button type="button"
+                        class="btn btn-light mr-3 text-success"
+                        onclick="$('#my-form').toggle();">
+
+                    <i class="icon-search4 mr-2"></i>
+                    Advance Search
+
+                </button>
+
+
+                <!-- Reset Search -->
+                <button type="button"
+                        class="btn btn-light mr-3 text-danger-300"
+                        onclick="ResetSearch();">
+
+                    <i class="icon-reset mr-2"></i>
+                    Reset Search
+
+                </button>
+
+
+                <!-- Add New -->
+                @*<a href="@Url.Action("Add", "InvDepartmentRequisitionOperation")"
+                   class="btn btn-light">
+
+                    <i class="icon-add mr-2"></i>
+                    Add New
+
+                </a>*@
+
+            </div>
+
+        </div>
+        <!-- /card header -->
+        <!-- Search Form -->
+        <form id="my-form"
+              style="display:none;">
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Requisition Code -->
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Requisition Code
+                            </label>
+
+                            <input type="text"
+                                   name="RequisitionCode"
+                                   id="RequisitionCode"
+                                   class="form-control"
+                                   placeholder="Requisition Code" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Requisition Name -->
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Requisition Name
+                            </label>
+
+                            <input type="text"
+                                   name="RequisitionName"
+                                   id="RequisitionName"
+                                   class="form-control"
+                                   placeholder="Requisition Name" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Department -->
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Department
+                            </label>
+
+                            <select name="DepartmentId"
+                                    id="DepartmentId"
+                                    class="form-control">
+
+                                <option value="">
+                                    -- All Departments --
+                                </option>
+
+                                @if (ViewBag.DepartmentList != null)
+                                {
+                                    foreach (var item in ViewBag.DepartmentList)
+                                    {
+                                        <option value="@item.RowId">
+                                            @item.DepartmentName
+                                        </option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Job No -->
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Job No
+                            </label>
+
+                            <input type="text"
+                                   name="JobNo"
+                                   id="JobNo"
+                                   class="form-control"
+                                   placeholder="Job No" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Status -->
+                    <div class="col-lg-4">
+
+                        <div class="form-group">
+
+                            <label>
+                                Status
+                            </label>
+
+                            <select name="ApprovalStatus"
+                                    id="ApprovalStatus"
+                                    class="form-control">
+
+                                <option value="All">
+                                    All Statuses
+                                </option>
+
+                                <option value="New">
+                                    New
+                                </option>
+
+                                <option value="Forwarded">
+                                    Forwarded
+                                </option>
+
+                                <option value="Approved">
+                                    Approved
+                                </option>
+
+                                <option value="Rejected">
+                                    Rejected
+                                </option>
+
+                                <option value="Issued">
+                                    Issued
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- From Date -->
+                    <div class="col-lg-2">
+
+                        <div class="form-group">
+
+                            <label>
+                                From Date
+                            </label>
+
+                            <input type="date"
+                                   name="FromDate"
+                                   id="FromDate"
+                                   class="form-control" />
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- To Date -->
+                    <div class="col-lg-2">
+
+                        <div class="form-group">
+
+                            <label>
+                                To Date
+                            </label>
+
+                            <input type="date"
+                                   name="ToDate"
+                                   id="ToDate"
+                                   class="form-control" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Search Footer -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <!-- Close -->
+                            <button type="button"
+                                    class="btn btn-light text-brown-300"
+                                    onclick="$('#my-form').hide();">
+
+                                Close Search Panel
+
+                            </button>
+
+
+                            <div>
+
+                                <!-- Reset -->
+                                <button type="button"
+                                        class="btn btn-light text-danger-300 mr-2"
+                                        onclick="ResetSearch();">
+
+                                    <i class="icon-reset mr-2"></i>
+                                    Reset Search
+
+                                </button>
+
+
+                                <!-- Search -->
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        onclick="ReloadDataTable();">
+
+                                    <i class="icon-search4 mr-2"></i>
+                                    Search
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+        </form>
+        <!-- /Search Form -->
+        <!-- DataTable -->
+        <table class="table dataTable datatable-column-search-inputs"
+               id="RequisitionItemList">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Requisition ID
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Requisition Code
+                    </th>
+
+                    <th>
+                        Requested By
+                    </th>
+
+                    <th>
+                        Job No
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th class="text-center">
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+            </tbody>
+
+
+            <tfoot>
+
+                <tr>
+
+                    <td>
+                        Requisition ID
+                    </td>
+
+                    <td>
+                        Date
+                    </td>
+
+                    <td>
+                        Requisition Code
+                    </td>
+
+                    <td>
+                        Requested By
+                    </td>
+
+                    <td>
+                        Job No
+                    </td>
+
+                    <td>
+                        Status
+                    </td>
+
+                    <td>
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+        <!-- /DataTable -->
+
+    </div>
+
+</div>
+<!-- /content -->
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+    var dtTable;
+
+
+    // ============================================================
+    // Status Badge
+    // ============================================================
+
+    function StatusBadge(status) {
+
+        switch (parseInt(status, 10)) {
+
+            case 0:
+                return "<span class='badge badge-info'>" +
+                       "<i class='icon-file-plus2 mr-1'></i> NEW" +
+                       "</span>";
+
+            case 1:
+                return "<span class='badge badge-warning'>" +
+                       "<i class='icon-share3 mr-1'></i> FORWARDED" +
+                       "</span>";
+
+            case 2:
+                return "<span class='badge badge-success'>" +
+                       "<i class='icon-checkmark3 mr-1'></i> APPROVED" +
+                       "</span>";
+
+            case 3:
+                return "<span class='badge badge-danger'>" +
+                       "<i class='icon-cross2 mr-1'></i> REJECTED" +
+                       "</span>";
+
+            case 4:
+                return "<span class='badge badge-primary'>" +
+                       "<i class='icon-truck mr-1'></i> ISSUED" +
+                       "</span>";
+
+            default:
+                return "<span class='badge badge-secondary'>" +
+                       "UNKNOWN" +
+                       "</span>";
+        }
+    }
+
+
+    // ============================================================
+    // Date Format
+    // Supports:
+    // /Date(1699999999999)/
+    // ISO Date
+    // ============================================================
+
+    function FormatDate(value) {
+
+        if (!value) {
+            return "";
+        }
+
+        var date;
+
+        var aspNetMatch = /\/Date\((\d+)\)\//.exec(value);
+
+        if (aspNetMatch) {
+
+            date = new Date(
+                parseInt(aspNetMatch[1], 10)
+            );
+
+        }
+        else {
+
+            date = new Date(value);
+
+        }
+
+        if (isNaN(date.getTime())) {
+            return value;
+        }
+
+        var day =
+            ("0" + date.getDate()).slice(-2);
+
+        var month =
+            ("0" + (date.getMonth() + 1)).slice(-2);
+
+        var year =
+            date.getFullYear();
+
+        return day + "-" + month + "-" + year;
+    }
+
+
+    // ============================================================
+    // Build Actions
+    // ============================================================
+    function BuildActions(row) {
+
+    var id = encodeURIComponent(row.RowId || "");
+
+    var forwardUrl =
+        '@Url.Action("Forward", "InvDepartmentRequisitionOperation")'
+        + '/' + id;
+
+    var approveUrl =
+        '@Url.Action("Approved", "InvDepartmentRequisitionOperation")'
+        + '/' + id;
+
+    var rejectUrl =
+        '@Url.Action("Reject", "InvDepartmentRequisitionOperation")'
+        + '/' + id;
+
+    var editUrl =
+        '@Url.Action("Edit", "InvDepartmentRequisitionOperation")'
+        + '/' + id;
+
+    var html =
+
+        "<div class='list-icons'>" +
+
+            "<div class='dropdown'>" +
+
+                "<a href='#' " +
+                   "class='list-icons-item' " +
+                   "data-toggle='dropdown'>" +
+
+                    "<i class='icon-menu9'></i>" +
+
+                "</a>" +
+
+                "<div class='dropdown-menu dropdown-menu-right'>" +
+
+                    // Edit
+                    //"<a href='" + editUrl +
+                    //"' class='dropdown-item text-blue'>" +
+
+                    //    "<i class='icon-pencil7 mr-2'></i>" +
+                    //    "Edit Information" +
+
+                    //"</a>" +
+
+                    // Forward
+                    "<a href='" + forwardUrl +
+                    "' class='dropdown-item text-primary'>" +
+
+                        "<i class='icon-share3 mr-2'></i>" +
+                        "Forward Requisition" +
+
+                    "</a>" +
+
+                    // Approve
+                    "<a href='" + approveUrl +
+                    "' class='dropdown-item text-success'>" +
+
+                        "<i class='icon-checkmark3 mr-2'></i>" +
+                        "Approve Requisition" +
+
+                    "</a>" +
+
+                    // Reject
+                    "<a href='" + rejectUrl +
+                    "' class='dropdown-item text-danger'>" +
+
+                        "<i class='icon-cross2 mr-2'></i>" +
+                        "Reject Requisition" +
+
+                    "</a>" +
+
+                "</div>" +
+
+            "</div>" +
+
+        "</div>";
+
+    return html;
+}
+    
+
+
+    // ============================================================
+    // Reload DataTable
+    // ============================================================
+
+    function ReloadDataTable() {
+
+        if (dtTable) {
+
+            dtTable.ajax.reload(
+                null,
+                true
+            );
+
+        }
+    }
+
+
+    // ============================================================
+    // Reset Search
+    // ============================================================
+
+    function ResetSearch() {
+
+        $("#my-form")[0].reset();
+
+        ReloadDataTable();
+
+    }
+
+
+    // ============================================================
+    // Initialize DataTable
+    // ============================================================
+
+    function UpdateDataTable() {
+
+        dtTable =
+            $('#RequisitionItemList').DataTable({
+
+                processing: true,
+
+                serverSide: true,
+
+                method: "GET",
+
+                searching: false,
+
+                ordering: true,
+
+                pageLength: 10,
+
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+
+
+                ajax: {
+
+                    url:
+                        "@Url.Action("GetInvDepartmentRequisitionItemList", "InvDepartmentRequisitionOperation")",
+
+                    type: "GET",
+
+
+                    data: function (d) {
+
+                        $("#my-form")
+                            .serializeArray()
+                            .forEach(function (item) {
+
+                                d[item.name] = item.value;
+
+                            });
+
+                    },
+
+
+                    dataSrc: "data",
+
+
+                    error: function (
+                        xhr,
+                        status,
+                        thrown
+                    ) {
+
+                        console.error(
+                            "Requisition list failed to load — HTTP",
+                            xhr.status,
+                            xhr.responseText
+                        );
+
+                    }
+
+                },
+
+
+                columns: [
+
+                    // =================================================
+                    // Requisition ID
+                    // =================================================
+
+                    {
+                        data: 'RequisitionId',
+
+                        defaultContent: "",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            return data || "";
+
+                        }
+                    },
+
+
+                    // =================================================
+                    // Requisition Date
+                    // =================================================
+
+                    {
+                        data: 'RequisitionDate',
+
+                        defaultContent: "",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            if (
+                                type === 'display' ||
+                                type === 'filter'
+                            ) {
+
+                                return FormatDate(data);
+
+                            }
+
+                            return data;
+
+                        }
+
+                    },
+
+
+                    // =================================================
+                    // Requisition Code
+                    // =================================================
+
+                    {
+                        data: 'RequisitionCode',
+
+                        defaultContent: "",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            return data || "";
+
+                        }
+
+                    },
+
+
+                    // =================================================
+                    // Requested By
+                    // =================================================
+
+                    {
+                        data: 'RequestedByName',
+
+                        defaultContent: "",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            return data ||
+                                   row.RequestedBy ||
+                                   "";
+
+                        }
+
+                    },
+
+
+                    // =================================================
+                    // Job No
+                    // =================================================
+
+                    {
+                        data: 'JobNo',
+
+                        defaultContent: "",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            return data || "";
+
+                        }
+
+                    },
+
+
+                    // =================================================
+                    // Status
+                    // =================================================
+
+                    {
+                        data: 'Status',
+
+                        className: "text-center",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            if (type === 'display') {
+
+                                return StatusBadge(data);
+
+                            }
+
+                            return data;
+
+                        }
+
+                    },
+
+
+                    // =================================================
+                    // Actions
+                    // =================================================
+
+                    {
+                        data: 'RowId',
+
+                        orderable: false,
+
+                        searchable: false,
+
+                        className: "text-center",
+
+                        render: function (
+                            data,
+                            type,
+                            row
+                        ) {
+
+                            if (type !== 'display') {
+
+                                return "";
+
+                            }
+
+                            return BuildActions(row);
+
+                        }
+
+                    }
+
+                ],
+
+
+                order: [
+                    [0, "desc"]
+                ]
+
+            });
+
+    }
+
+
+    // ============================================================
+    // Document Ready
+    // ============================================================
+
+    $(document).ready(function () {
+
+        UpdateDataTable();
+
+    });
+
+    </script>
+
+}

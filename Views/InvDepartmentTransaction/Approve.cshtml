@@ -1,0 +1,246 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+@using System.Web.Script.Serialization
+
+@{ ViewBag.Title = "Approve Requisition";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+
+                InvDepartmentRequisitionInfo requisition = ViewBag.Requisition;
+                var serializer = new JavaScriptSerializer();
+                string existingDetailsJson = serializer.Serialize(requisition.Details); }
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>Home
+                </a>
+                <a href="@Url.Action("Index","InvDepartmentTransaction")" class="breadcrumb-item">
+                    Requisition Approval
+                </a>
+                <span class="breadcrumb-item active">Approve</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Approve Requisition — @requisition.RequisitionCode</h6>
+                <input type="hidden" name="RequisitionId" value="@requisition.RowId" />
+            </div>
+
+            <div class="card-body">
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">Requisition Name:</label>
+                    <div class="col-lg-9 pt-2">@requisition.RequisitionName</div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">Requested By:</label>
+                    <div class="col-lg-9 pt-2">@requisition.RequestedByName</div>
+                </div>
+
+                <hr />
+
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label><span class="text-danger">*</span> Transaction Date</label>
+                            <input type="date" name="TransactionDate" class="form-control"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Transaction Code</label>
+                            <input type="text" name="TransactionCode" class="form-control"
+                                   value="@ViewBag.NextTransactionCode" readonly />
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <input type="text" name="Remarks" class="form-control" placeholder="Enter remarks" />
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr />
+
+                <h6 class="font-weight-bold">Items — confirm the quantity to approve for each</h6>
+
+                <table class="table table-bordered" id="ItemsGrid">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Item</th>
+                            <th>Unit</th>
+                            <th>Requested Qty</th>
+                            <th>Approved Qty</th>
+                            <th>Unit Price Est.</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+
+            </div>
+
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage"></div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Index","InvDepartmentTransaction")" class="btn btn-light">
+                        Cancel
+                    </a>
+
+                    <button type="button" id="btnSubmit" class="btn bg-success">
+                        Approve <i class="icon-checkmark3 ml-2"></i>
+                    </button>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card" id="successdiv" style="display:none">
+            <div class="card-header bg-white">
+                <h6 class="card-title">Requisition Approved</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="text-success">The Material Issue Voucher has been created.</h4>
+            </div>
+            <div class="card-footer bg-white">
+                <a href="@Url.Action("Index","InvDepartmentTransaction")" class="btn btn-light">Back To List</a>
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+    var itemLines = @Html.Raw(existingDetailsJson) || [];
+
+    function RenderGrid() {
+
+        var rows = "";
+
+        $.each(itemLines, function (i, line) {
+
+            var approvedQty = line.ApprovedQuantity != null ? line.ApprovedQuantity : line.Quantity;
+            var total = (approvedQty * line.UnitPriceEst).toFixed(2);
+
+            rows +=
+                "<tr>" +
+                "<td>" + (i + 1) + "</td>" +
+                "<td>" + line.ItemName + "</td>" +
+                "<td>" + line.MinUnitName + "</td>" +
+                "<td>" + line.Quantity + "</td>" +
+                "<td><input type='number' class='form-control form-control-sm approvedQtyInput' " +
+                "    data-index='" + i + "' value='" + approvedQty +
+                "    ' min='0' max='" + line.Quantity + "' step='any' style='width:100px' /></td>" +
+                "<td>" + parseFloat(line.UnitPriceEst).toFixed(2) + "</td>" +
+                "<td class='lineTotal'>" + total + "</td>" +
+                "</tr>";
+        });
+
+        $("#ItemsGrid tbody").html(rows);
+    }
+
+    $(document).ready(function () {
+
+        RenderGrid();
+
+        $("#ItemsGrid").on("input", ".approvedQtyInput", function () {
+
+            var idx = $(this).data("index");
+            var val = parseFloat($(this).val()) || 0;
+
+            itemLines[idx].ApprovedQuantity = val;
+
+            var total = (val * itemLines[idx].UnitPriceEst).toFixed(2);
+            $(this).closest("tr").find(".lineTotal").text(total);
+
+        });
+
+        $("#btnSubmit").click(function () {
+
+            if (itemLines.length === 0) {
+                $("#errormessage").html("This requisition has no items to approve.");
+                $("#errordiv").show();
+                return;
+            }
+
+            var payload = $.map(itemLines, function (line) {
+                return {
+                    ItemId: line.ItemId,
+                    UnitId: line.UnitId,
+                    Quantity: line.ApprovedQuantity != null ? line.ApprovedQuantity : line.Quantity,
+                    UnitPrice: line.UnitPriceEst
+                };
+            });
+
+            var formData = $("#my-form").serialize()
+                + "&DetailsJson=" + encodeURIComponent(JSON.stringify(payload));
+
+            $("#btnSubmit").prop("disabled", true);
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("Approve", "InvDepartmentTransaction")',
+
+                data: formData,
+
+                success: function (data) {
+
+                    if (data.ResponseStatus == -1) {
+                        window.location.href = '@Url.Action("Logout","Login")';
+                    }
+                    else if (data.ResponseStatus == -2) {
+                        window.location.href = '@Url.Action("Index","InvDepartmentTransaction")';
+                    }
+                    else if (data.ResponseStatus == 0) {
+                        $("#errormessage").html(data.ResponseMessage);
+                        $("#errordiv").show();
+                        $("#btnSubmit").prop("disabled", false);
+                    }
+                    else {
+                        $("#errordiv").hide();
+                        $("#maindiv").hide();
+                        $("#successdiv").show();
+                    }
+
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+}

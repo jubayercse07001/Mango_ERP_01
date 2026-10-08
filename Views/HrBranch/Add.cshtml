@@ -1,0 +1,344 @@
+﻿@using ERP.Models.HR.Organization.HrBranch;
+
+@{
+    ViewBag.Title = "Add Branch";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    ```
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <a href="@Url.Action("Index","HrBranch")" class="breadcrumb-item">
+                    HrBranch
+                </a>
+
+                <span class="breadcrumb-item active">Add</span>
+
+            </div>
+
+        </div>
+    </div>
+    ```
+
+</div>
+
+<div class="content">
+
+    ```
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Branch</h6>
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Division
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="DivisionId"
+                                        id="DivisionId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Division
+                                    </option>
+
+                                    @if (ViewBag.DivisionList != null)
+                                    {
+                                        foreach (var item in ViewBag.DivisionList)
+                                        {
+                                            <option value="@item.RowId">
+                                                @item.DivisionName
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Branch Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="BranchName"
+                                       class="form-control"
+                                       placeholder="Branch Name">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Short Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="ShortBranchName"
+                                       class="form-control"
+                                       placeholder="Short Branch Name">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Address
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="BranchAddress"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Branch Address"></textarea>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Contact Number
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="ContactNumber"
+                                       class="form-control"
+                                       placeholder="Contact Number">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Rank
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="number"
+                                       name="Rank"
+                                       class="form-control"
+                                       value="0">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Error Area -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Submit -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="d-flex justify-content-between">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-blue">
+
+                                Submit
+                                <i class="icon-paperplane ml-2"></i>
+
+                            </button>
+
+                            <a href="@Url.Action("Index","HrBranch")"
+                               class="btn btn-light">
+
+                                Back To List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Success Div -->
+        <div class="card"
+             id="successdiv"
+             style="display:none">
+
+            <div class="card-header bg-white">
+
+                <h6 class="card-title">
+                    Branch Added Successfully
+                </h6>
+
+            </div>
+
+            <div class="card-body">
+
+                <h4 class="text-success">
+                    Branch information has been added successfully.
+                </h4>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add","HrBranch")"
+                       class="btn btn-light">
+
+                        Add Another
+
+                    </a>
+
+                    <a href="@Url.Action("Index","HrBranch")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+    ```
+
+</div>
+
+@section ChildpageJavaScript{
+
+    <script>
+
+$(document).ready(function () {
+
+    $("#btnSubmit").click(function () {
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Add", "HrBranch")',
+
+            data: $("#my-form").serialize(),
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout", "Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index", "HrBranch")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(data.ResponseMessage);
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errormessage").html("");
+                    $("#errordiv").hide();
+
+                    $("#maindiv").hide();
+                    $("#successdiv").show();
+
+                }
+            },
+
+            error: function (xhr) {
+
+                $("#errormessage").html(xhr.responseText);
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+
+}

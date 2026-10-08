@@ -1,0 +1,453 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="~/global_assets/images/Mango.ico" type="image/gif" sizes="16x16">
+
+    <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="~/global_assets/css/icons/icomoon/styles.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/layout.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
+    <!-- Core JS files -->
+    <script src="~/global_assets/js/main/jquery.min.js"></script>
+    <script src="~/global_assets/js/main/bootstrap.bundle.min.js"></script>
+    <script src="~/global_assets/js/plugins/loaders/blockui.min.js"></script>
+    <!-- /core JS files -->
+    <script src="~/assets/js/app.js"></script>
+
+
+    <script src="~/global_assets/js/plugins/tables/datatables/datatables.min.js"></script>
+    <script src="~/global_assets/js/plugins/pickers/pickadate/picker.js"></script>
+    <script src="~/global_assets/js/plugins/pickers/pickadate/picker.date.js"></script>
+    <script src="~/global_assets/js/plugins/notifications/bootbox.min.js"></script>
+
+    <style>
+        @@media (min-width: 992px) {
+            .col-form-label {
+                text-align: right
+            }
+        }
+    </style>
+
+
+    <!-- /theme JS files -->
+
+</head>
+
+<body class="layout-boxed-bg navbar-top">
+
+    <!-- Boxed layout wrapper -->
+    <div class="d-flex flex-column flex-nowrap layout-boxed ">
+
+        <!-- Main navbar -->
+        <div class="navbar navbar-expand-md navbar-dark fixed-top bg-slate-700">
+            <div class="navbar-brand" style="min-width:unset">
+                <a href="@Url.Action("Index", "Home")" class="d-inline-block">
+                    <img src="~/global_assets/images/Mango.jpg" alt="" style="height:50px">
+                </a>
+            </div>
+
+            <div class="d-md-none">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+                    <i class="icon-tree5"></i>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar-mobile">
+
+
+                <span class=" mr-md-auto" style="font-size: 1.625rem;"></span>
+
+                <ul class="navbar-nav">
+                    
+
+                    @*<li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                HR Common
+            </a>
+
+            <div class="dropdown-menu">
+                <a href="@Url.Action("Index", "HrBloodGroup")" class="dropdown-item"><i class="icon-books"></i>Blood Group</a>
+
+                <a href="@Url.Action("Index", "HrCountry")" class="dropdown-item"><i class=" icon-make-group"></i>Country</a>
+
+                <a href="@Url.Action("Index", "HrCurrency")" class="dropdown-item"><i class="icon-vector2"></i>Currency</a>
+                <a href="@Url.Action("Index", "HrEducationalDegree")" class="dropdown-item"><i class="icon-ungroup"></i>Educational Degree</a>
+
+                <a href="@Url.Action("Index", "HrEducationalInstitute")" class="dropdown-item"><i class="icon-ungroup"></i>Educational Institute</a>
+
+                <a href="@Url.Action("Index", "HrEmployeeMessage")" class="dropdown-item"><i class="icon-stack"></i>Employee Message</a>
+                <a href="@Url.Action("Index", "HrEngineerType")" class="dropdown-item"><i class="icon-stack"></i>Engineer Type</a>
+                <a href="@Url.Action("Index", "HrJobType")" class="dropdown-item"><i class="icon-stack"></i>Job Type</a>
+                <a href="@Url.Action("Index", "HrReligion")" class="dropdown-item"><i class="icon-stack"></i>Religion</a>
+                <a href="@Url.Action("Index", "HrSkillType")" class="dropdown-item"><i class="icon-stack"></i>Skill Type</a>
+                <a href="@Url.Action("Index", "HrSkill")" class="dropdown-item"><i class="icon-stack"></i>Skill</a>
+                <a href="@Url.Action("Index", "HrState")" class="dropdown-item"><i class="icon-stack"></i>State</a>
+                <a href="@Url.Action("Index", "HrNationality")" class="dropdown-item"><i class="icon-stack"></i>Nationality</a>
+                <a href="@Url.Action("Index", "HrMessageTemplate")" class="dropdown-item"><i class="icon-stack"></i>Message Template</a>
+
+
+                <a href="@Url.Action("Index", "Section")" class="dropdown-item"><i class="icon-stack2"></i>Section</a>
+
+                <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-gradient"></i>Mesuring Unit</a>
+                <a href="@Url.Action("Index", "Expense")" class="dropdown-item"><i class="icon-gradient"></i>Expense</a>
+                <a href="@Url.Action("Add", "ExpenseClaim")" class="dropdown-item"><i class="icon-stack2"></i>Expense Claim</a>
+                <a href="@Url.Action("Index", "ExpenseClaim")" class="dropdown-item"><i class="icon-airplane2"></i>Expense Claim </a>
+            </div>
+        </li>*@
+                    <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                HR Module 
+            </a>
+
+            <div class="dropdown-menu">
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Common</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "HrBloodGroup")" class="dropdown-item"><i class="icon-android"></i> Blood Group</a>
+                        <a href="@Url.Action("Index", "HrCountry")" class="dropdown-item"><i class="icon-android"></i> Country</a>
+                        <a href="@Url.Action("Index", "HrCurrency")" class="dropdown-item"><i class="icon-android"></i> Currency</a>
+                        <a href="@Url.Action("Index", "HrEducationalDegree")" class="dropdown-item"><i class="icon-android"></i>Educational Degree</a>
+                        <a href="@Url.Action("Index", "HrEducationalInstitute")" class="dropdown-item"><i class="icon-android"></i>Educational Institute</a>
+                        <a href="@Url.Action("Index", "HrEmployeeMessage")" class="dropdown-item"><i class="icon-android"></i>Employee Message</a>
+                        <a href="@Url.Action("Index", "HrEngineerType")" class="dropdown-item"><i class="icon-android"></i>Engineer Type</a>
+                        <a href="@Url.Action("Index", "HrJobType")" class="dropdown-item"><i class="icon-android"></i>Job Type</a>
+                        <a href="@Url.Action("Index", "HrMessageTemplate")" class="dropdown-item"><i class="icon-android"></i>Message Template</a>
+                        <a href="@Url.Action("Index", "HrNationality")" class="dropdown-item"><i class="icon-android"></i>Nationality</a>
+                        <a href="@Url.Action("Index", "HrReligion")" class="dropdown-item"><i class="icon-android"></i>Religion</a>
+                        <a href="@Url.Action("Index", "HrSkill")" class="dropdown-item"><i class="icon-android"></i>Skill</a>
+                        <a href="@Url.Action("Index", "HrSkillType")" class="dropdown-item"><i class="icon-android"></i>Skill Type</a>
+                        <a href="@Url.Action("Index", "HrState")" class="dropdown-item"><i class="icon-android"></i>State</a>
+
+                    </div>
+                </div>
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Organization</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "HrCompanyInformation")" class="dropdown-item"><i class="icon-android"></i> Company Information</a>
+                        <a href="@Url.Action("Index", "HrMainDivision")" class="dropdown-item"><i class="icon-android"></i> Main Division</a>
+                        <a href="@Url.Action("Index", "HrDivision")" class="dropdown-item"><i class="icon-android"></i> Division</a>
+                        <a href="@Url.Action("Index", "HrBranch")" class="dropdown-item"><i class="icon-android"></i> Branch</a>
+                        <a href="@Url.Action("Index", "HrDepartmentGroup")" class="dropdown-item"><i class="icon-android"></i> Department Group</a>
+                        <a href="@Url.Action("Index", "HrDepartment")" class="dropdown-item"><i class="icon-android"></i> Department</a>
+                        <a href="@Url.Action("Index", "HrDesignationGroup")" class="dropdown-item"><i class="icon-android"></i> Designation Group</a>
+                        <a href="@Url.Action("Index", "HrDesignation")" class="dropdown-item"><i class="icon-android"></i> Designation</a>
+
+                        <a href="@Url.Action("Index", "HrMainDivisionDesignationMap")" class="dropdown-item"><i class="icon-android"></i> Main Division Designation Map</a>
+                        <a href="@Url.Action("Index", "HrDivisionDesignationMap")" class="dropdown-item"><i class="icon-android"></i> Division Designation Map</a>
+                        <a href="@Url.Action("Index", "HrDepartmentDesignationMap")" class="dropdown-item"><i class="icon-android"></i> Department Designation Map</a>
+                        <a href="@Url.Action("Index", "HrApprovedPosition")" class="dropdown-item"><i class="icon-android"></i> Approved Position</a>
+                        <a href="@Url.Action("Index", "HrGrade")" class="dropdown-item"><i class="icon-android"></i> Grade</a>
+                        @*<a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-android"></i> MeasuringUnit</a>
+                        *@
+                    </div>
+                </div>
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Employee</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "HrEmployeeType")" class="dropdown-item"><i class="icon-android"></i> Employee Type</a>
+                        <a href="@Url.Action("Index", "HrEmployee")" class="dropdown-item"><i class="icon-android"></i> Employee</a>
+                        <a href="@Url.Action("Index", "HrEmployeeTrainingCategory")" class="dropdown-item"><i class="icon-android"></i> Training Category</a>
+                        <a href="@Url.Action("Index", "HrEmployeeTrainingList")" class="dropdown-item"><i class="icon-android"></i> Training List</a>
+                    </div>
+                </div>@*<a href="@Url.Action("Index", "HrMainDivision")" class="dropdown-item"><i class="icon-android"></i> Main Division</a>
+                        <a href="@Url.Action("Index", "HrDivision")" class="dropdown-item"><i class="icon-android"></i> Division</a>
+                        <a href="@Url.Action("Index", "HrBranch")" class="dropdown-item"><i class="icon-android"></i> Branch</a>
+                        <a href="@Url.Action("Index", "HrDepartmentGroup")" class="dropdown-item"><i class="icon-android"></i> Department Group</a>
+                        <a href="@Url.Action("Index", "HrDepartment")" class="dropdown-item"><i class="icon-android"></i> Department</a>
+                        <a href="@Url.Action("Index", "HrDesignationGroup")" class="dropdown-item"><i class="icon-android"></i> Designation Group</a>
+                        <a href="@Url.Action("Index", "HrDesignation")" class="dropdown-item"><i class="icon-android"></i> Designation</a>
+
+                        <a href="@Url.Action("Index", "HrMainDivisionDesignationMap")" class="dropdown-item"><i class="icon-android"></i> Main Division Designation Map</a>
+                        <a href="@Url.Action("Index", "HrDivisionDesignationMap")" class="dropdown-item"><i class="icon-android"></i> Division Designation Map</a>
+                        <a href="@Url.Action("Index", "HrDeptDesignationMapping")" class="dropdown-item"><i class="icon-android"></i> Department Designation Mapping</a>
+                        <a href="@Url.Action("Index", "HrApprovedPosition")" class="dropdown-item"><i class="icon-android"></i> Approved Position</a>
+                        <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-android"></i> MeasuringUnit</a>
+                        <a href="@Url.Action("Index", "HrGrade")" class="dropdown-item"><i class="icon-android"></i> Grade</a>*@
+            </div>
+        </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                            <i class="icon-cube3 mr-2"></i>
+                            Inventory
+                        </a>
+
+                        <div class="dropdown-menu">
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Item Management</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvItemCategory")" class="dropdown-item"><i class="icon-android"></i> Item Category</a>
+                                    <a href="@Url.Action("Index", "InvItem")" class="dropdown-item"><i class="icon-android"></i> Item </a>
+                                    <a href="@Url.Action("Index", "InvUnit")" class="dropdown-item"><i class="icon-android"></i> Unit</a>
+                                    <a href="@Url.Action("Index", "InvUnitConversion")" class="dropdown-item"><i class="icon-android"></i> Unit Conversion</a>
+                                    <a href="@Url.Action("Index", "InvManufacturer")" class="dropdown-item"><i class="icon-android"></i> Manufacturer</a>
+                                    <a href="@Url.Action("Index", "InvRefferenceInformation")" class="dropdown-item"><i class="icon-android"></i> Reference Information</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i>Inventory Classification</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvGroup")" class="dropdown-item"><i class="icon-android"></i> Group</a>
+                                    <a href="@Url.Action("Index", "InvClass")" class="dropdown-item"><i class="icon-android"></i> Class</a>
+                                    <a href="@Url.Action("Index", "InvFamily")" class="dropdown-item"><i class="icon-android"></i> Family</a>
+                                    <a href="@Url.Action("Index", "InvSubFamily")" class="dropdown-item"><i class="icon-android"></i> Sub Family</a>
+
+
+                                </div>
+                            </div>
+
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Inventory Master</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvManufacturer")" class="dropdown-item"><i class="icon-android"></i> Manufacturer</a>
+                                    <a href="@Url.Action("Index", "InvProperty")" class="dropdown-item"><i class="icon-android"></i> Property</a>
+                                    <a href="@Url.Action("Index", "InvDepartment")" class="dropdown-item"><i class="icon-android"></i> Department</a>
+                                    <a href="@Url.Action("Index", "InvJob")" class="dropdown-item"><i class="icon-android"></i> Job</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Supplier</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvSupplier")" class="dropdown-item"><i class="icon-android"></i> Supplier</a>
+                                    <a href="@Url.Action("Index", "InvItemCategory")" class="dropdown-item"><i class="icon-android"></i> Supplier Category</a>
+                                    <a href="@Url.Action("Index", "InvItemCategory")" class="dropdown-item"><i class="icon-android"></i> Item Mapping</a>
+                                </div>
+                            </div>
+                            
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Requisition</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvDepartmentRequisition")" class="dropdown-item"><i class="icon-android"></i> Requisition</a>
+                                    <a href="@Url.Action("Index", "InvDepartmentRequisition2nd")" class="dropdown-item"><i class="icon-android"></i>Department Item Requisition</a>
+                                    <a href="@Url.Action("Index", "InvDepartmentRequisitionOperation")" class="dropdown-item"><i class="icon-android"></i>Item Requisition Operation</a>
+                                    <a href="@Url.Action("Index", "InvStockForcasting")" class="dropdown-item"><i class="icon-android"></i> Stock Forcasting</a>
+                                </div>
+                            </div>
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i>Department Transaction</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvDepartmentTransactionIssue")" class="dropdown-item"><i class="icon-android"></i>Issue</a>
+                                    <a href="@Url.Action("Index", "InvDepartmentTransactionReceive")" class="dropdown-item"><i class="icon-android"></i>Receive</a>
+                                    <a href="@Url.Action("Index", "InvDepartmentTransactionTransfer")" class="dropdown-item"><i class="icon-android"></i>Transfer</a>
+                                </div>
+                            </div>
+
+                            <div class="dropdown-submenu">
+                                <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Inventory Transaction</a>
+                                <div class="dropdown-menu">
+                                    <a href="@Url.Action("Index", "InvItemReceive")" class="dropdown-item"><i class="icon-android"></i> Item Receive</a>
+                                    <a href="@Url.Action("Index", "InvItemIssue")" class="dropdown-item"><i class="icon-android"></i> Item Issue</a>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-submenu">
+                                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Item Information</a>
+                                    <div class="dropdown-menu">
+                                        <a href="@Url.Action("Index", "InvItem")" class="dropdown-item"><i class="icon-android"></i> Item Information</a>
+                                        <a href="@Url.Action("Index", "InvSupplier")" class="dropdown-item"><i class="icon-android"></i> Supplier Information</a>
+
+                                    </div>
+                                </div>
+                                <div class="dropdown-submenu">
+                                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Operation</a>
+                                    <div class="dropdown-menu">
+                                        <a href="@Url.Action("Index", "SetUp")" class="dropdown-item"><i class="icon-android"></i> Movable Items</a>
+                                        <a href="@Url.Action("Index", "MCLYear")" class="dropdown-item"><i class="icon-android"></i> MCL Year Setting</a>
+                                        <a href="@Url.Action("Index", "MovableItem")" class="dropdown-item"><i class="icon-android"></i> MCL User Setting</a>
+                                        <a href="@Url.Action("Index", "MovableItem")" class="dropdown-item"><i class="icon-android"></i> MCL (Office Level)</a>
+                                        <a href="@Url.Action("Index", "MovableItem")" class="dropdown-item"><i class="icon-android"></i> MCL (Central)</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown-submenu">
+                                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Reports</a>
+                                    <div class="dropdown-menu">
+                                        <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-android"></i> Movable Items</a>
+                                        <a href="#" class="dropdown-item"><i class="icon-windows"></i> Third level</a>
+                                    </div>
+                                </div>
+                            </div>
+</li>
+                    <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                Administration
+            </a>
+
+            <div class="dropdown-menu">
+                <a href="@Url.Action("Index", "Account")" class="dropdown-item"><i class="icon-books"></i>Accounts</a>
+
+                <a href="@Url.Action("Index", "Group")" class="dropdown-item"><i class=" icon-make-group"></i>Group</a>
+
+                <a href="@Url.Action("Index", "SubGroup")" class="dropdown-item"><i class="icon-vector2"></i>Sub Group</a>
+
+                <a href="@Url.Action("Index", "SubSubGroup")" class="dropdown-item"><i class="icon-ungroup"></i>Sub Sub Group</a>
+
+                <a href="@Url.Action("Index", "Division")" class="dropdown-item"><i class="icon-stack"></i>Division</a>
+
+
+
+                <a href="@Url.Action("Index", "Section")" class="dropdown-item"><i class="icon-stack2"></i>Section</a>
+
+                <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-gradient"></i>Mesuring Unit</a>
+                <a href="@Url.Action("Index", "Expense")" class="dropdown-item"><i class="icon-gradient"></i>Expense</a>
+                <a href="@Url.Action("Add", "ExpenseClaim")" class="dropdown-item"><i class="icon-stack2"></i>Expense Claim</a>
+                <a href="@Url.Action("Index", "ExpenseClaim")" class="dropdown-item"><i class="icon-airplane2"></i>Expense Claim </a>
+            </div>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                Master Entry
+            </a>
+
+            <div class="dropdown-menu">
+                <a href="@Url.Action("Index", "Company")" class="dropdown-item"><i class="icon-books"></i>Company</a>
+
+                <a href="@Url.Action("Index", "Department")" class="dropdown-item"><i class="icon-stack3"></i>Department</a>
+
+                <a href="@Url.Action("Index", "Designation")" class="dropdown-item"><i class="icon-vector2"></i>Designation</a>
+
+                <a href="@Url.Action("Index", "Holiday")" class="dropdown-item"><i class="icon-ungroup"></i>Holiday</a>
+
+                <a href="@Url.Action("Index", "Shift")" class="dropdown-item"><i class="icon-stack"></i>Shift</a>
+                <a href="@Url.Action("Index", "ShiftAssign")" class="dropdown-item"><i class="icon-stack"></i>Shif  Assign</a>
+
+                <a href="@Url.Action("Index", "Leave")" class="dropdown-item"><i class="icon-stack"></i>Leave</a>
+
+                <a href="@Url.Action("Index", "LeaveAssign")" class="dropdown-item"><i class="icon-stack"></i>Leave Assign</a>
+
+
+            </div>
+        </li>
+        
+
+        
+
+
+
+        <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                Stock Item Records
+            </a>
+
+            <div class="dropdown-menu">
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Operation</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "StockItem")" class="dropdown-item"><i class="icon-android"></i>  Stock Items</a>
+                        <a href="@Url.Action("Index", "StockItemReceive")" class="dropdown-item"><i class="icon-android"></i>  Stock Item Receive</a>
+                        <a href="@Url.Action("Index", "StockItemIssue")" class="dropdown-item"><i class="icon-android"></i>  Stock Item Issue</a>
+
+                    </div>
+                </div>
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Reports</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-android"></i> Movable Items</a>
+                        <a href="#" class="dropdown-item"><i class="icon-windows"></i> Third level</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+        <li class="nav-item dropdown">
+            <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" aria-expanded="false">
+                <i class="icon-cube3 mr-2"></i>
+                Project Item Records
+            </a>
+
+            <div class="dropdown-menu">
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Operation</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "ProjectItem")" class="dropdown-item"><i class="icon-android"></i> Project Items</a>
+                        <a href="@Url.Action("Index", "ProjectItemReceive")" class="dropdown-item"><i class="icon-android"></i> Project Item Receive</a>
+
+                    </div>
+                </div>
+                <div class="dropdown-submenu">
+                    <a href="#" class="dropdown-item dropdown-toggle"><i class="icon-firefox"></i> Reports</a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Index", "MeasuringUnit")" class="dropdown-item"><i class="icon-android"></i> Movable Items</a>
+                        <a href="#" class="dropdown-item"><i class="icon-windows"></i> Third level</a>
+                    </div>
+                </div>
+            </div>
+        </li>
+
+
+                    <li class="nav-item dropdown dropdown-user">
+                        <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+
+                            <i class="icon-user mr-2 "></i>
+
+                            <span>@ViewBag.User.DisplayName</span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a href="#" class="dropdown-item"><i class="icon-key"></i> Change Password</a>
+                            <div class="dropdown-divider"></div>
+
+                            <a href="@Url.Action("Logout", "Login")" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /main navbar -->
+        <!-- Page content -->
+        <div class="page-content" style="margin-top:35px">
+
+            <!-- Main content -->
+            <div class="content-wrapper">
+                @RenderBody()
+
+                <!-- Footer -->
+                <div class="navbar navbar-expand-lg navbar-light">
+                    <div class="text-center d-lg-none w-100">
+                        <button type="button" class="navbar-toggler dropdown-toggle" data-toggle="collapse" data-target="#navbar-footer">
+                            <i class="icon-unfold mr-2"></i>
+                            Footer
+                        </button>
+                    </div>
+
+                    <div class="navbar-collapse collapse" id="navbar-footer">
+                        <span class="navbar-text">
+                            &copy; @DateTime.Today.Year <a href="#"> Mango Teleservices Limited</a>
+                        </span>
+
+                        <ul class="navbar-nav ml-lg-auto">
+
+                            @*<li class="nav-item">Develoved and maitained by <a href="https://www.gm-software.com" target="_blank" class="font-weight-semibold"><span class="text-pink-400"><img src="https://www.gm-software.com/img/logo.png" style="width:25px;" /> GM Software and Design</span></a></li>*@
+                        </ul>
+                    </div>
+                </div>
+                <!-- /footer -->
+
+            </div>
+            <!-- /main content -->
+
+        </div>
+        <!-- /page content -->
+
+    </div>
+    <!-- /boxed layout wrapper -->
+
+    @RenderSection("ChildpageJavaScript", required: false);
+</body>
+
+</html>

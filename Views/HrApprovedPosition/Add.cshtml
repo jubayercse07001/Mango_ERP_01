@@ -1,0 +1,343 @@
+﻿@using ERP.Models.HR.Organization.HrApprovedPosition
+
+@{
+    ViewBag.Title = "Add Approved Position";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <a href="@Url.Action("Index","HrApprovedPosition")" class="breadcrumb-item">
+                    HrApprovedPosition
+                </a>
+                <span class="breadcrumb-item active">Add</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <form id="my-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Approved Position</h6>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Company
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="CompanyId" id="CompanyId" class="form-control">
+                                    <option value="">Select Company</option>
+                                    @foreach (var item in ViewBag.CompanyList)
+                                    {
+                                        <option value="@item.RowId">@item.CompanyName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Division
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="DivisionId" id="DivisionId" class="form-control">
+                                    <option value="">Select Division</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Branch
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="BranchId" id="BranchId" class="form-control">
+                                    <option value="">Select Branch</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Department
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="DepartmentId" id="DepartmentId" class="form-control">
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Employee Type
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="EmployeeTypeId" id="EmployeeTypeId" class="form-control">
+                                    <option value="">Select Employee Type</option>
+                                    @foreach (var item in ViewBag.EmployeeTypeList)
+                                    {
+                                        <option value="@item.RowId">@item.EmployeeTypeName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Designation Group
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="DesignationGroupId" id="DesignationGroupId" class="form-control">
+                                    <option value="">Select Designation Group</option>
+                                    @if (ViewBag.DesignationGroupList != null)
+                                    {
+                                        foreach (var item in ViewBag.DesignationGroupList)
+                                        {
+                                            <option value="@item.RowId">@item.DesignationGroup</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Designation
+                            </label>
+                            <div class="col-lg-8">
+                                <select name="DesignationId" id="DesignationId" class="form-control">
+                                    <option value="">Select Designation</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span> Approved Post
+                            </label>
+                            <div class="col-lg-8">
+                                <input type="number" name="ApprovedPost" class="form-control" value="0" min="1" />
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">Position Rank</label>
+                            <div class="col-lg-8">
+                                <input type="number"
+                                       id="PositionRank"
+                                       name="PositionRank"
+                                       class="form-control"
+                                       value="1"
+                                       readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning" id="errormessage"></div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <button type="button" id="btnSubmit" class="btn bg-blue">
+                        Submit <i class="icon-paperplane ml-2"></i>
+                    </button>
+                    <a href="@Url.Action("Index","HrApprovedPosition")" class="btn btn-light">
+                        Back To List
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="successdiv" style="display:none">
+            <div class="card-header bg-white">
+                <h6 class="card-title">Approved Position Added Successfully</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="text-success">Approved position setup details saved smoothly.</h4>
+            </div>
+            <div class="card-footer bg-white">
+                <div class="d-flex justify-content-between">
+                    <a href="@Url.Action("Add","HrApprovedPosition")" class="btn btn-light">Add Another</a>
+                    <a href="@Url.Action("Index","HrApprovedPosition")" class="btn btn-light">Back To List</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+    $(document).ready(function () {
+
+        // Core Reusable Logic: Fetch Next Position Rank dynamically
+        function updatePositionRank() {
+            var companyId = $("#CompanyId").val();
+            var branchId = $("#BranchId").val();
+            var departmentId = $("#DepartmentId").val();
+
+            // Only execute if all three keys are filled out
+            if (companyId && branchId && departmentId) {
+                $.ajax({
+                    url: '@Url.Action("GetNextPositionRank", "HrApprovedPosition")',
+                    type: 'GET',
+                    data: {
+                        companyId: companyId,
+                        branchId: branchId,
+                        departmentId: departmentId
+                    },
+                    success: function (rankValue) {
+                        $("#PositionRank").val(rankValue);
+                    },
+                    error: function() {
+                        $("#PositionRank").val(1); // fallback default
+                    }
+                });
+            } else {
+                $("#PositionRank").val(1); // clear/reset default if dependency breaks
+            }
+        }
+
+        // 1. Company Change -> Load Divisions
+        $("#CompanyId").change(function () {
+            var companyId = $(this).val();
+            $("#DivisionId").html('<option value="">Select Division</option>');
+            $("#BranchId").html('<option value="">Select Branch</option>');
+            $("#DepartmentId").html('<option value="">Select Department</option>');
+            updatePositionRank(); // Cascade triggers Rank update evaluation
+
+            if (!companyId) return;
+
+            $.ajax({
+                url: '@Url.Action("GetDivisionByCompany", "HrApprovedPosition")',
+                type: 'GET',
+                data: { CompanyId: companyId },
+                success: function (data) {
+                    var html = '<option value="">Select Division</option>';
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.RowId + '">' + item.DivisionName + '</option>';
+                    });
+                    $("#DivisionId").html(html);
+                }
+            });
+        });
+
+        // 2. Division Change -> Load Branches
+        $("#DivisionId").change(function () {
+            var divisionId = $(this).val();
+            $("#BranchId").html('<option value="">Select Branch</option>');
+            $("#DepartmentId").html('<option value="">Select Department</option>');
+            updatePositionRank();
+
+            if (!divisionId) return;
+
+            $.ajax({
+                url: '@Url.Action("GetBranchByDivision", "HrApprovedPosition")',
+                type: 'GET',
+                data: { DivisionId: divisionId },
+                success: function (data) {
+                    var html = '<option value="">Select Branch</option>';
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.RowId + '">' + item.BranchName + '</option>';
+                    });
+                    $("#BranchId").html(html);
+                }
+            });
+        });
+
+        // 3. Branch Change -> Load Departments
+        $("#BranchId").change(function () {
+            var branchId = $(this).val();
+            $("#DepartmentId").html('<option value="">Select Department</option>');
+            updatePositionRank(); // Cascade triggers Rank update evaluation
+
+            if (!branchId) return;
+
+            $.ajax({
+                url: '@Url.Action("GetDepartmentByBranch", "HrApprovedPosition")',
+                type: 'GET',
+                data: { BranchId: branchId },
+                success: function (data) {
+                    var html = '<option value="">Select Department</option>';
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.RowId + '">' + item.DepartmentName + '</option>';
+                    });
+                    $("#DepartmentId").html(html);
+                }
+            });
+        });
+
+        // 4. Department Change -> Trigger Rank calculation check
+        $("#DepartmentId").change(function () {
+            updatePositionRank();
+        });
+
+        // 5. Designation Group Change -> Load Designations
+        $("#DesignationGroupId").change(function () {
+            var groupId = $(this).val();
+            $("#DesignationId").html('<option value="">Select Designation</option>');
+
+            if (!groupId) return;
+
+            $.ajax({
+                url: '@Url.Action("GetDesignationByGroup", "HrApprovedPosition")',
+                type: 'GET',
+                data: { DesignationGroupId: groupId },
+                dataType: 'json',
+                success: function (data) {
+                    var html = '<option value="">Select Designation</option>';
+                    $.each(data, function (i, item) {
+                        html += '<option value="' + item.RowId + '">' + item.DesignationName + '</option>';
+                    });
+                    $("#DesignationId").html(html);
+                }
+            });
+        });
+
+        // Form Submit
+        $("#btnSubmit").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Add", "HrApprovedPosition")',
+                data: $("#my-form").serialize(),
+                success: function (data) {
+                    if (data.ResponseStatus == -1) {
+                        window.location.href = '@Url.Action("Logout","Login")';
+                    }
+                    else if (data.ResponseStatus == -2) {
+                        window.location.href = '@Url.Action("Index","HrApprovedPosition")';
+                    }
+                    else if (data.ResponseStatus == 0) {
+                        $("#errormessage").html(data.ResponseMessage);
+                        $("#errordiv").show();
+                    }
+                    else {
+                        $("#errordiv").hide();
+                        $("#maindiv").hide();
+                        $("#successdiv").show();
+                    }
+                }
+            });
+        });
+    });
+    </script>
+}

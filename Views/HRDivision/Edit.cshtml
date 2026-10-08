@@ -1,0 +1,396 @@
+﻿@using ERP.Models.HR.Organization.HrDivision;
+
+@{ ViewBag.Title = "Edit Division";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+    <div class="d-flex">
+
+        <div class="breadcrumb">
+
+            <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                <i class="icon-home2 mr-2"></i> Home
+            </a>
+
+            <a href="@Url.Action("Index", "HrDivision")"
+               class="breadcrumb-item">
+                HrDivision
+            </a>
+
+            <span class="breadcrumb-item active">Edit</span>
+
+        </div>
+
+    </div>
+</div>
+<form id="my-form">
+
+    <div class="card" id="maindiv">
+
+        <div class="card-header bg-white header-elements-inline">
+
+            <h6 class="card-title">
+                Edit Existing Division
+            </h6>
+
+            <input type="hidden"
+                   name="RowId"
+                   value="@ViewBag.HrDivision.RowId" />
+
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <!-- Left Column -->
+                <div class="col-md-6">
+
+                    <!-- Company -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            <span class="text-danger">*</span>
+                            Company
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <select name="ParentId"
+                                    id="ParentId"
+                                    class="form-control">
+
+                                <option value="">
+                                    Select Company
+                                </option>
+
+                                @foreach (var item in ViewBag.CompanyList)
+                                {
+                    <option value="@item.RowId"
+                            @(item.RowId == ViewBag.HrDivision.ParentId ? "selected" : "")>
+                        @item.CompanyName
+                    </option>}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Main Division -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Main Division
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <select name="MainDivisionId"
+                                    id="MainDivisionId"
+                                    class="form-control">
+
+                                <option value="">
+                                    Select Main Division
+                                </option>
+
+                                @foreach (var item in ViewBag.MainDivisionList)
+                                {
+                    <option value="@item.RowId"
+                            @(item.RowId == ViewBag.HrDivision.MainDivisionId ? "selected" : "")>
+                        @item.MainDivisionName
+                    </option>}
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Division Name -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            <span class="text-danger">*</span>
+                            Division Name
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="text"
+                                   name="DivisionName"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.DivisionName"
+                                   placeholder="Division Name" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Short Division Name -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Short Name
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="text"
+                                   name="ShortDivisionName"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.ShortDivisionName"
+                                   placeholder="Short Division Name" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Address -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Address
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <textarea name="Address"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Address">@ViewBag.HrDivision.Address</textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+
+                    <!-- Phone -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Phone
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="text"
+                                   name="Phone"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.Phone"
+                                   placeholder="Phone" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Fax -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Fax
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="text"
+                                   name="Fax"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.Fax"
+                                   placeholder="Fax" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Mobile -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Mobile
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="text"
+                                   name="Mobile"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.Mobile"
+                                   placeholder="Mobile" />
+
+                        </div>
+
+                    </div>
+
+                    <!-- Rank -->
+                    <div class="form-group row">
+
+                        <label class="col-lg-4 col-form-label">
+                            Rank
+                        </label>
+
+                        <div class="col-lg-8">
+
+                            <input type="number"
+                                   name="Rank"
+                                   class="form-control"
+                                   value="@ViewBag.HrDivision.Rank" />
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Error Message -->
+        <div class="card-footer bg-white"
+             id="errordiv"
+             style="display:none">
+
+            <div class="row">
+
+                <div class="col-lg-10 ml-lg-auto text-warning"
+                     id="errormessage">
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Success Message -->
+        <div class="card-footer bg-white"
+             id="successdiv"
+             style="display:none">
+
+            <div class="row">
+
+                <div class="col-lg-10 ml-lg-auto text-success">
+
+                    <h2>
+                        Division information has been updated successfully.
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="card-footer bg-white">
+
+            <div class="row">
+
+                <div class="col-lg-12">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <button type="button"
+                                id="btnSubmit"
+                                class="btn bg-blue">
+
+                            Submit
+                            <i class="icon-paperplane ml-2"></i>
+
+                        </button>
+
+                        <a href="@Url.Action("Index","HrDivision")"
+                           class="btn btn-light">
+
+                            Back To List
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+@section ChildpageJavaScript{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+
+                var formData = new FormData($('#my-form')[0]);
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Edit", "HrDivision")',
+
+                    data: formData,
+
+                    processData: false,
+                    contentType: false,
+
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+
+                            window.location.href =
+                                '@Url.Action("Logout", "Login")';
+
+                        }
+                        else if (data.ResponseStatus == -2) {
+
+                            window.location.href =
+                                '@Url.Action("Index", "HrDivision")';
+
+                        }
+                        else if (data.ResponseStatus == 0) {
+
+                            $("#errormessage").html(data.ResponseMessage);
+
+                            $("#successdiv").hide();
+                            $("#errordiv").show();
+
+                        }
+                        else {
+
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+                            $("#successdiv").show();
+
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        console.log(xhr.responseText);
+
+                        $("#errormessage").html(xhr.responseText);
+
+                        $("#successdiv").hide();
+                        $("#errordiv").show();
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}

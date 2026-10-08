@@ -1,0 +1,84 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+<!-- Main content -->
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content d-flex justify-content-center align-items-center">
+
+        <!-- Login form -->
+        <form id="login-form" class="login-form" action="@Url.Action("Login", "Login")" method="post">
+            <div class="card mb-0">
+                <div class="card-body">
+                    <div class="text-center mb-3">
+                        <img src="/global_assets/images/Mango.jpg" />
+                    </div>
+                    <div class="text-center mb-3">
+
+                        <h5 class="mb-0">Login to your account</h5>
+                        <span class="d-block text-muted">Your credentials</span>
+                    </div>
+
+                    <div class="form-group form-group-feedback form-group-feedback-left">
+                        @*<input type="text" class="form-control" placeholder="Username" name="Username" value="sadiq">*@
+                        <input type="text" class="form-control" placeholder="Username" name="Username" value="admin">
+                        <div class="form-control-feedback">
+                            <i class="icon-user text-muted"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-group-feedback form-group-feedback-left">
+                        <input type="password" class="form-control" placeholder="Password" name="Password" value="abc123$">
+                        @*<input type="password" class="form-control" placeholder="Password" name="Password" value="admin">*@
+                        <div class="form-control-feedback">
+                            <i class="icon-lock2 text-muted"></i>
+                        </div>
+                    </div>
+
+                    <label id="login-error" class="validation-invalid-label" style="display:none">Invalid Username or Password ...</label>
+
+                    <div class="form-group">
+                        <button type="button" id="btnSubmit" class="btn btn-primary btn-block">Sign in <i class="icon-circle-right2 ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- /login form -->
+
+    </div>
+    <!-- /content area -->
+
+
+</div>
+
+
+@section ChildpageJavaScript{
+    <script>
+
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            $.ajax(
+            {
+                type: "POST",
+                url:  "@Url.Action("Login", "Login")",
+                data: $("#login-form").serialize(),
+                    success: function (data) {
+
+                        if (data.ResponseStatus == 0) {
+                            alert(data.ResponseMessages[0]);
+                            }
+                        else {
+                                window.location.href =  "@Url.Action("Index", "Home")";
+                            }
+
+                    }
+                });
+            });
+    });
+
+    </script>
+}

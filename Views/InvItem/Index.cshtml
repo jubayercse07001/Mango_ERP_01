@@ -1,0 +1,224 @@
+﻿@using Mango_ERP.Models;
+
+@{
+    ViewBag.Title = "Inventory Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <span class="breadcrumb-item active">Inventory Items</span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+
+        <div class="header-elements d-none">
+            <div class="breadcrumb justify-content-center">
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <div class="card">
+
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">List of Inventory Items</h5>
+
+            <div class="header-elements">
+
+                <a href="Javascript:$('#my-form').toggle()">
+                    <button type="button" class="btn btn-light mr-3 text-success">
+                        <i class="icon-search4 mr-2"></i>Advance Search
+                    </button>
+                </a>
+
+                <a href="@Url.Action("Index", "InvItem")">
+                    <button type="button" class="btn btn-light mr-3 text-danger-300">
+                        <i class="icon-reset mr-2"></i>Reset Search
+                    </button>
+                </a>
+
+                <button type="button" class="btn btn-light">
+                    <a href="@Url.Action("Add", "InvItem")">
+                        <i class="icon-add mr-2"></i>Add New
+                    </a>
+                </button>
+
+            </div>
+        </div>
+
+        <form id="my-form" style="display:none">
+
+            <div class="card-body row">
+                <!-- Add your custom advanced search filters here if needed -->
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+                    <div class="col-lg-12 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <a href="Javascript:$('#my-form').toggle();">
+                                <button type="button" class="btn btn-light text-brown-300">
+                                    Close Search Panel
+                                </button>
+                            </a>
+
+                            <a href="javascript:ResetSearch();">
+                                <button type="button" class="btn btn-light text-danger-300">
+                                    Reset Search
+                                </button>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <hr />
+
+        </form>
+
+        <table class="table dataTable datatable-column-search-inputs" id="InvItemList">
+
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Item Code</th>
+                    <th>Item Name</th>
+                    <th>Model Number</th>
+                    <th>Serial Number</th>
+                    <th>Batch Number</th>
+                    <th>Stock Item</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody></tbody>
+
+            <tfoot>
+                <tr>
+                    <td>Item ID</td>
+                    <td>Item Code</td>
+                    <td>Item Name</td>
+                    <td>Model Number</td>
+                    <td>Serial Number</td>
+                    <td>Batch Number</td>
+                    <td>Stock Item</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+
+        </table>
+
+    </div>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+    var dtTable;
+
+    function ReloadDataTable() {
+        dtTable.ajax.url(
+            "@Url.Action("GetInvItemList", "InvItem")?"
+            + $("#my-form").serialize()
+        ).load();
+    }
+
+    function ResetSearch() {
+        $("#my-form").trigger("reset");
+        ReloadDataTable();
+    }
+
+    function UpdateDataTable() {
+
+        dtTable = $('#InvItemList').DataTable({
+
+            "processing": true,
+            "serverSide": true,
+            "method": "GET",
+
+            "ajax":
+                "@Url.Action("GetInvItemList", "InvItem")?"
+                + $("#my-form").serialize(),
+
+            columns: [
+
+                { data: 'ItemId' },
+                { data: 'ItemCode' },
+                { data: 'ItemName' },
+                { data: 'ModelNumber' },
+                { data: 'SerialNumber' },
+                { data: 'BatchNumber' },
+                {
+                    data: 'IsStockItem',
+                    render: function (data, type, row) {
+                        return data === 1
+                            ? '<span class="badge badge-success">Yes</span>'
+                            : '<span class="badge badge-secondary">No</span>';
+                    }
+                },
+
+                {
+                    "mData": "RowId",
+
+                    "mRender": function (data, type, row) {
+
+                        var retVal =
+                            "<div class='list-icons'>" +
+                            "<div class='dropdown'>" +
+
+                            "<a href='#' class='list-icons-item' data-toggle='dropdown'>" +
+                            "<i class='icon-menu9'></i>" +
+                            "</a>" +
+
+                            "<div class='dropdown-menu dropdown-menu-right'>" +
+
+                            "<a href='@Url.Action("Edit","InvItem")/" + data + "' class='dropdown-item text-blue'>" +
+                            "<i class='icon-pencil7'></i> Edit Information</a>" +
+
+                            "<a href='@Url.Action("Delete","InvItem")/" + data + "' class='dropdown-item text-danger'>" +
+                            "<i class='icon-cross'></i> Delete Information</a>" +
+
+                            "</div>" +
+                            "</div>" +
+                            "</div>";
+
+                        return retVal;
+                    }
+                }
+
+            ]
+
+        });
+    }
+
+    $(document).ready(function () {
+
+        UpdateDataTable();
+
+    });
+
+    </script>
+}

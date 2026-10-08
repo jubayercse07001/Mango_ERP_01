@@ -1,0 +1,264 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Designation";
+}
+
+<!-- Page Header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index","HrDesignation")"
+                   class="breadcrumb-item">
+                    HrDesignation
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Content -->
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Delete Existing Designation
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.HrDesignation.RowId" />
+
+            </div>
+
+            <!-- Warning -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+                            Are you sure you want to delete the following Designation?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Details -->
+            <div class="card-body">
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">
+                        Designation ID:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.HrDesignation.DesignationId
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">
+                        Designation Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.HrDesignation.DesignationName
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">
+                        Short Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.HrDesignation.ShortDesignationName
+                    </div>
+                </div>
+
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">
+                        Designation Group:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.HrDesignation.DesignationGroupName
+                    </div>
+                </div>
+
+                <div class="form-group row mb-0">
+                    <label class="col-form-label col-lg-3">
+                        Rank:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+                        @ViewBag.HrDesignation.Rank
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Error Div -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Success Div -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Designation has been deleted successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger">
+
+                                Delete
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+                            <a href="@Url.Action("Index","HrDesignation")"
+                               class="btn btn-light">
+
+                                Back To List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Delete", "HrDesignation")',
+
+                    data: $("#my-form").serialize(),
+
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+
+                            window.location.href =
+                                '@Url.Action("Logout","Login")';
+
+                        }
+                        else if (data.ResponseStatus == -2) {
+
+                            window.location.href =
+                                '@Url.Action("Index","HrDesignation")';
+
+                        }
+                        else if (data.ResponseStatus == 0) {
+
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#successdiv").hide();
+                            $("#errordiv").show();
+
+                        }
+                        else {
+
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+
+                            $("#btnSubmit").hide();
+
+                            $("#successdiv").show();
+
+                        }
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+}

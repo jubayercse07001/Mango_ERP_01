@@ -1,0 +1,261 @@
+﻿@using ERP.Models.Inventory.InvSubFamily;
+
+@{
+    ViewBag.Title = "Edit Sub Family";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index","InvSubFamily")"
+                   class="breadcrumb-item">
+                    Sub Family
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Sub Family
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvSubFamily.RowId" />
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Family Dropdown -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Family
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <select name="FamilyId"
+                                        id="FamilyId"
+                                        class="form-control">
+
+                                    <option value="">
+                                        Select Family
+                                    </option>
+
+                                    @if (ViewBag.FamilyList != null)
+                                    {
+                                        foreach (var item in ViewBag.FamilyList)
+                                        {
+                                            <option value="@item.RowId"
+                                                    @(item.RowId == ViewBag.InvSubFamily.FamilyId ? "selected" : "")>
+                                                @item.FamilyName
+                                            </option>
+                                        }
+                                    }
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Sub Family Name Input -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Sub Family Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="SubFamilyName"
+                                       id="SubFamilyName"
+                                       class="form-control"
+                                       value="@ViewBag.InvSubFamily.SubFamilyName"
+                                       placeholder="Sub Family Name" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Sub Family information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index","InvSubFamily")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+$(document).ready(function () {
+
+    $("#btnSubmit").click(function () {
+
+        var formData = new FormData($('#my-form')[0]);
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Edit", "InvSubFamily")',
+
+            data: formData,
+
+            processData: false,
+            contentType: false,
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","InvSubFamily")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errormessage").html("");
+
+                    $("#errordiv").hide();
+                    $("#successdiv").show();
+
+                }
+
+            },
+
+            error: function (xhr) {
+
+                $("#errormessage").html(
+                    xhr.responseText
+                );
+
+                $("#successdiv").hide();
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+}

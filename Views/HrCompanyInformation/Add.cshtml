@@ -1,0 +1,349 @@
+﻿@using ERP.Models.HR.Organization.HrCompanyInformation;
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <a href="@Url.Action("Index", "HrCompanyInformation")" class="breadcrumb-item">
+                    HrCompanyInformation
+                </a>
+
+                <span class="breadcrumb-item active">Add</span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Content area -->
+<div class="content">
+
+    <form action="#" id="my-form" enctype="multipart/form-data">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Company Information</h6>
+            </div>
+
+            <div class="card-body">
+
+                <!-- TWO COLUMN FORM -->
+                <div class="row">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>Company Name
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="CompanyName"
+                                       class="form-control"
+                                       placeholder="Company Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Short Name
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="ShortCompanyName"
+                                       class="form-control"
+                                       placeholder="Short Company Name">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                Address
+                            </label>
+
+                            <div class="col-lg-8">
+                                <textarea name="AddressLine1"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Enter full address"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Phone
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="tel"
+                                       name="Phone1"
+                                       class="form-control"
+                                       placeholder="017XXXXXXXX, 018XXXXXXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Mobile
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="tel"
+                                       name="Mobile1"
+                                       class="form-control"
+                                       placeholder="017XXXXXXXX, 018XXXXXXXX">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Fax
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="Fax"
+                                       class="form-control"
+                                       placeholder="Fax">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Email
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="email"
+                                       name="Email1"
+                                       class="form-control"
+                                       placeholder="Email">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                 Website
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="Web"
+                                       class="form-control"
+                                       placeholder="Website">
+                            </div>
+                        </div>
+
+                        <!-- LOGO BROWSE OPTION -->
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                Logo
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="file"
+                                       name="LogoFile"
+                                       id="LogoFile"
+                                       class="form-control-file"
+                                       accept="image/*">
+
+                                <small class="text-muted">
+                                    Upload company logo
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-lg-4 col-form-label">
+                                Logo URL
+                            </label>
+
+                            <div class="col-lg-8">
+                                <input type="text"
+                                       name="LogoUrl"
+                                       class="form-control"
+                                       placeholder="Logo URL">
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ERROR DIV -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-blue">
+                                Submit
+                                <i class="icon-paperplane ml-2"></i>
+                            </button>
+
+                            <a href="@Url.Action("Index", "HrCompanyInformation")"
+                               class="btn btn-light">
+                                Back to List
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- SUCCESS MESSAGE -->
+        <div class="card"
+             style="display:none"
+             id="successdiv">
+
+            <div class="card-header bg-white">
+                <h6 class="card-title">
+                    Company Added Successfully
+                </h6>
+            </div>
+
+            <div class="card-body">
+                <h4 class="text-success">
+                    Company information has been added successfully.
+                </h4>
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <a href="@Url.Action("Add", "HrCompanyInformation")"
+                       class="btn btn-light">
+                        Add Another
+                    </a>
+
+                    <a href="@Url.Action("Index", "HrCompanyInformation")"
+                       class="btn btn-light">
+                        Back to List
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript{
+
+    <script>
+
+    $(document).ready(function () {
+
+        $("#btnSubmit").click(function () {
+
+            var formData = new FormData($('#my-form')[0]);
+
+            $.ajax({
+
+                type: "POST",
+
+                url: '@Url.Action("Add", "HrCompanyInformation")',
+
+                data: formData,
+
+                processData: false,
+                contentType: false,
+
+                success: function (data) {
+
+                    if (data.ResponseStatus == -1) {
+
+                        window.location.href =
+                            '@Url.Action("Logout", "Login")';
+
+                    }
+                    else if (data.ResponseStatus == -2) {
+
+                        window.location.href =
+                            '@Url.Action("Index", "HrCompanyInformation")';
+
+                    }
+                    else if (data.ResponseStatus == 0) {
+
+                        $("#errormessage").html(data.ResponseMessage);
+                        $("#errordiv").show();
+
+                    }
+                    else {
+
+                        $("#errormessage").html("");
+                        $("#errordiv").hide();
+
+                        $("#maindiv").hide();
+                        $("#successdiv").show();
+                    }
+                },
+
+                //error: function () {
+
+                //    $("#errormessage").html("Something went wrong.");
+                //    $("#errordiv").show();
+                //}
+                error: function (xhr, status, error) {
+
+                    console.log(xhr.responseText);
+
+                    $("#errormessage").html(xhr.responseText);
+                    $("#errordiv").show();
+                }
+
+            });
+
+        });
+
+    });
+
+    </script>
+
+}

@@ -1,0 +1,379 @@
+﻿
+@using ERP.Models.Inventory.InvItemCategory
+
+@{
+    ViewBag.Title = "Edit Item Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index","InvItemCategory")"
+                   class="breadcrumb-item">
+
+                    InvItemCategory
+
+                </a>
+
+                <span class="breadcrumb-item active">
+
+                    Edit
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Item Category
+                </h6>
+
+                <!-- Primary Key -->
+                <input type="hidden"
+                       name="RowId"
+                       id="RowId"
+                       value="@ViewBag.InvItemCategory.RowId" />
+
+                <!-- Category Id -->
+                <input type="hidden"
+                       name="CategoryId"
+                       id="CategoryId"
+                       value="@ViewBag.InvItemCategory.CategoryId" />
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Category Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Category Name
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="CategoryName"
+                                       id="CategoryName"
+                                       class="form-control"
+                                       value="@ViewBag.InvItemCategory.CategoryName"
+                                       placeholder="Category Name"
+                                       maxlength="200"
+                                       autocomplete="off" />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Description -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                Description
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="Description"
+                                          id="Description"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Description">@ViewBag.InvItemCategory.Description</textarea>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <!-- Reserved for future fields -->
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Item category information has been
+                            updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+
+                    <a href="@Url.Action("Index","InvItemCategory")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+
+                // Hide previous messages
+                $("#errordiv").hide();
+                $("#successdiv").hide();
+                $("#errormessage").html("");
+
+
+                // Client-side validation
+                var categoryName =
+                    $.trim($("#CategoryName").val());
+
+                if (categoryName === "") {
+
+                    $("#errormessage").html(
+                        "Please enter Category Name."
+                    );
+
+                    $("#errordiv").show();
+
+                    $("#CategoryName").focus();
+
+                    return false;
+                }
+
+
+                var formData =
+                    new FormData($("#my-form")[0]);
+
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Edit", "InvItemCategory")',
+
+                    data: formData,
+
+                    processData: false,
+
+                    contentType: false,
+
+
+                    beforeSend: function () {
+
+                        $("#btnSubmit")
+                            .prop("disabled", true)
+                            .html(
+                                'Updating... <i class="icon-spinner2 spinner ml-2"></i>'
+                            );
+
+                    },
+
+
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+
+                            // Session expired
+                            window.location.href =
+                                '@Url.Action("Logout","Login")';
+
+                        }
+
+                        else if (data.ResponseStatus == -2) {
+
+                            // No permission
+                            window.location.href =
+                                '@Url.Action("Index","InvItemCategory")';
+
+                        }
+
+                        else if (data.ResponseStatus == 0) {
+
+                            // Server-side validation / error
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#successdiv").hide();
+
+                            $("#errordiv").show();
+
+
+                            $("#btnSubmit")
+                                .prop("disabled", false)
+                                .html(
+                                    'Submit <i class="icon-paperplane ml-2"></i>'
+                                );
+
+                        }
+
+                        else {
+
+                            // Successfully updated
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+
+                            $("#successdiv").show();
+
+
+                            $("#btnSubmit")
+                                .prop("disabled", false)
+                                .html(
+                                    'Submit <i class="icon-paperplane ml-2"></i>'
+                                );
+
+                        }
+
+                    },
+
+
+                    error: function (xhr) {
+
+                        var errorMessage =
+                            "An unexpected error occurred while updating the item category.";
+
+                        if (xhr.responseText) {
+                            errorMessage =
+                                xhr.responseText;
+                        }
+
+                        $("#errormessage").html(
+                            errorMessage
+                        );
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+
+                        $("#btnSubmit")
+                            .prop("disabled", false)
+                            .html(
+                                'Submit <i class="icon-paperplane ml-2"></i>'
+                            );
+
+                    }
+
+                });
+
+            });
+
+
+            // Clear error when Category Name changes
+            $("#CategoryName").on("input", function () {
+
+                if ($.trim($(this).val()) !== "") {
+
+                    $("#errordiv").hide();
+
+                    $("#errormessage").html("");
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}
+

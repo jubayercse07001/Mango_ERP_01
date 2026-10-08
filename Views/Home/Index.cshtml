@@ -1,0 +1,113 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Dashboard";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light ">
+
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <span class="breadcrumb-item active">Dashboard</span>
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <!-- Individual column searching (text inputs) -->
+
+    <div class="card" id="successdiv">
+        <div class="card-header bg-white header-elements-inline">
+            <h6 class="card-title">Welcome, <span class="text-danger">@ViewBag.User.DisplayName</span></h6>
+
+        </div>
+
+        <div class="card-body">
+            <div class="form-group row">
+
+                <div class="col-lg-12 color-selector-active text-success">
+                    <h2 class="text-center">  Mango Human Resource Management System </h2>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="card-footer bg-white">
+            <div class="row">
+                <div class="col-sm-12 col-md-12">
+                    <h3 class="section-title text-left text-danger" style="padding-top:30px">Mango Teleservices Limited</h3>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-top">
+                                <i class="icon-home mr-3 icon"></i>
+                                <div>
+                                    <div style="font-weight:bold;">Head Office</div>
+                                    <div>Police Plaza Concord, Tower-02 (7th Floor), Plot#2, Road#144, Gulshan-1, Dhaka-1212, Bangladesh</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="d-flex align-items-top">
+                                <i class="icon-office  mr-3 icon"></i>
+                                <div>
+                                    @*<div style="font-weight:bold;">Dhaka Office</div>
+                                        <div>House-296 (Ground Floor), Lane-4, DOHS Baridhara, Dhaka-1206, Bangladesh.</div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="d-flex ">
+                                <i class="icon-phone  mr-3"></i>
+                                <div>
+                                    +88 02 8412506, +88 01879 496 827
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="d-flex ">
+                                <i class="icon-envelope   mr-3"></i>
+                                <div>
+                                    <a href="mailto:reach@gm-software.com" target="_blank">reach@gm-software.com</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="d-flex ">
+                                <i class="icon-dribbble3   mr-3"></i>
+                                <div>
+                                    @*<a href="https://www.gm-software.com" target="_blank">www.gm-software.com</a>*@
+                                    <a href="http://mango.com.bd" target="_blank">www.mango.com.bd</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /individual column searching (text inputs) -->
+
+
+
+</div>
+<!-- /content area -->

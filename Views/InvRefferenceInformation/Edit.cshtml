@@ -1,0 +1,405 @@
+﻿@using ERP.Models.Inventory.InvRefferenceInformation
+
+@{
+    ViewBag.Title = "Edit Reference Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvRefferenceInformation")"
+                   class="breadcrumb-item">
+
+                    Inventory Reference Information
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+            <!-- Card Header -->
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Reference Information
+                </h6>
+
+                <!-- RowId -->
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvRefferenceInformation.RowId" />
+
+            </div>
+
+
+            <!-- Card Body -->
+            <div class="card-body">
+
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <!-- Reference ID -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Reference ID
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       class="form-control"
+                                       value="@ViewBag.InvRefferenceInformation.RefferenceId"
+                                       readonly />
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Reference Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+
+                                <span class="text-danger">*</span>
+                                Reference Name
+
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="RefferenceName"
+                                       id="RefferenceName"
+                                       class="form-control"
+                                       value="@ViewBag.InvRefferenceInformation.RefferenceName"
+                                       placeholder="Reference Name"
+                                       maxlength="200"
+                                       autocomplete="off" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Error -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Success -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Reference information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Buttons -->
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+
+                    <a href="@Url.Action("Index", "InvRefferenceInformation")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+    <script>
+
+        $(document).ready(function () {
+
+
+            // ========================================================
+            // Submit
+            // ========================================================
+            $("#btnSubmit").click(function () {
+
+
+                // ----------------------------------------------------
+                // Clear previous messages
+                // ----------------------------------------------------
+                $("#errordiv").hide();
+
+                $("#successdiv").hide();
+
+                $("#errormessage").html("");
+
+
+                // ----------------------------------------------------
+                // Client-side validation
+                // ----------------------------------------------------
+                var referenceName =
+                    $.trim($("#RefferenceName").val());
+
+
+                if (referenceName === "") {
+
+                    $("#errormessage").html(
+                        "<ul>" +
+                        "<li>Reference Name is required</li>" +
+                        "</ul>"
+                    );
+
+                    $("#errordiv").show();
+
+                    $("#RefferenceName").focus();
+
+                    return false;
+                }
+
+
+                // ----------------------------------------------------
+                // Disable submit button
+                // ----------------------------------------------------
+                $("#btnSubmit")
+                    .prop("disabled", true);
+
+
+                // ----------------------------------------------------
+                // FormData
+                // ----------------------------------------------------
+                var formData =
+                    new FormData($("#my-form")[0]);
+
+
+                // ----------------------------------------------------
+                // AJAX
+                // ----------------------------------------------------
+                $.ajax({
+
+                    type: "POST",
+
+                    url:
+                        '@Url.Action(
+                            "Edit",
+                            "InvRefferenceInformation"
+                        )',
+
+                    data: formData,
+
+                    processData: false,
+
+                    contentType: false,
+
+
+                    // ------------------------------------------------
+                    // Success
+                    // ------------------------------------------------
+                    success: function (data) {
+
+
+                        // --------------------------------------------
+                        // Not Logged In
+                        // --------------------------------------------
+                        if (data.ResponseStatus == -1) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Logout",
+                                    "Login"
+                                )';
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Not Authorized
+                        // --------------------------------------------
+                        else if (data.ResponseStatus == -2) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Index",
+                                    "InvRefferenceInformation"
+                                )';
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Validation / Database Error
+                        // --------------------------------------------
+                        else if (data.ResponseStatus == 0) {
+
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#successdiv").hide();
+
+                            $("#errordiv").show();
+
+                            $("#btnSubmit")
+                                .prop("disabled", false);
+
+                            return;
+                        }
+
+
+                        // --------------------------------------------
+                        // Success
+                        // --------------------------------------------
+                        else {
+
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+
+                            $("#successdiv").show();
+
+                            $("#btnSubmit")
+                                .prop("disabled", false);
+
+                        }
+
+                    },
+
+
+                    // ------------------------------------------------
+                    // AJAX Error
+                    // ------------------------------------------------
+                    error: function (xhr) {
+
+                        var message =
+                            xhr.responseText;
+
+                        if (!message) {
+
+                            message =
+                                "Unable to update reference information.";
+
+                        }
+
+                        $("#errormessage").html(
+                            "<ul>" +
+                            "<li>" +
+                            message +
+                            "</li>" +
+                            "</ul>"
+                        );
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+                        $("#btnSubmit")
+                            .prop("disabled", false);
+
+                    }
+
+                });
+
+            });
+
+
+            // ========================================================
+            // Enter key
+            // ========================================================
+            $("#RefferenceName").keypress(function (e) {
+
+                if (e.which == 13) {
+
+                    e.preventDefault();
+
+                    $("#btnSubmit").click();
+
+                }
+
+            });
+
+        });
+
+    </script>
+}

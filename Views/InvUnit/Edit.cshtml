@@ -1,0 +1,252 @@
+﻿@using ERP.Models.Inventory.InvUnit;
+
+@{
+    ViewBag.Title = "Edit Inventory Unit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index","Home")"
+                   class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+                </a>
+
+                <a href="@Url.Action("Index","InvUnit")"
+                   class="breadcrumb-item">
+                    Inventory Unit
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Edit
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="content">
+
+    <form id="my-form">
+
+        <div class="card" id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Inventory Unit
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.InvUnit.RowId" />
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+
+                        <!-- Unit Name -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Unit Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="MinUnitName"
+                                       id="MinUnitName"
+                                       class="form-control"
+                                       value="@ViewBag.InvUnit.MinUnitName"
+                                       placeholder="Unit Name" />
+
+                            </div>
+
+                        </div>
+
+                        <!-- Unit Symbol -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Unit Symbol
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="UnitSymbol"
+                                       id="UnitSymbol"
+                                       class="form-control"
+                                       value="@ViewBag.InvUnit.UnitSymbol"
+                                       placeholder="Unit Symbol" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h4>
+                            Unit information has been updated successfully.
+                        </h4>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="d-flex justify-content-between">
+
+                    <button type="button"
+                            id="btnSubmit"
+                            class="btn bg-blue">
+
+                        Submit
+                        <i class="icon-paperplane ml-2"></i>
+
+                    </button>
+
+                    <a href="@Url.Action("Index","InvUnit")"
+                       class="btn btn-light">
+
+                        Back To List
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+$(document).ready(function () {
+
+    $("#btnSubmit").click(function () {
+
+        var formData = new FormData($('#my-form')[0]);
+
+        $.ajax({
+
+            type: "POST",
+
+            url: '@Url.Action("Edit", "InvUnit")',
+
+            data: formData,
+
+            processData: false,
+            contentType: false,
+
+            success: function (data) {
+
+                if (data.ResponseStatus == -1) {
+
+                    window.location.href =
+                        '@Url.Action("Logout","Login")';
+
+                }
+                else if (data.ResponseStatus == -2) {
+
+                    window.location.href =
+                        '@Url.Action("Index","InvUnit")';
+
+                }
+                else if (data.ResponseStatus == 0) {
+
+                    $("#errormessage").html(
+                        data.ResponseMessage
+                    );
+
+                    $("#successdiv").hide();
+                    $("#errordiv").show();
+
+                }
+                else {
+
+                    $("#errormessage").html("");
+
+                    $("#errordiv").hide();
+                    $("#successdiv").show();
+
+                }
+
+            },
+
+            error: function (xhr) {
+
+                $("#errormessage").html(
+                    xhr.responseText
+                );
+
+                $("#successdiv").hide();
+                $("#errordiv").show();
+
+            }
+
+        });
+
+    });
+
+});
+
+    </script>
+}

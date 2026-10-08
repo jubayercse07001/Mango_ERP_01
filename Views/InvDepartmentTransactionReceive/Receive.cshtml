@@ -1,0 +1,1579 @@
+﻿@using System
+@using System.Collections.Generic
+@using ERP.Models.Inventory.InvDepartmentRequisition
+@using ERP.Models.Inventory.InvDepartmentRequisitionDetail
+
+@{
+    ViewBag.Title = "Receive Requisition";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var requisition =
+        ViewBag.Requisition as InvDepartmentRequisitionInfo;
+
+    if (requisition == null)
+    {
+        Response.Redirect(
+            Url.Action(
+                "Index",
+                "InvDepartmentTransactionReceive"
+            )
+        );
+
+        return;
+    }
+}
+
+
+<!-- ============================================================
+     PAGE HEADER
+============================================================ -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+
+                <a href="@Url.Action("Index", "InvDepartmentTransactionReceive")"
+                   class="breadcrumb-item">
+
+                    Department Transaction Receive
+
+                </a>
+
+
+                <span class="breadcrumb-item active">
+                    Receive Requisition
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ============================================================
+     CONTENT
+============================================================ -->
+<div class="content">
+
+    <div class="card">
+
+
+        <!-- ====================================================
+             CARD HEADER
+        ===================================================== -->
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+
+                Receive Requisition
+
+                <span class="text-muted font-weight-normal ml-2">
+                    (@requisition.RequisitionCode)
+                </span>
+
+            </h5>
+
+
+            <div class="header-elements">
+
+                <a href="@Url.Action(
+                            "Index",
+                            "InvDepartmentTransactionReceive"
+                        )"
+                   class="btn btn-light">
+
+                    <i class="icon-arrow-left13 mr-2"></i>
+                    Back to List
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ====================================================
+             CARD BODY
+        ===================================================== -->
+        <div class="card-body">
+
+
+            <!-- =================================================
+                 HEADER INFORMATION
+            ================================================== -->
+
+            <div class="row mb-3">
+
+                <!-- Requisition Code -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requisition Code
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequisitionCode"
+                           readonly />
+
+                </div>
+
+
+                <!-- Requisition Date -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requisition Date
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@(requisition.RequisitionDate == DateTime.MinValue
+                                        ? ""
+                                        : requisition.RequisitionDate.ToString("dd-MM-yyyy"))"
+                           readonly />
+
+                </div>
+
+
+                <!-- Requested By -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Requested By
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequestedByName"
+                           readonly />
+
+                </div>
+
+
+                <!-- Job No -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Job No
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.JobNo"
+                           readonly />
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 SECOND HEADER ROW
+            ================================================== -->
+
+            <div class="row mb-3">
+
+                <!-- Status -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Status
+                    </label>
+
+                    <input type="text"
+                           class="form-control text-success"
+                           value="ISSUED"
+                           readonly />
+
+                </div>
+
+
+                <!-- Department -->
+                <div class="col-md-3">
+
+                    <label class="font-weight-semibold">
+                        Department
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.DepartmentName"
+                           readonly />
+
+                </div>
+
+
+                <!-- Requisition Name -->
+                <div class="col-md-6">
+
+                    <label class="font-weight-semibold">
+                        Requisition Name
+                    </label>
+
+                    <input type="text"
+                           class="form-control"
+                           value="@requisition.RequisitionName"
+                           readonly />
+
+                </div>
+
+            </div>
+
+
+
+            <hr />
+
+
+
+            <!-- =================================================
+                 REMARKS
+            ================================================== -->
+
+            <div class="row mb-3">
+
+                <div class="col-md-12">
+
+                    <div class="form-group">
+
+                        <label class="font-weight-semibold">
+                            Remarks
+                        </label>
+
+                        <input type="text"
+                               id="Remarks"
+                               class="form-control"
+                               maxlength="500"
+                               placeholder="Optional receive remarks" />
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DETAIL TABLE
+            ================================================== -->
+
+            <div class="table-responsive">
+
+                <table class="table table-bordered table-striped table-sm"
+                       id="ReceiveDetailTable">
+
+                    <thead class="bg-light">
+
+                        <tr>
+
+                            <th class="text-center"
+                                style="width:35px;">
+                                #
+                            </th>
+
+                            <th style="min-width:150px;">
+                                Item
+                            </th>
+
+                            <th class="text-right"
+                                style="width:80px;">
+                                Approved
+                            </th>
+
+                            <th class="text-right"
+                                style="width:80px;">
+                                Issued
+                            </th>
+
+                            <th class="text-right"
+                                style="width:100px;">
+                                Already Recv
+                            </th>
+
+                            <th class="text-right"
+                                style="width:90px;">
+                                Remaining
+                            </th>
+
+                            <th style="width:100px;">
+                                Issued Unit
+                            </th>
+
+                            <th style="min-width:150px;">
+                                Receive Unit
+                            </th>
+
+                            <th class="text-right"
+                                style="min-width:110px;">
+
+                                Receive Qty
+                                <span class="text-danger">*</span>
+
+                            </th>
+
+                            <th class="text-right"
+                                style="width:90px;">
+                                Conv. Rate
+                            </th>
+
+                            <th class="text-right"
+                                style="width:95px;">
+                                Conv. Price
+                            </th>
+
+                            <th class="text-right"
+                                style="width:100px;">
+                                Conv. Total
+                            </th>
+
+                            <th style="min-width:120px;">
+                                Remarks
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @if (requisition.Details != null &&
+                             requisition.Details.Count > 0)
+                        {
+                            int i = 1;
+
+                            foreach (var line in requisition.Details)
+                            {
+                                decimal issued =
+                                    Convert.ToDecimal(
+                                        line.IssuedQuantity
+                                    );
+
+                                decimal alreadyReceived =
+                                    Convert.ToDecimal(
+                                        line.ReceivedQuantity
+                                    );
+
+                                decimal remaining =
+                                    issued - alreadyReceived;
+
+                                if (remaining < 0)
+                                {
+                                    remaining = 0;
+                                }
+
+
+                                <tr data-rowid="@line.RowId"
+                                    data-itemid="@line.ItemId"
+                                    data-requested-unit="@line.UnitId"
+                                    data-unit-price="@line.UnitPriceEst"
+                                    data-remaining="@remaining">
+
+
+                                    <!-- ==================================
+                                         SERIAL
+                                    =================================== -->
+                                    <td class="text-center">
+                                        @i
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         ITEM
+                                    =================================== -->
+                                    <td>
+
+                                        <strong>
+                                            @line.ItemName
+                                        </strong>
+
+                                        <input type="hidden"
+                                               class="detail-row-id"
+                                               value="@line.RowId" />
+
+                                        <input type="hidden"
+                                               class="item-id"
+                                               value="@line.ItemId" />
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         APPROVED
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        @line.ApprovedQuantity.ToString("0.####")
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         ISSUED
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        @issued.ToString("0.####")
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         ALREADY RECEIVED
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        @alreadyReceived.ToString("N2")
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         REMAINING
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        <span class="remaining-qty font-weight-semibold">
+
+                                            @remaining.ToString("N2")
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         ISSUED UNIT
+                                    =================================== -->
+                                    <td>
+
+                                        <span class="requested-unit-name">
+                                            @line.MinUnitName
+                                        </span>
+
+                                        <input type="hidden"
+                                               class="requested-unit-id"
+                                               value="@line.UnitId" />
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         RECEIVE UNIT
+                                    =================================== -->
+                                    <td>
+
+                                        <select class="form-control form-control-sm receive-unit"
+                                                style="min-width:140px;">
+
+                                            <option value="">
+                                                -- Select Unit --
+                                            </option>
+
+
+                                            @if (ViewBag.UnitList != null)
+                                            {
+                                                foreach (var unit in ViewBag.UnitList)
+                                                {
+                                                    string selectedText = "";
+
+                                                    if (
+                                                        Convert.ToString(
+                                                            unit.RowId
+                                                        )
+                                                        ==
+                                                        Convert.ToString(
+                                                            line.UnitId
+                                                        )
+                                                    )
+                                                    {
+                                                        selectedText =
+                                                            "selected";
+                                                    }
+
+
+                                                    <option value="@unit.RowId"
+                                                            @selectedText>
+
+                                                        @unit.MinUnitName
+
+                                                    </option>
+                                                }
+                                            }
+
+                                        </select>
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         RECEIVE QUANTITY
+                                    =================================== -->
+                                    <td>
+
+                                        <input type="number"
+                                               class="form-control form-control-sm text-right received-qty"
+                                               style="min-width:100px;"
+                                               min="0"
+                                               step="0.0001"
+                                               value="@(remaining > 0
+                                                            ? remaining.ToString("0.####")
+                                                            : "0")"
+                                               data-remaining="@remaining" />
+
+                                        <small class="text-danger quantity-error"
+                                               style="display:none;">
+                                        </small>
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         CONVERSION RATE
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        <span class="conversion-rate">
+                                            1.00
+                                        </span>
+
+                                        <input type="hidden"
+                                               class="unit-conversion-id"
+                                               value="" />
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         CONVERSION PRICE
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        <span class="conversion-price">
+
+                                            @line.UnitPriceEst.ToString("N2")
+
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         CONVERSION TOTAL
+                                    =================================== -->
+                                    <td class="text-right">
+
+                                        <span class="conversion-total">
+                                            0.00
+                                        </span>
+
+                                    </td>
+
+
+
+                                    <!-- ==================================
+                                         LINE REMARKS
+                                    =================================== -->
+                                    <td>
+
+                                        <input type="text"
+                                               class="form-control form-control-sm line-remarks"
+                                               maxlength="250"
+                                               placeholder="Remarks"
+                                               style="min-width:110px;" />
+
+                                    </td>
+
+                                </tr>
+
+
+                                i++;
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="13"
+                                    class="text-center text-muted">
+
+                                    No issued items found in this requisition.
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ====================================================
+             CARD FOOTER
+        ===================================================== -->
+        <div class="card-footer bg-white">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <div id="receiveError"
+                         class="alert alert-danger"
+                         style="display:none;">
+                    </div>
+
+                </div>
+
+
+                <div class="col-md-4 text-right">
+
+                    <a href="@Url.Action(
+                                "Index",
+                                "InvDepartmentTransactionReceive"
+                            )"
+                       class="btn btn-light">
+
+                        <i class="icon-cross2 mr-2"></i>
+                        Cancel
+
+                    </a>
+
+
+                    <button type="button"
+                            id="btnReceive"
+                            class="btn btn-primary">
+
+                        <i class="icon-download4 mr-2"></i>
+                        Receive Requisition
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+@section ChildpageJavaScript
+{
+
+    <script type="text/javascript">
+
+
+    // ============================================================
+    // DECIMAL HELPER
+    // ============================================================
+
+    function toDecimal(value)
+    {
+        var n = parseFloat(value);
+
+        if (isNaN(n))
+        {
+            return 0;
+        }
+
+        return n;
+    }
+
+
+
+    // ============================================================
+    // FORMAT DECIMAL
+    // ============================================================
+
+    function formatDecimal(value, places)
+    {
+        return toDecimal(value).toFixed(places);
+    }
+
+
+
+    // ============================================================
+    // LOAD UNIT CONVERSION
+    // ============================================================
+
+    function loadConversion($row)
+    {
+        var requestedUnitId =
+            $row.find(".requested-unit-id").val();
+
+        var receiveUnitId =
+            $row.find(".receive-unit").val();
+
+        var unitPrice =
+            toDecimal(
+                $row.attr("data-unit-price")
+            );
+
+        var receiveQty =
+            toDecimal(
+                $row.find(".received-qty").val()
+            );
+
+
+        var $rate =
+            $row.find(".conversion-rate");
+
+        var $price =
+            $row.find(".conversion-price");
+
+        var $total =
+            $row.find(".conversion-total");
+
+        var $convId =
+            $row.find(".unit-conversion-id");
+
+
+        // --------------------------------------------------------
+        // No receive unit
+        // --------------------------------------------------------
+
+        if (!receiveUnitId)
+        {
+            $rate.text("0.00");
+            $price.text("0.00");
+            $total.text("0.00");
+            $convId.val("");
+
+            return;
+        }
+
+
+        // --------------------------------------------------------
+        // Same Unit
+        // --------------------------------------------------------
+
+        if (requestedUnitId === receiveUnitId)
+        {
+            var sameUnitTotal =
+                receiveQty * unitPrice;
+
+
+            $rate.text("1.00");
+
+            $price.text(
+                formatDecimal(
+                    unitPrice,
+                    2
+                )
+            );
+
+            $total.text(
+                formatDecimal(
+                    sameUnitTotal,
+                    2
+                )
+            );
+
+            $convId.val("");
+
+            return;
+        }
+
+
+        // --------------------------------------------------------
+        // Loading
+        // --------------------------------------------------------
+
+        $rate.html(
+            "<span class='text-muted'>...</span>"
+        );
+
+        $price.html(
+            "<span class='text-muted'>...</span>"
+        );
+
+        $total.html(
+            "<span class='text-muted'>...</span>"
+        );
+
+
+        // --------------------------------------------------------
+        // AJAX
+        // --------------------------------------------------------
+
+        $.ajax(
+        {
+            url:
+                "@Url.Action(
+                    "GetUnitConversion",
+                    "InvDepartmentTransactionReceive"
+                )",
+
+            type: "GET",
+
+            data:
+            {
+                requestedUnitId:
+                    requestedUnitId,
+
+                issueUnitId:
+                    receiveUnitId,
+
+                unitPriceEst:
+                    unitPrice
+            },
+
+
+            success: function (res)
+            {
+                if (!res || !res.success)
+                {
+                    $rate.html(
+                        "<span class='text-danger'>N/A</span>"
+                    );
+
+                    $price.html(
+                        "<span class='text-danger'>N/A</span>"
+                    );
+
+                    $total.html(
+                        "<span class='text-danger'>N/A</span>"
+                    );
+
+                    $convId.val("");
+
+                    return;
+                }
+
+
+                var rate =
+                    toDecimal(
+                        res.conversionRate
+                    );
+
+                var price =
+                    toDecimal(
+                        res.conversionPrice
+                    );
+
+                var total =
+                    receiveQty * price;
+
+
+                $rate.text(
+                    formatDecimal(
+                        rate,
+                        4
+                    )
+                );
+
+
+                $price.text(
+                    formatDecimal(
+                        price,
+                        2
+                    )
+                );
+
+
+                $total.text(
+                    formatDecimal(
+                        total,
+                        2
+                    )
+                );
+
+
+                $convId.val(
+                    res.unitConversionId || ""
+                );
+            },
+
+
+            error: function ()
+            {
+                $rate.html(
+                    "<span class='text-danger'>Error</span>"
+                );
+
+                $price.html(
+                    "<span class='text-danger'>Error</span>"
+                );
+
+                $total.html(
+                    "<span class='text-danger'>Error</span>"
+                );
+
+                $convId.val("");
+            }
+        });
+    }
+
+
+
+    // ============================================================
+    // VALIDATE ROW
+    // ============================================================
+
+    function validateRow($row)
+    {
+        var qty =
+            toDecimal(
+                $row.find(".received-qty").val()
+            );
+
+        var remaining =
+            toDecimal(
+                $row.attr("data-remaining")
+            );
+
+        var receiveUnit =
+            $row.find(".receive-unit").val();
+
+        var $qty =
+            $row.find(".received-qty");
+
+        var $unit =
+            $row.find(".receive-unit");
+
+        var $error =
+            $row.find(".quantity-error");
+
+        var rateText =
+            $row.find(".conversion-rate").text();
+
+
+        // --------------------------------------------------------
+        // Reset validation
+        // --------------------------------------------------------
+
+        $qty.removeClass(
+            "border-danger"
+        );
+
+        $unit.removeClass(
+            "border-danger"
+        );
+
+        $error
+            .hide()
+            .text("");
+
+
+        // --------------------------------------------------------
+        // Negative quantity
+        // --------------------------------------------------------
+
+        if (qty < 0)
+        {
+            $qty.addClass(
+                "border-danger"
+            );
+
+            $error
+                .text(
+                    "Cannot be negative."
+                )
+                .show();
+
+            return false;
+        }
+
+
+        // --------------------------------------------------------
+        // Conversion rate
+        // --------------------------------------------------------
+
+        var rate =
+            toDecimal(
+                rateText
+            );
+
+
+        if (rate <= 0)
+        {
+            rate = 1;
+        }
+
+
+        // --------------------------------------------------------
+        // Requested equivalent
+        // --------------------------------------------------------
+
+        var requestedEquivalent =
+            qty;
+
+
+        var requestedUnitId =
+            $row.find(
+                ".requested-unit-id"
+            ).val();
+
+
+        var receiveUnitId =
+            $row.find(
+                ".receive-unit"
+            ).val();
+
+
+        if (
+            requestedUnitId
+            &&
+            receiveUnitId
+            &&
+            requestedUnitId !== receiveUnitId
+        )
+        {
+            // Example:
+            // 1 Feet = 12 Inch
+            //
+            // Receive Qty = 24 Inch
+            //
+            // Requested Equivalent = 24 / 12
+            //                       = 2 Feet
+
+            requestedEquivalent =
+                qty / rate;
+        }
+
+
+        // --------------------------------------------------------
+        // Remaining validation
+        // --------------------------------------------------------
+
+        if (
+            requestedEquivalent
+            >
+            remaining + 0.0001
+        )
+        {
+            $qty.addClass(
+                "border-danger"
+            );
+
+            $error
+                .text(
+                    "Exceeds remaining "
+                    +
+                    formatDecimal(
+                        remaining,
+                        4
+                    )
+                    +
+                    " (requested unit)."
+                )
+                .show();
+
+            return false;
+        }
+
+
+        // --------------------------------------------------------
+        // Receive unit required
+        // --------------------------------------------------------
+
+        if (
+            qty > 0
+            &&
+            !receiveUnit
+        )
+        {
+            $unit.addClass(
+                "border-danger"
+            );
+
+            $error
+                .text(
+                    "Select Receive Unit."
+                )
+                .show();
+
+            return false;
+        }
+
+
+        // --------------------------------------------------------
+        // Invalid conversion
+        // --------------------------------------------------------
+
+        if (
+            qty > 0
+            &&
+            (
+                rateText === "N/A"
+                ||
+                rateText === "Error"
+                ||
+                rateText === "..."
+            )
+        )
+        {
+            $unit.addClass(
+                "border-danger"
+            );
+
+            $error
+                .text(
+                    "Invalid unit conversion."
+                )
+                .show();
+
+            return false;
+        }
+
+
+        return true;
+    }
+
+
+
+    // ============================================================
+    // RECEIVE UNIT CHANGE
+    // ============================================================
+
+    $(document).on(
+        "change",
+        ".receive-unit",
+        function ()
+        {
+            var $row =
+                $(this).closest(
+                    "tr[data-rowid]"
+                );
+
+
+            loadConversion($row);
+
+            validateRow($row);
+        }
+    );
+
+
+
+    // ============================================================
+    // RECEIVE QUANTITY CHANGE
+    // ============================================================
+
+    $(document).on(
+        "input change",
+        ".received-qty",
+        function ()
+        {
+            var $row =
+                $(this).closest(
+                    "tr[data-rowid]"
+                );
+
+
+            var price =
+                toDecimal(
+                    $row.find(
+                        ".conversion-price"
+                    ).text()
+                );
+
+
+            var qty =
+                toDecimal(
+                    $(this).val()
+                );
+
+
+            if (qty < 0)
+            {
+                $(this).val(0);
+
+                qty = 0;
+            }
+
+
+            $row.find(
+                ".conversion-total"
+            ).text(
+                formatDecimal(
+                    qty * price,
+                    2
+                )
+            );
+
+
+            validateRow($row);
+        }
+    );
+
+
+
+    // ============================================================
+    // DOCUMENT READY
+    // ============================================================
+
+    $(document).ready(
+        function ()
+        {
+            $(
+                "#ReceiveDetailTable tbody tr[data-rowid]"
+            ).each(
+                function ()
+                {
+                    loadConversion(
+                        $(this)
+                    );
+                }
+            );
+        }
+    );
+
+
+
+    // ============================================================
+    // RECEIVE BUTTON
+    // ============================================================
+
+    $("#btnReceive").on(
+        "click",
+        function ()
+        {
+            var $button =
+                $(this);
+
+            var $error =
+                $("#receiveError");
+
+
+            $error
+                .hide()
+                .text("");
+
+
+            var receivedLines = [];
+
+            var hasPositiveQty =
+                false;
+
+            var hasError =
+                false;
+
+
+            // ----------------------------------------------------
+            // Loop detail rows
+            // ----------------------------------------------------
+
+            $(
+                "#ReceiveDetailTable tbody tr[data-rowid]"
+            ).each(
+                function ()
+                {
+                    var $row =
+                        $(this);
+
+
+                    // --------------------------------------------
+                    // Validate
+                    // --------------------------------------------
+
+                    if (!validateRow($row))
+                    {
+                        hasError = true;
+
+                        return false;
+                    }
+
+
+                    // --------------------------------------------
+                    // Quantity
+                    // --------------------------------------------
+
+                    var qty =
+                        toDecimal(
+                            $row.find(
+                                ".received-qty"
+                            ).val()
+                        );
+
+
+                    if (qty <= 0)
+                    {
+                        return;
+                    }
+
+
+                    hasPositiveQty =
+                        true;
+
+
+                    // --------------------------------------------
+                    // Add line
+                    // --------------------------------------------
+
+                    receivedLines.push(
+                    {
+                        RowId:
+                            $row.find(
+                                ".detail-row-id"
+                            ).val(),
+
+                        ReceivedQuantity:
+                            qty,
+
+                        ReceiveUnitId:
+                            $row.find(
+                                ".receive-unit"
+                            ).val(),
+
+                        UnitConversionId:
+                            $row.find(
+                                ".unit-conversion-id"
+                            ).val()
+                            ||
+                            null,
+
+                        ConversionRate:
+                            toDecimal(
+                                $row.find(
+                                    ".conversion-rate"
+                                ).text()
+                            ),
+
+                        ConversionPrice:
+                            toDecimal(
+                                $row.find(
+                                    ".conversion-price"
+                                ).text()
+                            ),
+
+                        ConversionTotal:
+                            toDecimal(
+                                $row.find(
+                                    ".conversion-total"
+                                ).text()
+                            ),
+
+                        Remarks:
+                            $row.find(
+                                ".line-remarks"
+                            ).val()
+                    });
+                }
+            );
+
+
+            // ----------------------------------------------------
+            // Validation error
+            // ----------------------------------------------------
+
+            if (hasError)
+            {
+                $error
+                    .text(
+                        "Please correct the highlighted items."
+                    )
+                    .show();
+
+                return;
+            }
+
+
+            // ----------------------------------------------------
+            // At least one quantity
+            // ----------------------------------------------------
+
+            if (!hasPositiveQty)
+            {
+                $error
+                    .text(
+                        "Please enter at least one Receive Quantity greater than zero."
+                    )
+                    .show();
+
+                return;
+            }
+
+
+            // ----------------------------------------------------
+            // Confirmation
+            // ----------------------------------------------------
+
+            if (
+                !confirm(
+                    "Are you sure you want to receive this requisition?"
+                )
+            )
+            {
+                return;
+            }
+
+
+            // ----------------------------------------------------
+            // Disable button
+            // ----------------------------------------------------
+
+            $button
+                .prop(
+                    "disabled",
+                    true
+                )
+                .html(
+                    "<i class='icon-spinner2 spinner mr-2'></i> Processing..."
+                );
+
+
+            // ----------------------------------------------------
+            // POST
+            // ----------------------------------------------------
+
+            $.ajax(
+            {
+                url:
+                    "@Url.Action(
+                        "Receive",
+                        "InvDepartmentTransactionReceive"
+                    )",
+
+                type: "POST",
+
+                data:
+                {
+                    id:
+                        "@requisition.RowId",
+
+                    remarks:
+                        $("#Remarks").val(),
+
+                    ReceivedLinesJson:
+                        JSON.stringify(
+                            receivedLines
+                        )
+                },
+
+
+                // -----------------------------------------------
+                // SUCCESS
+                // -----------------------------------------------
+
+                success: function (response)
+                {
+                    if (
+                        response
+                        &&
+                        response.ResponseStatus === 1
+                    )
+                    {
+                        alert(
+                            response.ResponseMessage
+                            ||
+                            "Requisition received successfully."
+                        );
+
+
+                        window.location.href =
+                            "@Url.Action(
+                                "Index",
+                                "InvDepartmentTransactionReceive"
+                            )";
+
+
+                        return;
+                    }
+
+
+                    alert(
+                        (
+                            response
+                            &&
+                            response.ResponseMessage
+                        )
+                        ?
+                        response.ResponseMessage
+                        :
+                        "Receive failed."
+                    );
+
+
+                    $button
+                        .prop(
+                            "disabled",
+                            false
+                        )
+                        .html(
+                            "<i class='icon-download4 mr-2'></i> Receive Requisition"
+                        );
+                },
+
+
+                // -----------------------------------------------
+                // ERROR
+                // -----------------------------------------------
+
+                error: function (xhr)
+                {
+                    console.error(xhr);
+
+
+                    var message =
+                        "An unexpected error occurred while receiving the requisition.";
+
+
+                    if (
+                        xhr.responseJSON
+                        &&
+                        xhr.responseJSON.ResponseMessage
+                    )
+                    {
+                        message =
+                            xhr.responseJSON.ResponseMessage;
+                    }
+
+
+                    alert(message);
+
+
+                    $button
+                        .prop(
+                            "disabled",
+                            false
+                        )
+                        .html(
+                            "<i class='icon-download4 mr-2'></i> Receive Requisition"
+                        );
+                }
+            });
+        }
+    );
+
+    </script>
+
+}

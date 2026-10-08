@@ -1,0 +1,2664 @@
+﻿@using Mango_ERP.Models;
+
+@{
+    ViewBag.Title = "Add Employee";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="@Url.Action("Index","HrEmployee")" class="breadcrumb-item">HrEmployee</a>
+                <span class="breadcrumb-item active">Add</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <form id="my-form" enctype="multipart/form-data">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-white header-elements-inline">
+                <h6 class="card-title">Add New Employee</h6>
+            </div>
+
+            <ul class="nav nav-tabs nav-tabs-bottom nav-justified mb-0">
+                <li class="nav-item"><a href="#tab-basic" class="nav-link active" data-toggle="tab">Basic Info</a></li>
+                <li class="nav-item"><a href="#tab-detail" class="nav-link" data-toggle="tab">Detail Info</a></li>
+                <li class="nav-item"><a href="#tab-education" class="nav-link" data-toggle="tab">Education Info</a></li>
+                <li class="nav-item"><a href="#tab-experience" class="nav-link" data-toggle="tab">Experience Info</a></li>
+                <li class="nav-item"><a href="#tab-training" class="nav-link" data-toggle="tab">Training Info</a></li>
+                <li class="nav-item"><a href="#tab-knowledge" class="nav-link" data-toggle="tab">Professional Knowledge</a></li>
+                <li class="nav-item"><a href="#tab-reference" class="nav-link" data-toggle="tab">Reference Info</a></li>
+                <li class="nav-item"><a href="#tab-picture" class="nav-link" data-toggle="tab">Picture Info</a></li>
+            </ul>
+
+            <div class="card-body tab-content">
+                <!-- ====================================== BASIC INFO ==================== -->
+                <div class="tab-pane fade show active" id="tab-basic">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    <span class="text-danger">*</span> Company
+                                </label>
+                                <div class="col-lg-8">
+                                    <select name="CompanyId" id="CompanyId" class="form-control">
+                                        <option value="">Select Company</option>
+                                        @foreach (var item in ViewBag.CompanyList)
+                                        {
+                                            <option value="@item.RowId">@item.CompanyName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    <span class="text-danger">*</span> Division
+                                </label>
+                                <div class="col-lg-8">
+                                    <select name="DivisionId" id="DivisionId" class="form-control">
+                                        <option value="">Select Division</option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    <span class="text-danger">*</span> Branch
+                                </label>
+                                <div class="col-lg-8">
+                                    <select name="BranchId" id="BranchId" class="form-control">
+                                        <option value="">Select Branch</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    <span class="text-danger">*</span> Department
+                                </label>
+                                <div class="col-lg-8">
+                                    <select name="DepartmentId" id="DepartmentId" class="form-control">
+                                        <option value="">Select Department</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    <span class="text-danger">*</span>Designation
+                                </label>
+                                <div class="col-lg-8">
+                                    <select name="DesignationId" id="DesignationId" class="form-control">
+                                        <option value="">Select Designation</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Employee Type</label>
+                                <div class="col-lg-8">
+                                    <select name="EmployeeTypeId" class="form-control">
+                                        <option value="">Select Employee Type</option>
+                                        @if (ViewBag.EmployeeTypeList != null)
+                                        {
+                                            foreach (var item in ViewBag.EmployeeTypeList)
+                                            {
+                                                <option value="@item.RowId">@item.EmployeeTypeName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Employeement Type</label>
+                                <div class="col-lg-8">
+                                    <select name="JobType" class="form-control">
+                                        <option value="">Select Employeement Type</option>
+                                        @if (ViewBag.JobTypeList != null)
+                                        {
+                                            foreach (var item in ViewBag.JobTypeList)
+                                            {
+                                                <option value="@item.RowId">@item.JobType</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Staff Code</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="StaffCode" class="form-control" placeholder="Staff Code" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Title</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="Title" class="form-control" placeholder="E.g. Mr. / Ms." />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> First Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="FirstName" class="form-control" placeholder="First Name" required />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Middle Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="MiddleName" class="form-control" placeholder="Middle Name" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Last Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="LastName" class="form-control" placeholder="Last Name" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Present Address</label>
+                                <div class="col-lg-8">
+                                    <textarea name="PresentAddress" class="form-control" rows="2" placeholder="Present Address"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Permanent Address</label>
+                                <div class="col-lg-8">
+                                    <textarea name="PermanentAddress" class="form-control" rows="2" placeholder="Permanent Address"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Blood Group</label>
+                                <div class="col-lg-8">
+                                    <select name="BloodGroupId" id="BloodGroupId" class="form-control">
+                                        <option value="">Select Blood Group</option>
+                                        @if (ViewBag.BloodGroupList != null)
+                                        {
+                                            foreach (var item in ViewBag.BloodGroupList)
+                                            {
+
+                                                <option value="@item.RowId">@item.BloodGroupName</option>
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Date Of Birth</label>
+                                <div class="col-lg-8">
+                                    <input type="date" name="DateOfBirth" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Nationality</label>
+                                <div class="col-lg-8">
+                                    <select name="NationalityId" id="NationalityId" class="form-control">
+                                        <option value="">Select Nationality</option>
+                                        @if (ViewBag.NationalityList != null)
+                                        {
+                                            foreach (var item in ViewBag.NationalityList)
+                                            {
+
+                                                <option value="@item.RowId">@item.NationalityName</option>
+
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">National ID (NID)</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="NationalIdNumber" class="form-control" placeholder="NID Number" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Home Phone</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="HomePhone" class="form-control" placeholder="Home Phone" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Cell Phone</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="CellPhone" class="form-control" placeholder="Cell Phone" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Office Phone</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="OfficePhone" class="form-control" placeholder="Office Phone" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Primary Email</label>
+                                <div class="col-lg-8">
+                                    <input type="email" name="PrimaryEmail" class="form-control" placeholder="Primary Email" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Alternate Email</label>
+                                <div class="col-lg-8">
+                                    <input type="email" name="AlternateEmail" class="form-control" placeholder="Alternate Email" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Gender</label>
+                                <div class="col-lg-8">
+                                    <select name="Gender" class="form-control">
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Religion</label>
+                                <div class="col-lg-8">
+                                    <select name="ReligionId" class="form-control">
+                                        <option value="">Select Religion</option>
+                                        @if (ViewBag.ReligionList != null)
+                                        {
+                                            foreach (var item in ViewBag.ReligionList)
+                                            {
+                                                <option value="@item.RowId">@item.ReligionName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Marital Status</label>
+                                <div class="col-lg-8">
+                                    <select name="MaritalStatus" class="form-control">
+                                        <option value="">Select Marital Status</option>
+                                        <option value="Single">Single</option>
+                                        <option value="Married">Married</option>
+                                        <option value="Divorced">Divorced</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Date Of Join</label>
+                                <div class="col-lg-8">
+                                    <input type="date" name="DateOfJoin" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <!-- Main Label -->
+                                <label class="col-lg-4 col-form-label">Date Of Permanent</label>
+
+                                <!-- Inputs Container (Flexbox aligns checkbox and date side-by-side) -->
+                                <div class="col-lg-8 d-flex align-items-center gap-3">
+
+                                    <!-- Checkbox Wrapper -->
+                                    <div class="form-check m-0">
+                                        <input type="checkbox"
+                                               id="IsPermanent"
+                                               class="form-check-input" />
+                                        @*<label class="form-check-label ms-1" for="IsPermanent">Permanent</label>*@
+                                    </div>
+
+                                    <!-- Date Input with your dynamic server-side value -->
+                                    <input type="date"
+                                           id="DateOfPermanent"
+                                           name="DateOfPermanent"
+                                           class="form-control flex-grow-1"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <!-- Main Label -->
+                                <label class="col-lg-4 col-form-label">Date of Confirmation</label>
+
+                                <!-- Inputs Container (Flexbox aligns checkbox and date side-by-side) -->
+                                <div class="col-lg-8 d-flex align-items-center gap-3">
+
+                                    <!-- Checkbox Wrapper -->
+                                    <div class="form-check m-0">
+                                        <input type="checkbox"
+                                               id="IsConfirmed"
+                                               name="IsConfirmed"
+                                               value="true"
+                                               class="form-check-input" />
+
+                                        <!-- Hidden field for ASP.NET boolean binding model -->
+                                        <input type="hidden" name="IsConfirmed" value="false" />
+                                    </div>
+
+                                    <!-- Date Input with dynamic layout rules applied -->
+                                    <input type="date"
+                                           id="ConfirmationDate"
+                                           name="ConfirmationDate"
+                                           class="form-control flex-grow-1"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                           disabled />
+                                </div>
+                            </div>
+                            <div class="form-group row align-items-center mb-3">
+                                <!-- Main Label -->
+                                <label class="col-lg-4 col-form-label">Date Of Retirement</label>
+
+                                <!-- Inputs Container (Flexbox aligns checkbox and date side-by-side) -->
+                                <div class="col-lg-8 d-flex align-items-center gap-3">
+
+                                    <!-- Checkbox Wrapper -->
+                                    <div class="form-check m-0">
+                                        <input type="checkbox"
+                                               id="IsRetired"
+                                               class="form-check-input" />
+
+                                    </div>
+
+                                    <input type="date"
+                                           id="DateOfRetirement"
+                                           name="DateOfRetirement"
+                                           class="form-control flex-grow-1"
+                                           disabled />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Preferred Job Title</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="PeferredJob" class="form-control" placeholder="Preferred Job Title" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">User ID</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="UserId" class="form-control" placeholder="System User ID" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Rank</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="Rank" class="form-control" value="0" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row pt-2">
+                                <label class="col-lg-4 col-form-label">Statuses</label>
+                                <div class="col-lg-8">
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" name="IsAdminEmployee" value="Yes" class="form-check-input"> Is Admin
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" name="IsInLPR" value="Yes" class="form-check-input"> Is In LPR
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row border-top pt-2">
+                                <label class="col-lg-4 col-form-label">
+                                    Is Salaried
+                                </label>
+                                <div class="col-lg-8">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox"
+                                                   id="IsSalaried"
+                                                   name="IsSalaried"
+                                                   value="true"
+                                                   class="form-check-input" />
+                                            Is Salaried
+                                        </label>
+
+                                        <input type="hidden" name="IsSalaried" value="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Grade</label>
+                                <div class="col-lg-8">
+                                    <select name="GradeId" id="GradeId" class="form-control">
+                                        <option value="">Select Grade</option>
+                                        @if (ViewBag.GradeList != null)
+                                        {
+                                            foreach (var item in ViewBag.GradeList)
+                                            {
+                                                <option value="@item.RowId">@item.GradeName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Basic Salary</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="BasicSalary" id="BasicSalary" class="form-control" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Current Salary</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="CurrentSalary" id="CurrentSalary" class="form-control" placeholder="0.00" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Bank Account No</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="BankAccountNumber" id="BankAccountNumber" class="form-control" placeholder="Account Number" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row border-top pt-2">
+                                <label class="col-lg-4 col-form-label">
+                                    Is Engineer
+                                </label>
+                                <div class="col-lg-8">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox"
+                                                   id="IsEngineer"
+                                                   name="IsEngineer"
+                                                   value="true"
+                                                   class="form-check-input" />
+                                            Is Engineer
+                                        </label>
+
+                                        <input type="hidden" name="IsEngineer" value="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    Engineer Type
+                                </label>
+                                <div class="col-lg-8">
+                                    <select id="EngineerTypeId"
+                                            name="EngineerTypeId"
+                                            class="form-control">
+                                        <option value="">Select Engineer Type</option>
+
+                                        @if (ViewBag.EngineerTypeList != null)
+                                        {
+                                            foreach (var item in ViewBag.EngineerTypeList)
+                                            {
+                                                <option value="@item.RowId">
+                                                    @item.EngineerTypeName
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row border-top pt-2">
+                                <label class="col-lg-4 col-form-label">
+                                    Is Terminated
+                                </label>
+                                <div class="col-lg-8">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox"
+                                                   id="IsTerminated"
+                                                   name="IsTerminated"
+                                                   value="true"
+                                                   class="form-check-input" />
+                                            Terminated
+                                        </label>
+                                        <input type="hidden" name="IsTerminated" value="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    Date of Termination
+                                </label>
+                                <div class="col-lg-8">
+                                    <input type="date"
+                                           id="TerminateDate"
+                                           name="TerminateDate"
+                                           class="form-control mb-1"
+                                           value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    Terminated By
+                                </label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           id="TerminateBy"
+                                           name="TerminateBy"
+                                           class="form-control"
+                                           placeholder="Enter User/Employee ID" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    Termination Reason
+                                </label>
+                                <div class="col-lg-8">
+                                    <textarea id="TerminateReason"
+                                              name="TerminateReason"
+                                              class="form-control"
+                                              rows="3"
+                                              placeholder="Enter termination reason"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row border-top pt-2">
+                                <label class="col-lg-4 col-form-label">
+                                    Police Verified
+                                </label>
+                                <div class="col-lg-8">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="checkbox"
+                                                   id="IsPoliceVerified"
+                                                   name="IsPoliceVerified"
+                                                   value="true"
+                                                   class="form-check-input" />
+                                            Verified
+                                        </label>
+                                        <input type="hidden" name="IsPoliceVerified" value="false" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">
+                                    Police Verification Number
+                                </label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           id="PoliceVerificationNumber"
+                                           name="PoliceVerificationNumber"
+                                           class="form-control"
+                                           placeholder="Enter Verification Reference Number" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- ====================================== END BASIC INFO ==================== -->
+                
+                <!-- ====================================== DETAIL INFO ==================== -->
+                <div class="tab-pane fade" id="tab-detail">
+
+                    <div class="row">
+
+                        <!-- Left Side -->
+                        <div class="col-md-6">
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Father's Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.FathersName" id="EmployeeDetail.FathersName"
+                                           class="form-control" placeholder="Father's Name" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Mother's Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.MothersName" id="EmployeeDetail.MothersName"
+                                           class="form-control" placeholder="Mother's Name" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Spouse Name</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.SpouseName" id="EmployeeDetail.SpouseName"
+                                           class="form-control" placeholder="Spouse Name" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Number Of Children</label>
+                                <div class="col-lg-8">
+                                    <input type="number"
+                                           name="EmployeeDetail.NumberOfChildren"
+                                           id="EmployeeDetail.NumberOfChildren"
+                                           class="form-control"
+                                           placeholder="0"
+                                           min="0"
+                                           step="1"
+                                           value="0" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">National ID</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.NationalIdNumber"
+                                           id="EmployeeDetail.NationalIdNumber"
+                                           class="form-control"
+                                           placeholder="National ID Number" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">City Of Birth</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.CityOfBirth"
+                                           id="EmployeeDetail.CityOfBirth"
+                                           class="form-control"
+                                           placeholder="City Of Birth" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">District Of Birth</label>
+                                <div class="col-lg-8">
+                                    <select name=">EmployeeDetail.DistrictOfBirth" id=">EmployeeDetail.DistrictOfBirth" class="form-control">
+                                        <option value="">Select District</option>
+
+                                        @if (ViewBag.DistrictList != null)
+                                        {
+                                            foreach (var item in ViewBag.DistrictList)
+                                            {
+                                                <option value="@item.RowId">
+                                                    @item.DistrictName
+                                                </option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Country Of Birth</label>
+                                <div class="col-lg-8">
+                                    <select name="EmployeeDetail.CountryIdOfBirth"
+                                            id="EmployeeDetail.CountryIdOfBirth"
+                                            class="form-control">
+
+                                        <option value="">Select Country</option>
+
+                                        @if (ViewBag.CountryList != null)
+                                        {
+                                            foreach (var item in ViewBag.CountryList)
+                                            {
+                                                <option value="@item.RowId">
+                                                    @item.CountryName
+                                                </option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Citizenship</label>
+                                <div class="col-lg-8">
+                                    <select name="EmployeeDetail.CountryIdOfCitizenship"
+                                            id="EmployeeDetail.CountryIdOfCitizenship"
+                                            class="form-control">
+
+                                        <option value="">Select Citizenship Country</option>
+
+                                        @if (ViewBag.CountryList != null)
+                                        {
+                                            foreach (var item in ViewBag.CountryList)
+                                            {
+                                                <option value="@item.RowId">
+                                                    @item.CountryName
+                                                </option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Birth Mark</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.BirthMark"
+                                           id="EmployeeDetail.BirthMark"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Height</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.Height"
+                                           id="EmployeeDetail.Height"
+                                           class="form-control"
+                                           placeholder="170 cm" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Weight</label>
+                                <div class="col-lg-8">
+                                    <input type="text" name="EmployeeDetail.Weight"
+                                           id="EmployeeDetail.Weight"
+                                           class="form-control"
+                                           placeholder="70 Kg" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Side -->
+                        <div class="col-md-6">
+
+
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Emergency Contact</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.EmergencyContactPerson"
+                                           id="EmployeeDetail.EmergencyContactPerson"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Emergency Phone</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.EmergenryContactNo"
+                                           id="EmployeeDetail.EmergenryContactNo"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Relation</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.EmergenryContactRelation"
+                                           id="EmployeeDetail.EmergenryContactRelation"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Total Experience</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.TotalExperience"
+                                           id="EmployeeDetail.TotalExperience"
+                                           class="form-control"
+                                           placeholder="10 Years" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Passport No</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.PassportNo"
+                                           id="EmployeeDetail.PassportNo"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Preferred Location</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.PreferedLocation"
+                                           id="EmployeeDetail.PreferedLocation"
+                                           class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Willing To Travel</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control"
+                                            name="EmployeeDetail.WillingToTravel"
+                                            id="EmployeeDetail.WillingToTravel">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Willing To Relocate</label>
+                                <div class="col-lg-8">
+                                    <select class="form-control"
+                                            name="EmployeeDetail.WillingToRelocate"
+                                            id="EmployeeDetail.WillingToRelocate">
+                                        <option value="No">No</option>
+                                        <option value="Yes">Yes</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Security Clearance</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.SecurityClearance"
+                                           id="EmployeeDetail.SecurityClearance"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Work Authorization</label>
+                                <div class="col-lg-8">
+                                    <input type="text"
+                                           name="EmployeeDetail.WorkAuthorizationId"
+                                           id="EmployeeDetail.WorkAuthorizationId"
+                                           class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-lg-4 col-form-label">Remarks</label>
+                                <div class="col-lg-8">
+                                    <textarea class="form-control"
+                                              name="EmployeeDetail.Remarks"
+                                              id="EmployeeDetail.Remarks"
+                                              rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ====================================== END DETAIL INFO ==================== -->
+                
+                <!-- ====================================== EDUCATION ==================== -->
+                <div class="tab-pane fade" id="tab-education">
+                    <div class="bg-light p-3 rounded mb-3 text-muted">
+                        <i class="icon-info22 mr-2"></i> Add academic qualifications and degrees for this employee.
+                    </div>
+
+                    <!-- Education Form Inputs -->
+                    <div class="card card-body bg-light">
+                        <input type="hidden" id="Edu_Index" value="-1" />
+
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Degree Name</label>
+                                    <div class="col-lg-8">
+                                        <select id="EducationalDegreeId" class="form-control">
+                                            <option value="">-- Select Degree --</option>
+                                            @if (ViewBag.DegreeList != null)
+                                            {
+                                                foreach (var item in ViewBag.DegreeList)
+                                                {
+                                                    <option value="@item.RowId">@item.DegreeName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Institute</label>
+                                    <div class="col-lg-8">
+                                        <select id="EducationalInstituteId" class="form-control">
+                                            <option value="">-- Select Institute --</option>
+                                            @if (ViewBag.InstituteList != null)
+                                            {
+                                                foreach (var item in ViewBag.InstituteList)
+                                                {
+                                                    <option value="@item.RowId">@item.InstituteName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Board</label>
+                                    <div class="col-lg-8">
+                                        <select id="Board" class="form-control">
+                                            <option value="">-- Select Board --</option>
+                                            <option value="N/A">N/A</option>
+                                            <option value="Dhaka">Dhaka</option>
+                                            <option value="Rajshahi">Rajshahi</option>
+                                            <option value="Comilla">Comilla</option>
+                                            <option value="Jessore">Jessore</option>
+                                            <option value="Chittagong">Chittagong</option>
+                                            <option value="Barisal">Barisal</option>
+                                            <option value="Sylhet">Sylhet</option>
+                                            <option value="Dinajpur">Dinajpur</option>
+                                            <option value="Mymensingh">Mymensingh</option>
+                                            <option value="Technical">Technical Board</option>
+                                            <option value="Madrasah">Madrasah Board</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Passing Year</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="PassingYear" class="form-control" placeholder="E.g. 2020" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Session</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Session" class="form-control" placeholder="E.g. 2016-2017" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Result</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Result" class="form-control" placeholder="E.g. 3.75 / 1st Class" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Rank</label>
+                                    <div class="col-lg-8">
+                                        <input type="number" id="Rank" class="form-control" value="0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-2">
+                            <button type="button" id="btnAddEducation" class="btn btn-sm btn-primary">
+                                <i class="icon-plus3 mr-1"></i> Add Entry
+                            </button>
+                            <button type="button" id="btnClearEduForm" class="btn btn-sm btn-light ml-1">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Education Display Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-striped" id="tblEducation">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th>Degree Name</th>
+                                    <th>Institute</th>
+                                    <th>Board</th>
+                                    <th>Year</th>
+                                    <th>Session</th>
+                                    <th>Result</th>
+                                    <th>Rank</th>
+                                    <th class="text-center" style="width: 100px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyEduRow">
+                                    <td colspan="8" class="text-center text-muted">No education details added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Hidden Storage Container to bind against HrEmployee.Educations -->
+                    <div id="educationHiddenInputs"></div>
+                </div>
+                <!-- ====================================== END EDUCATION ==================== -->
+                
+                <!--======================================= EXPERIENCE =============================-->
+                <div class="tab-pane fade" id="tab-experience">
+                    <div class="bg-light p-3 rounded mb-3 text-muted">
+                        <i class="icon-info22 mr-2"></i> Add prior work experience and employment details for this employee.
+                    </div>
+
+                    <!-- Experience Input Form Block -->
+                    <div class="card card-body bg-light">
+                        <input type="hidden" id="Exp_Index" value="-1" />
+
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Company Name</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="CompanyName" class="form-control" placeholder="Company Name" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Designation</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Designation" class="form-control" placeholder="Designation" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Department</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Department" class="form-control" placeholder="Department" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Company Location</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="CompanyLocation" class="form-control" placeholder="Company Location" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Start Date</label>
+                                    <div class="col-lg-8">
+                                        <input type="date" id="FromDate" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">End Date</label>
+                                    <div class="col-lg-8">
+                                        <input type="date" id="ToDate" class="form-control" />
+                                        <div class="custom-control custom-checkbox mt-1">
+                                            <input type="checkbox" class="custom-control-input" id="IsCurrentlyWorking">
+                                            <label class="custom-control-label text-muted" for="IsCurrentlyWorking">Currently Working Here</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Duration Field (Auto-calculated, or user override) -->
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Duration</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Duration" class="form-control" placeholder="e.g. 2 yrs 3 mos" readonly />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Responsibilities</label>
+                                    <div class="col-lg-8">
+                                        <textarea id="Responsibilities" class="form-control" rows="2" placeholder="Brief description of duties..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-2">
+                            <button type="button" id="btnAddExperience" class="btn btn-sm btn-primary">
+                                <i class="icon-plus3 mr-1"></i> Add Entry
+                            </button>
+                            <button type="button" id="btnClearExpForm" class="btn btn-sm btn-light ml-1">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Experience Display Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-striped" id="tblExperience">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th>Company Name</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Duration</th>
+                                    <th class="text-center" style="width: 100px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyExpRow">
+                                    <td colspan="7" class="text-center text-muted">No work experience details added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Container for dynamic ASP.NET MVC binding hidden elements -->
+                    <div id="experienceHiddenInputs"></div>
+                </div>
+                <!--======================================= END EXPERIENCE =============================-->
+                
+                <!--  ====================================== TRAINING===================-->
+                <div class="tab-pane fade" id="tab-training">
+                    <div class="bg-light p-3 rounded mb-3 text-muted">
+                        <i class="icon-info22 mr-2"></i> Add professional training details and certification history for this employee.
+                    </div>
+
+                    <!-- Training Input Form Block -->
+                    <div class="card card-body bg-light">
+                        <input type="hidden" id="Train_Index" value="-1" />
+                        <input type="hidden" id="Train_RowId" value="" />
+
+                        <div class="row">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Training Title</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="TrainingTitle" class="form-control" placeholder="Training Title / Course Name" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Training Source</label>
+                                    <div class="col-lg-8">
+                                        <select id="TrainingSource" class="form-control">
+                                            <option value="">-- Select Source --</option>
+                                            <option value="Internal">Internal</option>
+                                            <option value="External">External</option>
+                                            <option value="Online">Online / Self-Paced</option>
+                                            <option value="Foreign">Foreign</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Institute Name</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="InstituteName" class="form-control" placeholder="Institute / Organization Name" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Trainer Name</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Trainer" class="form-control" placeholder="Trainer / Instructor Name" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Start Date</label>
+                                    <div class="col-lg-8">
+                                        <input type="date" id="Train_StartDate" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> End Date</label>
+                                    <div class="col-lg-8">
+                                        <input type="date" id="Train_EndDate" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Duration</label>
+                                    <div class="col-lg-8">
+                                        <input type="text" id="Train_Duration" class="form-control" placeholder="e.g. 5 Days / 40 Hours" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-2">
+                            <button type="button" id="btnAddTraining" class="btn btn-sm btn-primary">
+                                <i class="icon-plus3 mr-1"></i> Add Entry
+                            </button>
+                            <button type="button" id="btnClearTrainForm" class="btn btn-sm btn-light ml-1">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Training Display Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-striped" id="tblTraining">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th>Training Title</th>
+                                    <th>Source</th>
+                                    <th>Institute</th>
+                                    <th>Trainer</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Duration</th>
+                                    <th class="text-center" style="width: 100px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyTrainRow">
+                                    <td colspan="8" class="text-center text-muted">No training details added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Container for dynamic ASP.NET MVC binding hidden elements -->
+                    <div id="trainingHiddenInputs"></div>
+                </div>
+                <!--  ====================================== END TRAINING ===============-->
+                
+                <!--  ======================================  KNOWLEDGE  ================-->
+                <div class="tab-pane fade" id="tab-knowledge">
+                    <div class="bg-light p-3 rounded mb-3 text-muted">
+                        <i class="icon-info22 mr-2"></i> Add professional skills, specialized knowledge, and competency details for this employee.
+                    </div>
+
+                    <!-- Knowledge Input Form Block -->
+                    <div class="card card-body bg-light">
+                        <input type="hidden" id="Knowledge_Index" value="-1" />
+                        <input type="hidden" id="Knowledge_RowId" value="" />
+
+                        <div class="row">
+                            <!-- Skill Selection -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label"><span class="text-danger">*</span> Skill / Topic</label>
+                                    <div class="col-lg-8">
+                                        <select id="SkillId" class="form-control">
+                                            <option value="">-- Select Skill --</option>
+                                            @if (ViewBag.SkillList != null)
+                                            {
+                                                foreach (var item in ViewBag.SkillList)
+                                                {
+                                                    <option value="@item.RowId">@item.SkillName</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label">Description / Remarks</label>
+                                    <div class="col-lg-8">
+                                        <textarea id="Description" class="form-control" rows="2" placeholder="Brief details about expertise level or certification..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-2">
+                            <button type="button" id="btnAddKnowledge" class="btn btn-sm btn-primary">
+                                <i class="icon-plus3 mr-1"></i> Add Entry
+                            </button>
+                            <button type="button" id="btnClearKnowledgeForm" class="btn btn-sm btn-light ml-1">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Display Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-striped" id="tblKnowledge">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th>Skill Name</th>
+                                    <th>Description</th>
+                                    <th class="text-center" style="width: 100px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyKnowledgeRow">
+                                    <td colspan="3" class="text-center text-muted">No professional knowledge details added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Container for dynamic ASP.NET MVC binding hidden elements -->
+                    <div id="knowledgeHiddenInputs"></div>
+                </div>
+                <!--  ====================================== END KNOWLEDGE ==============-->
+               
+                <!--  ====================================== REFERENCE ==================-->
+                <div class="tab-pane fade" id="tab-reference">
+                    <div class="bg-light p-3 rounded mb-3 text-muted">
+                        <i class="icon-info22 mr-2"></i> Add professional and personal reference details for this employee.
+                    </div>
+
+                    <!-- Reference Input Form Block -->
+                    <div class="card card-body bg-light">
+                        <input type="hidden" id="Ref_Index" value="-1" />
+                        <input type="hidden" id="Ref_RowId" value="" />
+                        <input type="hidden" id="Ref_EmployeeReferenceId" value="0" />
+
+                        <div class="row">
+                            <!-- Reference Name -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label><span class="text-danger">*</span> Reference Name</label>
+                                    <input type="text" id="Ref_ReferenceName" class="form-control" placeholder="Full name" />
+                                </div>
+                            </div>
+
+                            <!-- Relation -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Relation</label>
+                                    <input type="text" id="Ref_Relation" class="form-control" placeholder="e.g. Ex-Manager, Colleague" />
+                                </div>
+                            </div>
+
+                            <!-- Contact No -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Contact No</label>
+                                    <input type="number" id="Ref_ContactNo" class="form-control" placeholder="Contact number" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Designation -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Designation</label>
+                                    <input type="text" id="Ref_Designation" class="form-control" placeholder="e.g. Senior Manager" />
+                                </div>
+                            </div>
+
+                            <!-- Occupation -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Occupation</label>
+                                    <input type="text" id="Ref_Occupation" class="form-control" placeholder="e.g. Service, Business" />
+                                </div>
+                            </div>
+
+                            <!-- Company -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Company / Organization</label>
+                                    <input type="text" id="Ref_Company" class="form-control" placeholder="Company name" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Email -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" id="Ref_Email" class="form-control" placeholder="email@domain.com" />
+                                </div>
+                            </div>
+
+                            <!-- NID -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>National ID (NID)</label>
+                                    <input type="text" id="Ref_NId" class="form-control" placeholder="NID Number" />
+                                </div>
+                            </div>
+
+                            <!-- Web -->
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Website / LinkedIn</label>
+                                    <input type="text" id="Ref_Web" class="form-control" placeholder="https://..." />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Present Address -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Present Address</label>
+                                    <textarea id="Ref_PresentAddress" class="form-control" rows="2" placeholder="Present address..."></textarea>
+                                </div>
+                            </div>
+
+                            <!-- Permanent Address -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Permanent Address</label>
+                                    <textarea id="Ref_PermanentAddress" class="form-control" rows="2" placeholder="Permanent address..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-right mt-2">
+                            <button type="button" id="btnAddReference" class="btn btn-sm btn-primary">
+                                <i class="icon-plus3 mr-1"></i> Add Entry
+                            </button>
+                            <button type="button" id="btnClearRefForm" class="btn btn-sm btn-light ml-1">Clear</button>
+                        </div>
+                    </div>
+
+                    <!-- References Display Table -->
+                    <div class="table-responsive mt-3">
+                        <table class="table table-bordered table-striped" id="tblReferences">
+                            <thead class="bg-blue">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Relation</th>
+                                    <th>Company / Designation</th>
+                                    <th>Contact No</th>
+                                    <th>Email</th>
+                                    <th class="text-center" style="width: 100px;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyRefRow">
+                                    <td colspan="6" class="text-center text-muted">No reference details added yet.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Hidden inputs bound to HrEmployee.References list -->
+                    <div id="referenceHiddenInputs"></div>
+                </div>
+                <!--  ====================================== END REFERENCE ==============-->
+                
+                <!-- ======================================= PICTURE ==================== -->
+                <div class="tab-pane fade" id="tab-picture">
+                     Picture + Signature upload with preview 
+                    <div class="row">
+                        <div class="col-md-6 border-right">
+                            <h6 class="font-weight-semibold text-blue">Employee Profile Picture</h6>
+                            <input type="file" name="PictureFile" id="PictureFile" class="form-control" accept="image/*" onchange="previewImage(this, 'avatarPreview')" />
+                            <div class="mt-2">
+                                <img id="avatarPreview" src="~/Images/placeholder_avatar.jpg" style="width:150px;height:150px;object-fit:cover;" class="rounded" alt="Preview" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="font-weight-semibold text-blue">Official Signature</h6>
+                            <input type="file" name="SignatureFile" id="SignatureFile" class="form-control" accept="image/*" onchange="previewImage(this, 'signaturePreview')" />
+                            <div class="mt-2">
+                                <img id="signaturePreview" src="~/Images/placeholder_signature.jpg" style="width:200px;height:80px;object-fit:contain;" class="rounded" alt="Signature" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="tab-pane fade show active" id="tab-picture">-->
+    <!-- Hidden fields for tracking IDs -->
+    <!--<input type="hidden" name="EmployeePicture.RowId" value="@Model?.EmployeePicture?.RowId" />
+    <input type="hidden" name="EmployeePicture.HrEmployeePictureId" value="@(Model?.EmployeePicture?.HrEmployeePictureId ?? 0)" />
+
+    <div class="row">-->
+        <!-- Profile Picture Upload -->
+        <!--<div class="col-md-6 border-right">
+            <div class="form-group">
+                <label class="font-weight-semibold text-primary">Employee Profile Picture</label>
+                <input type="file" name="PictureFile" id="PictureFile" class="form-control-file" accept="image/*" onchange="previewImage(this, 'avatarPreview')" />
+                <small class="form-text text-muted">Accepted formats: JPG, PNG, GIF. Max size: 2MB</small>
+            </div>
+            
+            <div class="mt-3">
+                @if (!string.IsNullOrEmpty(Model?.EmployeePicture?.PicturePath))
+                {
+                    <img id="avatarPreview" src="@Url.Content(Model.EmployeePicture.PicturePath)" style="width:160px; height:160px; object-fit:cover;" class="rounded border" alt="Profile Picture" />
+                }
+                else
+                {
+                    <img id="avatarPreview" src="@Url.Content("~/global_assets/images/placeholder_avatar.jpg")" style="width:160px; height:160px; object-fit:cover;" class="rounded border" alt="Default Avatar" />
+                }
+            </div>
+        </div>-->
+
+        <!-- Signature Upload -->
+        <!--<div class="col-md-6">
+            <div class="form-group">
+                <label class="font-weight-semibold text-primary">Official Signature</label>
+                <input type="file" name="SignatureFile" id="SignatureFile" class="form-control-file" accept="image/*" onchange="previewImage(this, 'signaturePreview')" />
+                <small class="form-text text-muted">Accepted formats: PNG, JPG with clean background.</small>
+            </div>
+
+            <div class="mt-3">
+                @if (!string.IsNullOrEmpty(Model?.EmployeePicture?.SignaturePath))
+                {
+                    <img id="signaturePreview" src="@Url.Content(Model.EmployeePicture.SignaturePath)" style="max-width:220px; max-height:80px; object-fit:contain;" class="rounded border p-1" alt="Signature" />
+                }
+                else
+                {
+                    <img id="signaturePreview" src="@Url.Content("~/global_assets/images/placeholder_signature.jpg")" style="max-width:220px; max-height:80px; object-fit:contain;" class="rounded border p-1" alt="Default Signature" />
+                }
+            </div>
+        </div>
+    </div>
+</div>-->
+                <!-- =======================================END PICTURE ==================== -->
+
+            </div>
+
+                        <div class="card-footer bg-white" id="errordiv" style="display:none">
+                            <div class="text-warning" id="errormessage"></div>
+                        </div>
+
+                        <div class="card-footer bg-white">
+                            <div class="d-flex justify-content-between">
+                                <a href="@Url.Action("Index","HrEmployee")" class="btn btn-light">
+                                    <i class="icon-arrow-left5 mr-1"></i> Back to List
+                                </a>
+                                <button type="button" id="btnSubmitForm" class="btn btn-success">
+                                    <i class="icon-floppy-disk mr-1"></i> Save Employee
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+    
+                    </form>
+</div>
+
+@section ChildpageJavaScript {
+    <script>
+        $(document).ready(function () {
+// ==================== Basic Info ====================
+            // 1. Company Change -> Load Divisions
+        $("#CompanyId").change(function () {
+
+    var companyId = $(this).val();
+
+    $("#DivisionId").html('<option value="">Loading...</option>');
+
+    $.ajax({
+
+        url: '@Url.Action("GetDivisionByCompany","HrEmployee")',
+
+        type: 'GET',
+
+        data: {
+            CompanyId: companyId
+        },
+
+        success: function (data) {
+
+            var html = '<option value="">Select Division</option>';
+
+            $.each(data, function (i, item) {
+
+                html += '<option value="' +
+                    item.RowId +
+                    '">' +
+                    item.DivisionName +
+                    '</option>';
+
+            });
+
+            $("#DivisionId").html(html);
+
+        }
+
+    });
+
+});
+
+        // 2. Division Change -> Load Branches
+        $("#DivisionId").change(function () {
+
+    var companyId = $("#CompanyId").val();
+    var divisionId = $(this).val();
+
+    $("#BranchId").html('<option value="">Loading...</option>');
+
+    if (companyId == "" || divisionId == "") {
+        $("#BranchId").html('<option value="">Select Branch</option>');
+        return;
+    }
+
+    $.ajax({
+
+        url: '@Url.Action("GetBranchByCompanyDivision", "HrEmployee")',
+
+        type: 'GET',
+
+        data: {
+            CompanyId: companyId,
+            DivisionId: divisionId
+        },
+
+        success: function (data) {
+
+            var html = '<option value="">Select Branch</option>';
+
+            $.each(data, function (i, item) {
+
+                html += '<option value="' +
+                    item.RowId +
+                    '">' +
+                    item.BranchName +
+                    '</option>';
+
+            });
+
+            $("#BranchId").html(html);
+
+        },
+
+        error: function () {
+
+            $("#BranchId").html('<option value="">Failed to load Branch</option>');
+
+        }
+
+    });
+
+});
+
+        // 3. Branch Change -> Load Departments
+        $("#BranchId").change(function () {
+
+    var companyId = $("#CompanyId").val();
+    var divisionId = $("#DivisionId").val();
+    var branchId = $(this).val();
+
+    $("#DepartmentId").html('<option value="">Loading...</option>');
+
+    if (companyId == "" || divisionId == "" || branchId == "") {
+        $("#DepartmentId").html('<option value="">Select Department</option>');
+        return;
+    }
+
+    $.ajax({
+
+        url: '@Url.Action("GetDepartmentByCompanyDivisionBranch", "HrEmployee")',
+
+        type: 'GET',
+
+        data: {
+            CompanyId: companyId,
+            DivisionId: divisionId,
+            BranchId: branchId
+        },
+
+        success: function (data) {
+
+            var html = '<option value="">Select Department</option>';
+
+            $.each(data, function (i, item) {
+
+                html += '<option value="' +
+                    item.RowId +
+                    '">' +
+                    item.DepartmentName +
+                    '</option>';
+
+            });
+
+            $("#DepartmentId").html(html);
+
+        },
+
+        error: function () {
+
+            $("#DepartmentId").html('<option value="">Failed to load Department</option>');
+
+        }
+
+    });
+
+});
+
+        // 4. Department Change -> Load Designations and Employee Type
+        $("#DepartmentId").on("change", function () {
+
+    var companyId = $("#CompanyId").val();
+    var divisionId = $("#DivisionId").val();
+    var branchId = $("#BranchId").val();
+    var departmentId = $(this).val();
+
+    // Clear dropdowns
+    $("#DesignationId").empty().append('<option value="">Select Designation</option>');
+    $("#EmployeeTypeId").empty().append('<option value="">Select Employee Type</option>');
+
+    if (!departmentId) {
+        return;
+    }
+
+    // Load Designation
+    $.ajax({
+        url: '@Url.Action("GetDesignationByCompanyDivisionBranchDepartment", "HrEmployee")',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            CompanyId: companyId,
+            DivisionId: divisionId,
+            BranchId: branchId,
+            DepartmentId: departmentId
+        },
+        success: function (data) {
+
+            $.each(data, function (i, item) {
+                $("#DesignationId").append(
+                    $("<option></option>")
+                        .val(item.RowId)
+                        .text(item.DesignationName)
+                );
+            });
+
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert("Unable to load Designation.");
+        }
+    });
+
+    // Load Employee Type
+    $.ajax({
+        url: '@Url.Action("GetEmployeeTypeByCompanyDivisionBranchDepartment", "HrEmployee")',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            CompanyId: companyId,
+            DivisionId: divisionId,
+            BranchId: branchId,
+            DepartmentId: departmentId
+        },
+        success: function (data) {
+
+            $.each(data, function (i, item) {
+                $("#EmployeeTypeId").append(
+                    $("<option></option>")
+                        .val(item.RowId)
+                        .text(item.EmployeeTypeName)
+                );
+            });
+
+        },
+        error: function (xhr) {
+            console.log(xhr.responseText);
+            alert("Unable to load Employee Type.");
+        }
+    });
+
+        });
+
+            //////////////////////////////////////////////////
+            // Bind the change event to the permanent checkbox
+            $("#IsPermanent").on("change", togglePermanentDate).trigger("change");
+
+            function togglePermanentDate() {
+                var isPermanent = $("#IsPermanent").is(":checked");
+                var $dateField = $("#DateOfPermanent");
+
+                // Enable if permanent, disable if not
+                $dateField.prop("disabled", !isPermanent);
+
+                // If unchecked, clear the date value
+                if (!isPermanent) {
+                    $dateField.val("");
+                } else {
+                    // Optional: Re-populate with today's date if they check it and it's empty
+                    if (!$dateField.val()) {
+                        var today = new Date().toISOString().split('T')[0];
+                        $dateField.val(today);
+                    }
+                }
+            }
+            /////////
+            $("#IsRetired").on("change", toggleRetirementDate).trigger("change");
+
+            function toggleRetirementDate() {
+                var isRetired = $("#IsRetired").is(":checked");
+                var $dateField = $("#DateOfRetirement");
+
+                // Enable if retired, disable if not
+                $dateField.prop("disabled", !isRetired);
+
+                // If unchecked, clear the date value
+                if (!isRetired) {
+                    $dateField.val("");
+                } else {
+                    // Optional: Re-populate with today's date if they check it and it's empty
+                    if (!$dateField.val()) {
+                        var today = new Date().toISOString().split('T')[0];
+                        $dateField.val(today);
+                    }
+                }
+            }
+            //////////////////////////////////////////////////IsSalaried
+
+
+            // 1. Bind the change event directly and call it on load
+            $("#IsSalaried").on("change", toggleSalaryFields).trigger("change");
+
+            function toggleSalaryFields() {
+                var isSalaried = $("#IsSalaried").is(":checked");
+
+                // Target all salary fields at once
+                var $salaryFields = $("#GradeId, #BasicSalary, #CurrentSalary, #BankAccountNumber");
+
+                // Set the disabled property for all fields
+                $salaryFields.prop("disabled", !isSalaried);
+
+                // If not salaried, clear the values
+                if (!isSalaried) {
+                    $salaryFields.val("");
+                }
+            }
+            /////////////////////////////////////////////////IsEngineer
+            function toggleEngineerType() {
+
+                if ($("#IsEngineer").is(":checked")) {
+
+                    $("#EngineerTypeId").prop("disabled", false);
+
+                } else {
+
+                    $("#EngineerTypeId")
+                        .val("")
+                        .prop("disabled", true);
+                }
+            }
+
+            // Initial page load
+            toggleEngineerType();
+
+            // Checkbox change
+            $("#IsEngineer").change(function () {
+                toggleEngineerType();
+            });
+
+            /////////////////////////////////////////////////IsConfirmed
+            //function toggleConfirmationDate() {
+
+            //    if ($("#IsConfirmed").is(":checked")) {
+
+            //        $("#ConfirmationDate").prop("disabled", false);
+
+            //    } else {
+
+            //        $("#ConfirmationDate")
+            //            .val("")
+            //            .prop("disabled", true);
+            //    }
+            //}
+
+            //// Initial page load
+            //toggleConfirmationDate();
+
+            //// Checkbox change
+            //$("#IsConfirmed").change(function () {
+            //    toggleConfirmationDate();
+            //});
+
+            $("#IsConfirmed").on("change", toggleConfirmationDate).trigger("change");
+
+            function toggleConfirmationDate() {
+                var isConfirmed = $("#IsConfirmed").is(":checked");
+                var $dateField = $("#ConfirmationDate");
+
+                // Enable field if true, disable if false
+                $dateField.prop("disabled", !isConfirmed);
+
+                // Reset if unchecked
+                if (!isConfirmed) {
+                    $dateField.val("");
+                } else {
+                    // Re-populate with today's date if empty when checked
+                    if (!$dateField.val()) {
+                        var today = new Date().toISOString().split('T')[0];
+                        $dateField.val(today);
+                    }
+                }
+            }
+
+            /////////////////////////////////////////////////IsTerminated
+            function toggleTerminationFields() {
+
+                if ($("#IsTerminated").is(":checked")) {
+
+                    $("#TerminateDate").prop("disabled", false);
+                    $("#TerminateBy").prop("disabled", false);
+                    $("#TerminateReason").prop("disabled", false);
+
+                } else {
+
+                    $("#TerminateDate")
+                        .val("")
+                        .prop("disabled", true);
+
+                    $("#TerminateBy")
+                        .val("")
+                        .prop("disabled", true);
+
+                    $("#TerminateReason")
+                        .val("")
+                        .prop("disabled", true);
+                }
+            }
+
+            // Initial page load
+            toggleTerminationFields();
+
+            // Checkbox changed
+            $("#IsTerminated").change(function () {
+                toggleTerminationFields();
+            });
+            /////////////////////////////////////////////////lePoliceVerification
+            function togglePoliceVerification() {
+
+                if ($("#IsPoliceVerified").is(":checked")) {
+
+                    $("#PoliceVerificationNumber")
+                        .prop("disabled", false);
+
+                } else {
+
+                    $("#PoliceVerificationNumber")
+                        .val("")
+                        .prop("disabled", true);
+                }
+            }
+
+            // Initial load
+            togglePoliceVerification();
+
+            // Checkbox change
+            $("#IsPoliceVerified").change(function () {
+                togglePoliceVerification();
+            });
+        ////////////////////////////////////////////////////////////////////
+
+        // ==================== EDUCATION DYNAMIC ROWS ====================
+            var educationList = [];
+
+            $(document).ready(function () {
+
+                // Add or Update Entry
+                $("#btnAddEducation").click(function () {
+                    var degreeId = $.trim($("#EducationalDegreeId").val());
+                    var degreeName = $("#EducationalDegreeId option:selected").text().trim();
+
+                    var instituteId = $.trim($("#EducationalInstituteId").val());
+                    var instituteName = $("#EducationalInstituteId option:selected").text().trim();
+
+                    // Validation checks
+                    if (!degreeId || degreeId === "") {
+                        alert("Please select a Degree Name.");
+                        $("#EducationalDegreeId").focus();
+                        return;
+                    }
+
+                    if (!instituteId || instituteId === "") {
+                        alert("Please select an Institute.");
+                        $("#EducationalInstituteId").focus();
+                        return;
+                    }
+
+                    var eduObj = {
+                        EducationalDegreeId: degreeId,
+                        EducationalDegreeName: degreeName,
+                        EducationalInstituteId: instituteId,
+                        EducationalInstituteName: instituteName,
+                        Board: $.trim($("#Board").val()),
+                        PassingYear: $.trim($("#PassingYear").val()),
+                        Session: $.trim($("#Session").val()),
+                        Result: $.trim($("#Result").val()),
+                        Rank: parseInt($("#Rank").val()) || 0
+                    };
+
+                    var editIdx = parseInt($("#Edu_Index").val());
+
+                    if (editIdx > -1) {
+                        educationList[editIdx] = eduObj;
+                    } else {
+                        educationList.push(eduObj);
+                    }
+
+                    renderEducationTable();
+                    clearEduForm();
+                });
+
+                // Clear Form Button
+                $("#btnClearEduForm").click(function () {
+                    clearEduForm();
+                });
+
+                // Edit Existing Item
+                $(document).on("click", ".btn-edit-edu", function () {
+                    var index = $(this).data("index");
+                    var item = educationList[index];
+
+                    $("#Edu_Index").val(index);
+                    $("#EducationalDegreeId").val(item.EducationalDegreeId);
+                    $("#EducationalInstituteId").val(item.EducationalInstituteId);
+                    $("#Board").val(item.Board);
+                    $("#PassingYear").val(item.PassingYear);
+                    $("#Session").val(item.Session);
+                    $("#Result").val(item.Result);
+                    $("#Rank").val(item.Rank);
+
+                    $("#btnAddEducation").html('<i class="icon-checkmark3 mr-1"></i> Update Entry');
+                });
+
+                // Remove Item
+                $(document).on("click", ".btn-delete-edu", function () {
+                    var index = $(this).data("index");
+                    educationList.splice(index, 1);
+                    renderEducationTable();
+                    clearEduForm();
+                });
+
+                function clearEduForm() {
+                    $("#Edu_Index").val("-1");
+                    $("#EducationalDegreeId").val("");
+                    $("#EducationalInstituteId").val("");
+                    $("#Board").val("");
+                    $("#PassingYear").val("");
+                    $("#Session").val("");
+                    $("#Result").val("");
+                    $("#Rank").val("0");
+                    $("#btnAddEducation").html('<i class="icon-plus3 mr-1"></i> Add Entry');
+                }
+
+                function renderEducationTable() {
+                    var tbody = $("#tblEducation tbody");
+                    tbody.empty();
+
+                    if (educationList.length === 0) {
+                        tbody.append('<tr id="emptyEduRow"><td colspan="8" class="text-center text-muted">No education details added yet.</td></tr>');
+                        $("#educationHiddenInputs").empty();
+                        return;
+                    }
+
+                    $.each(educationList, function (index, item) {
+                        var row = '<tr>' +
+                            '<td>' + escapeHtml(item.EducationalDegreeName) + '</td>' +
+                            '<td>' + escapeHtml(item.EducationalInstituteName) + '</td>' +
+                            '<td>' + (item.Board ? escapeHtml(item.Board) : '-') + '</td>' +
+                            '<td>' + (item.PassingYear ? escapeHtml(item.PassingYear) : '-') + '</td>' +
+                            '<td>' + (item.Session ? escapeHtml(item.Session) : '-') + '</td>' +
+                            '<td>' + (item.Result ? escapeHtml(item.Result) : '-') + '</td>' +
+                            '<td>' + item.Rank + '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="javascript:void(0)" class="btn-edit-edu mr-2 text-primary" data-index="' + index + '" title="Edit"><i class="icon-pencil"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn-delete-edu text-danger" data-index="' + index + '" title="Delete"><i class="icon-trash"></i></a>' +
+                            '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    syncHiddenEducationInputs();
+                }
+
+                // Generates hidden fields with standard MVC list index naming: Educations[i].PropertyName
+                function syncHiddenEducationInputs() {
+                    var container = $("#educationHiddenInputs");
+                    container.empty();
+
+                    $.each(educationList, function (i, item) {
+                        container.append('<input type="hidden" name="Educations[' + i + '].EducationalDegreeId" value="' + item.EducationalDegreeId + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].EducationalInstituteId" value="' + item.EducationalInstituteId + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].Board" value="' + escapeHtml(item.Board) + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].PassingYear" value="' + escapeHtml(item.PassingYear) + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].Session" value="' + escapeHtml(item.Session) + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].Result" value="' + escapeHtml(item.Result) + '" />');
+                        container.append('<input type="hidden" name="Educations[' + i + '].Rank" value="' + item.Rank + '" />');
+                    });
+                }
+
+                function escapeHtml(str) {
+                    if (!str) return '';
+                    return String(str)
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+            });
+        // ====================END EDUCATION DYNAMIC ROWS ====================
+
+//  =============================EXPERIENCE DYNAMIC ROWS =====================
+          // Pre-populate experience list if loading an existing HrEmployee record
+
+            var trainingList = [];
+
+            $(document).ready(function () {
+
+                // Render table on load if editing an existing employee record
+                if (trainingList.length > 0) {
+                    renderTrainingTable();
+                }
+
+                // Auto-update duration when start or end dates change
+                $("#Train_StartDate, #Train_EndDate").on("change", function () {
+                    updateTrainingDurationInput();
+                });
+
+                function updateTrainingDurationInput() {
+                    var startDate = $("#Train_StartDate").val();
+                    var endDate = $("#Train_EndDate").val();
+
+                    if (!startDate || !endDate) {
+                        $("#Train_Duration").val("");
+                        return;
+                    }
+
+                    var durationText = calculateTrainingDuration(startDate, endDate);
+                    $("#Train_Duration").val(durationText);
+                }
+
+                // Add or Update Entry
+                $("#btnAddTraining").click(function () {
+                    var trainingTitle = $.trim($("#TrainingTitle").val());
+                    var trainingSource = $("#TrainingSource").val();
+                    var instituteName = $.trim($("#InstituteName").val());
+                    var trainer = $.trim($("#Trainer").val());
+                    var startDate = $("#Train_StartDate").val();
+                    var endDate = $("#Train_EndDate").val();
+                    var duration = $.trim($("#Train_Duration").val());
+
+                    // Validations
+                    if (!trainingTitle) {
+                        alert("Please enter Training Title.");
+                        $("#TrainingTitle").focus();
+                        return;
+                    }
+
+                    if (!startDate) {
+                        alert("Please select a Start Date.");
+                        $("#Train_StartDate").focus();
+                        return;
+                    }
+
+                    if (!endDate) {
+                        alert("Please select an End Date.");
+                        $("#Train_EndDate").focus();
+                        return;
+                    }
+
+                    if (endDate < startDate) {
+                        alert("End Date cannot be earlier than Start Date.");
+                        $("#Train_EndDate").focus();
+                        return;
+                    }
+
+                    var editIdx = parseInt($("#Train_Index").val());
+                    var existingRowId = editIdx > -1 ? trainingList[editIdx].RowId : "";
+
+                    var trainObj = {
+                        RowId: existingRowId,
+                        TrainingTitle: trainingTitle,
+                        TrainingSource: trainingSource,
+                        InstituteName: instituteName,
+                        Trainer: trainer,
+                        StartDate: startDate,
+                        EndDate: endDate,
+                        Duration: duration
+                    };
+
+                    if (editIdx > -1) {
+                        trainingList[editIdx] = trainObj;
+                    } else {
+                        trainingList.push(trainObj);
+                    }
+
+                    renderTrainingTable();
+                    clearTrainForm();
+                });
+
+                // Clear Form
+                $("#btnClearTrainForm").click(function () {
+                    clearTrainForm();
+                });
+
+                // Edit Existing Item
+                $(document).on("click", ".btn-edit-train", function () {
+                    var index = $(this).data("index");
+                    var item = trainingList[index];
+
+                    $("#Train_Index").val(index);
+                    $("#TrainingTitle").val(item.TrainingTitle);
+                    $("#TrainingSource").val(item.TrainingSource);
+                    $("#InstituteName").val(item.InstituteName);
+                    $("#Trainer").val(item.Trainer);
+                    $("#Train_StartDate").val(item.StartDate);
+                    $("#Train_EndDate").val(item.EndDate);
+                    $("#Train_Duration").val(item.Duration);
+
+                    $("#btnAddTraining").html('<i class="icon-checkmark3 mr-1"></i> Update Entry');
+                });
+
+                // Delete Item
+                $(document).on("click", ".btn-delete-train", function () {
+                    var index = $(this).data("index");
+                    trainingList.splice(index, 1);
+                    renderTrainingTable();
+                    clearTrainForm();
+                });
+
+                function clearTrainForm() {
+                    $("#Train_Index").val("-1");
+                    $("#TrainingTitle").val("");
+                    $("#TrainingSource").val("");
+                    $("#InstituteName").val("");
+                    $("#Trainer").val("");
+                    $("#Train_StartDate").val("");
+                    $("#Train_EndDate").val("");
+                    $("#Train_Duration").val("");
+                    $("#btnAddTraining").html('<i class="icon-plus3 mr-1"></i> Add Entry');
+                }
+
+                function renderTrainingTable() {
+                    var tbody = $("#tblTraining tbody");
+                    tbody.empty();
+
+                    if (trainingList.length === 0) {
+                        tbody.append('<tr id="emptyTrainRow"><td colspan="8" class="text-center text-muted">No training details added yet.</td></tr>');
+                        $("#trainingHiddenInputs").empty();
+                        return;
+                    }
+
+                    $.each(trainingList, function (index, item) {
+                        var row = '<tr>' +
+                            '<td>' + escapeHtml(item.TrainingTitle) + '</td>' +
+                            '<td>' + (item.TrainingSource ? escapeHtml(item.TrainingSource) : '-') + '</td>' +
+                            '<td>' + (item.InstituteName ? escapeHtml(item.InstituteName) : '-') + '</td>' +
+                            '<td>' + (item.Trainer ? escapeHtml(item.Trainer) : '-') + '</td>' +
+                            '<td>' + item.StartDate + '</td>' +
+                            '<td>' + item.EndDate + '</td>' +
+                            '<td>' + (item.Duration ? escapeHtml(item.Duration) : '-') + '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="javascript:void(0)" class="btn-edit-train mr-2 text-primary" data-index="' + index + '" title="Edit"><i class="icon-pencil"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn-delete-train text-danger" data-index="' + index + '" title="Delete"><i class="icon-trash"></i></a>' +
+                            '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    syncHiddenTrainingInputs();
+                }
+
+                // Generates inputs matching ASP.NET MVC binding structure: Trainings[i].PropertyName
+                function syncHiddenTrainingInputs() {
+                    var container = $("#trainingHiddenInputs");
+                    container.empty();
+
+                    $.each(trainingList, function (i, item) {
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].RowId", value: item.RowId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].TrainingTitle", value: item.TrainingTitle }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].TrainingSource", value: item.TrainingSource || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].InstituteName", value: item.InstituteName || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].Trainer", value: item.Trainer || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].StartDate", value: item.StartDate }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].EndDate", value: item.EndDate }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "Trainings[" + i + "].Duration", value: item.Duration || "" }).appendTo(container);
+                    });
+                }
+
+                // Helper to format days or months duration
+                function calculateTrainingDuration(startDateStr, endDateStr) {
+                    var start = new Date(startDateStr);
+                    var end = new Date(endDateStr);
+
+                    if (isNaN(start.getTime()) || isNaN(end.getTime())) return '-';
+
+                    var diffTime = end.getTime() - start.getTime();
+                    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; // Include inclusive start day
+
+                    if (diffDays <= 0) return '-';
+
+                    if (diffDays >= 30) {
+                        var months = Math.floor(diffDays / 30);
+                        var remainingDays = diffDays % 30;
+                        var text = months + (months === 1 ? " mo " : " mos ");
+                        if (remainingDays > 0) text += remainingDays + (remainingDays === 1 ? " day" : " days");
+                        return text.trim();
+                    }
+
+                    return diffDays + (diffDays === 1 ? " day" : " days");
+                }
+
+                function escapeHtml(str) {
+                    if (!str) return '';
+                    return String(str)
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+            });
+            //===================END TRAINING DYNAMIC ROWS=====================
+            //===================KNOWLEDGE  DYNAMIC ROWS=======================
+            var knowledgeList = [];
+
+            $(document).ready(function () {
+
+                // 1. Initial Render (In case editing existing record with pre-loaded knowledgeList)
+                if (knowledgeList.length > 0) {
+                    renderKnowledgeTable();
+                }
+
+                // 2. Add or Update Entry
+                $("#btnAddKnowledge").click(function () {
+                    var skillId = $("#SkillId").val();
+                    var skillName = $.trim($("#SkillId option:selected").text());
+                    var description = $.trim($("#Description").val());
+
+                    // Validation: Skill Selection Required
+                    if (!skillId) {
+                        alert("Please select a Skill.");
+                        $("#SkillId").focus();
+                        return;
+                    }
+
+                    var editIdx = parseInt($("#Knowledge_Index").val());
+                    var existingRowId = editIdx > -1 ? knowledgeList[editIdx].RowId : "";
+
+                    var knowledgeObj = {
+                        RowId: existingRowId,
+                        SkillId: skillId,
+                        SkillName: skillName,
+                        Description: description
+                    };
+
+                    if (editIdx > -1) {
+                        knowledgeList[editIdx] = knowledgeObj;
+                    } else {
+                        knowledgeList.push(knowledgeObj);
+                    }
+
+                    renderKnowledgeTable();
+                    clearKnowledgeForm();
+                });
+
+                // 3. Clear Form Button Click
+                $("#btnClearKnowledgeForm").click(function () {
+                    clearKnowledgeForm();
+                });
+
+                // 4. Edit Existing Item
+                $(document).on("click", ".btn-edit-knowledge", function () {
+                    var index = $(this).data("index");
+                    var item = knowledgeList[index];
+
+                    $("#Knowledge_Index").val(index);
+                    $("#Knowledge_RowId").val(item.RowId || "");
+                    $("#SkillId").val(item.SkillId).trigger('change');
+                    $("#Description").val(item.Description);
+
+                    $("#btnAddKnowledge").html('<i class="icon-checkmark3 mr-1"></i> Update Entry');
+                });
+
+                // 5. Delete Item
+                $(document).on("click", ".btn-delete-knowledge", function () {
+                    var index = $(this).data("index");
+                    knowledgeList.splice(index, 1);
+                    renderKnowledgeTable();
+                    clearKnowledgeForm();
+                });
+
+                // 6. Reset Form
+                function clearKnowledgeForm() {
+                    $("#Knowledge_Index").val("-1");
+                    $("#Knowledge_RowId").val("");
+                    $("#SkillId").val("").trigger('change');
+                    $("#Description").val("");
+                    $("#btnAddKnowledge").html('<i class="icon-plus3 mr-1"></i> Add Entry');
+                }
+
+                // 7. Render Dynamic Table Rows
+                function renderKnowledgeTable() {
+                    var tbody = $("#tblKnowledge tbody");
+                    tbody.empty();
+
+                    if (knowledgeList.length === 0) {
+                        tbody.append('<tr id="emptyKnowledgeRow"><td colspan="3" class="text-center text-muted">No professional knowledge details added yet.</td></tr>');
+                        $("#knowledgeHiddenInputs").empty();
+                        return;
+                    }
+
+                    $.each(knowledgeList, function (index, item) {
+                        var row = '<tr>' +
+                            '<td>' + escapeHtml(item.SkillName) + '</td>' +
+                            '<td>' + (item.Description ? escapeHtml(item.Description) : '-') + '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="javascript:void(0)" class="btn-edit-knowledge mr-2 text-primary" data-index="' + index + '" title="Edit"><i class="icon-pencil"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn-delete-knowledge text-danger" data-index="' + index + '" title="Delete"><i class="icon-trash"></i></a>' +
+                            '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    syncHiddenKnowledgeInputs();
+                }
+
+                // 8. Generate Hidden Inputs for ASP.NET MVC Default Model Binder
+                function syncHiddenKnowledgeInputs() {
+                    var container = $("#knowledgeHiddenInputs");
+                    container.empty();
+
+                    $.each(knowledgeList, function (i, item) {
+                        $("<input>").attr({ type: "hidden", name: "ProfessionalKnowledges[" + i + "].RowId", value: item.RowId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "ProfessionalKnowledges[" + i + "].SkillId", value: item.SkillId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "ProfessionalKnowledges[" + i + "].SkillName", value: item.SkillName || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "ProfessionalKnowledges[" + i + "].Description", value: item.Description || "" }).appendTo(container);
+                    });
+                }
+
+                // Helper: Escape HTML string to prevent XSS
+                function escapeHtml(str) {
+                    if (!str) return '';
+                    return String(str)
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+            });
+            //===================END KNOWLEDGE  DYNAMIC ROWS===================
+            //=================== REFERENCE  DYNAMIC ROWS======================
+            var referenceList = [];
+
+            $(document).ready(function () {
+
+                // 1. Render on load if editing existing employee
+                if (referenceList.length > 0) {
+                    renderReferenceTable();
+                }
+
+                // 2. Add / Update Reference
+                $("#btnAddReference").click(function () {
+                    var refName = $.trim($("#Ref_ReferenceName").val());
+
+                    if (!refName) {
+                        alert("Please enter Reference Name.");
+                        $("#Ref_ReferenceName").focus();
+                        return;
+                    }
+
+                    var editIdx = parseInt($("#Ref_Index").val());
+                    var existingRowId = editIdx > -1 ? referenceList[editIdx].RowId : "";
+                    var existingRefId = editIdx > -1 ? referenceList[editIdx].EmployeeReferenceId : 0;
+
+                    var refObj = {
+                        RowId: existingRowId,
+                        EmployeeReferenceId: existingRefId,
+                        EmployeeId: editIdx > -1 ? referenceList[editIdx].EmployeeId : "",
+                        ReferenceName: refName,
+                        Relation: $.trim($("#Ref_Relation").val()),
+                        ContactNo: $("#Ref_ContactNo").val() || 0,
+                        Designation: $.trim($("#Ref_Designation").val()),
+                        Occupation: $.trim($("#Ref_Occupation").val()),
+                        Company: $.trim($("#Ref_Company").val()),
+                        Email: $.trim($("#Ref_Email").val()),
+                        NId: $.trim($("#Ref_NId").val()),
+                        Web: $.trim($("#Ref_Web").val()),
+                        PresentAddress: $.trim($("#Ref_PresentAddress").val()),
+                        PermanentAddress: $.trim($("#Ref_PermanentAddress").val())
+                    };
+
+                    if (editIdx > -1) {
+                        referenceList[editIdx] = refObj;
+                    } else {
+                        referenceList.push(refObj);
+                    }
+
+                    renderReferenceTable();
+                    clearReferenceForm();
+                });
+
+                // 3. Clear Button Click
+                $("#btnClearRefForm").click(function () {
+                    clearReferenceForm();
+                });
+
+                // 4. Edit Reference
+                $(document).on("click", ".btn-edit-ref", function () {
+                    var index = $(this).data("index");
+                    var item = referenceList[index];
+
+                    $("#Ref_Index").val(index);
+                    $("#Ref_RowId").val(item.RowId || "");
+                    $("#Ref_EmployeeReferenceId").val(item.EmployeeReferenceId || 0);
+                    $("#Ref_ReferenceName").val(item.ReferenceName);
+                    $("#Ref_Relation").val(item.Relation);
+                    $("#Ref_ContactNo").val(item.ContactNo || "");
+                    $("#Ref_Designation").val(item.Designation);
+                    $("#Ref_Occupation").val(item.Occupation);
+                    $("#Ref_Company").val(item.Company);
+                    $("#Ref_Email").val(item.Email);
+                    $("#Ref_NId").val(item.NId);
+                    $("#Ref_Web").val(item.Web);
+                    $("#Ref_PresentAddress").val(item.PresentAddress);
+                    $("#Ref_PermanentAddress").val(item.PermanentAddress);
+
+                    $("#btnAddReference").html('<i class="icon-checkmark3 mr-1"></i> Update Entry');
+                });
+
+                // 5. Delete Reference
+                $(document).on("click", ".btn-delete-ref", function () {
+                    var index = $(this).data("index");
+                    referenceList.splice(index, 1);
+                    renderReferenceTable();
+                    clearReferenceForm();
+                });
+
+                // 6. Reset Form
+                function clearReferenceForm() {
+                    $("#Ref_Index").val("-1");
+                    $("#Ref_RowId").val("");
+                    $("#Ref_EmployeeReferenceId").val("0");
+                    $("#Ref_ReferenceName").val("");
+                    $("#Ref_Relation").val("");
+                    $("#Ref_ContactNo").val("");
+                    $("#Ref_Designation").val("");
+                    $("#Ref_Occupation").val("");
+                    $("#Ref_Company").val("");
+                    $("#Ref_Email").val("");
+                    $("#Ref_NId").val("");
+                    $("#Ref_Web").val("");
+                    $("#Ref_PresentAddress").val("");
+                    $("#Ref_PermanentAddress").val("");
+
+                    $("#btnAddReference").html('<i class="icon-plus3 mr-1"></i> Add Entry');
+                }
+
+                // 7. Render Table
+                function renderReferenceTable() {
+                    var tbody = $("#tblReferences tbody");
+                    tbody.empty();
+
+                    if (referenceList.length === 0) {
+                        tbody.append('<tr id="emptyRefRow"><td colspan="6" class="text-center text-muted">No reference details added yet.</td></tr>');
+                        $("#referenceHiddenInputs").empty();
+                        return;
+                    }
+
+                    $.each(referenceList, function (index, item) {
+                        var companyDesig = [item.Company, item.Designation].filter(Boolean).join(" - ") || "-";
+
+                        var row = '<tr>' +
+                            '<td>' + escapeHtml(item.ReferenceName) + '</td>' +
+                            '<td>' + (item.Relation ? escapeHtml(item.Relation) : '-') + '</td>' +
+                            '<td>' + escapeHtml(companyDesig) + '</td>' +
+                            '<td>' + (item.ContactNo ? escapeHtml(item.ContactNo) : '-') + '</td>' +
+                            '<td>' + (item.Email ? escapeHtml(item.Email) : '-') + '</td>' +
+                            '<td class="text-center">' +
+                            '<a href="javascript:void(0)" class="btn-edit-ref mr-2 text-primary" data-index="' + index + '" title="Edit"><i class="icon-pencil"></i></a>' +
+                            '<a href="javascript:void(0)" class="btn-delete-ref text-danger" data-index="' + index + '" title="Delete"><i class="icon-trash"></i></a>' +
+                            '</td>' +
+                            '</tr>';
+                        tbody.append(row);
+                    });
+
+                    syncHiddenReferenceInputs();
+                }
+
+                // 8. Generate Hidden Inputs for ASP.NET MVC Model Binder (`References[i]`)
+                function syncHiddenReferenceInputs() {
+                    var container = $("#referenceHiddenInputs");
+                    container.empty();
+
+                    $.each(referenceList, function (i, item) {
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].RowId", value: item.RowId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].EmployeeReferenceId", value: item.EmployeeReferenceId || 0 }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].EmployeeId", value: item.EmployeeId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].ReferenceName", value: item.ReferenceName || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Relation", value: item.Relation || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].ContactNo", value: item.ContactNo || 0 }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Designation", value: item.Designation || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Occupation", value: item.Occupation || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Company", value: item.Company || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Email", value: item.Email || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].NId", value: item.NId || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].Web", value: item.Web || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].PresentAddress", value: item.PresentAddress || "" }).appendTo(container);
+                        $("<input>").attr({ type: "hidden", name: "References[" + i + "].PermanentAddress", value: item.PermanentAddress || "" }).appendTo(container);
+                    });
+                }
+
+                function escapeHtml(str) {
+                    if (!str) return '';
+                    return String(str)
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;");
+                }
+            });
+            //===================END REFERENCE  DYNAMIC ROWS===================
+            //===================IMAGE  DYNAMIC ROWS===================
+            // Preview images
+            window.previewImage = function (input, previewId) {
+                if (input.files && input.files[0]) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        $('#' + previewId).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            };
+            //===================END IMAGE  DYNAMIC ROWS===================
+            // ==================== FORM SUBMISSION (with files) ====================
+            $("#btnSubmitForm").click(function () {
+                const form = $('#my-form')[0];
+                const formData = new FormData(form);
+
+                $.ajax({
+        url: '@Url.Action("Add","HrEmployee")',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+
+        success: function (response) {
+
+            if (response.ResponseStatus == 1) {
+
+                alert(response.ResponseMessage);
+
+                window.location.href = '@Url.Action("Index","HrEmployee")';
+            }
+            else {
+
+                $('#errormessage').html(response.ResponseMessage);
+                $('#errordiv').show();
+            }
+        },
+
+        error: function (xhr) {
+
+            $('#errormessage').html(xhr.responseText);
+            $('#errordiv').show();
+        }
+
+    });
+
+});
+
+
+           
+
+            
+        });
+    </script>
+}

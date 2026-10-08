@@ -1,0 +1,136 @@
+﻿@model ERP.Models.HR.Organization.HrDepartmentDesignationMap.HrDepartmentDesignationMapInfo
+
+@{
+    ViewBag.Title = "Delete Department Designation Map";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index","Home")" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                <a href="@Url.Action("Index","HrDepartmentDesignationMap")" class="breadcrumb-item">Department Designation Map</a>
+                <span class="breadcrumb-item active">Delete Confirmation</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+    <form id="delete-form">
+        <div class="card" id="maindiv">
+            <div class="card-header bg-danger text-white header-elements-inline">
+                <h6 class="card-title text-white">Are you sure you want to delete these mappings?</h6>
+            </div>
+
+            <input type="hidden" name="DepartmentId" value="@Model.DepartmentId" />
+            <input type="hidden" name="RowId" value="@Model.RowId" />
+
+            <div class="card-body">
+                <div class="alert alert-warning border-0 alert-dismissible">
+                    <span class="font-weight-semibold">Warning!</span> Proceeding will delete <strong>all</strong> designation connections mapped to this Department below.
+                </div>
+
+                <div class="form-group row mt-3">
+                    <label class="col-lg-3 font-weight-bold">Selected Department:</label>
+                    <div class="col-lg-9">
+                        <span class="text-muted text-uppercase font-weight-black">@Model.DepartmentName</span>
+                    </div>
+                </div>
+
+                <hr />
+
+                <h6>Mappings Slated For Permanent Removal:</h6>
+                <table class="table table-bordered table-striped" id="tblDesignationsToDelete">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>Designation ID</th>
+                            <th>Designation Name</th>
+                            <th class="text-center" style="width: 150px;">Status Flag</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.GroupedDesignations != null)
+                        {
+                            foreach (var item in ViewBag.GroupedDesignations)
+                            {
+                                <tr>
+                                    <td><code>@item.DesignationId</code></td>
+                                    <td><span class="font-weight-semibold text-danger">@item.DesignationName</span></td>
+                                    <td class="text-center"><span class="badge badge-secondary">Will Be Removed</span></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-footer bg-white" id="errordiv" style="display:none">
+                <div class="row">
+                    <div class="col-lg-12 text-warning" id="errormessage"></div>
+                </div>
+            </div>
+
+            <div class="card-footer bg-white d-flex justify-content-between">
+                <button type="button" id="btnConfirmDelete" class="btn btn-danger">
+                    Confirm Delete & Unmap <i class="icon-trash ml-2"></i>
+                </button>
+                <a href="@Url.Action("Index","HrDepartmentDesignationMap")" class="btn btn-light">
+                    Cancel & Return
+                </a>
+            </div>
+        </div>
+
+        <div class="card" id="successdiv" style="display:none">
+            <div class="card-header bg-success header-elements-inline">
+                <h6 class="card-title text-white">Transaction Success</h6>
+            </div>
+            <div class="card-body">
+                <h4 class="text-success">
+                    <i class="icon-checkmark4 mr-2"></i> Operational execution complete. Selected structural map sets dropped.
+                </h4>
+            </div>
+            <div class="card-footer bg-white d-flex justify-content-end">
+                <a href="@Url.Action("Index","HrDepartmentDesignationMap")" class="btn btn-light">
+                    Back To List
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+    $(document).ready(function () {
+
+        // Confirm processing pipeline operation over execution endpoint matrix
+        $("#btnConfirmDelete").click(function () {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("Delete","HrDepartmentDesignationMap")',
+                data: $("#delete-form").serialize(),
+                success: function (data) {
+                    if (data.ResponseStatus == -1) {
+                        window.location.href = '@Url.Action("Logout","Login")';
+                    }
+                    else if (data.ResponseStatus == 0) {
+                        $("#errormessage").html(data.ResponseMessage);
+                        $("#errordiv").show();
+                    }
+                    else {
+                        $("#errordiv").hide();
+                        $("#maindiv").hide();
+                        $("#successdiv").show();
+                    }
+                },
+                error: function () {
+                    $("#errormessage").html("An issue occurred communicating with the server pipeline processing mechanism.");
+                    $("#errordiv").show();
+                }
+            });
+        });
+    });
+    </script>
+}

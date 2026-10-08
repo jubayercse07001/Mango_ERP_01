@@ -1,0 +1,253 @@
+﻿@using ERP.Models.HR.Organization.HrApprovedPosition;
+
+@{
+    ViewBag.Title = "Hr Approved Position";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Hr Approved Position
+                </span>
+            </div>
+
+            <a href="#" class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+
+        <div class="header-elements d-none">
+            <div class="breadcrumb justify-content-center"></div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Content area -->
+<div class="content">
+
+    <div class="card">
+
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+                List of Approved Positions
+            </h5>
+
+            <div class="header-elements">
+
+                <a href="Javascript:$('#my-form').toggle()">
+                    <button type="button"
+                            class="btn btn-light mr-3 text-success">
+                        <i class="icon-search4 mr-2"></i>
+                        Advance Search
+                    </button>
+                </a>
+
+                <a href="@Url.Action("Index","HrApprovedPosition")">
+                    <button type="button"
+                            class="btn btn-light mr-3 text-danger-300">
+                        <i class="icon-reset mr-2"></i>
+                        Reset Search
+                    </button>
+                </a>
+
+                <button type="button" class="btn btn-light">
+                    <a href="@Url.Action("Add","HrApprovedPosition")">
+                        <i class="icon-add mr-2"></i>
+                        Add New
+                    </a>
+                </button>
+
+            </div>
+
+        </div>
+
+        <form id="my-form" style="display:none">
+
+            <div class="card-body row">
+
+            </div>
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <a href="Javascript:$('#my-form').toggle();">
+                                <button type="button"
+                                        class="btn btn-light text-brown-300">
+                                    Close Search Panel
+                                </button>
+                            </a>
+
+                            <a href="javascript:ResetSearch();">
+                                <button type="button"
+                                        class="btn btn-light text-danger-300">
+                                    Reset Search
+                                </button>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+        </form>
+
+        <table class="table dataTable datatable-column-search-inputs"
+               id="ApprovedPositionItemList">
+
+            <thead>
+
+                <tr>
+
+                    <th>Position ID</th>
+                    <th>Company</th>
+                    <th>Division</th>
+                    @*<th>Branch</th>*@
+                    <th>Department</th>
+                    @*<th>Employee Type</th>*@
+                    <th>Designation</th>
+                    <th>Approved Post</th>
+                    <th>Position Rank</th>
+                    <th class="text-center">Actions</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody></tbody>
+
+            <tfoot>
+
+                <tr>
+
+                    <td>Position ID</td>
+                    <td>Company</td>
+                    <td>Division</td>
+                    @*<td>Branch</td>*@
+                    <td>Department</td>
+                    @*<td>Employee Type</td>*@
+                    <td>Designation</td>
+                    <td>Approved Post</td>
+                    <td>Position Rank</td>
+                    <td></td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+
+    </div>
+
+</div>
+
+@section ChildpageJavaScript
+{
+    <script>
+
+    var dtTable;
+
+    function ReloadDataTable() {
+
+        dtTable.ajax.url(
+            "@Url.Action("GetHrApprovedPositionItemList",
+            "HrApprovedPosition")?"
+            + $("#my-form").serialize()
+        ).load();
+    }
+
+    function ResetSearch() {
+
+        $("#my-form").trigger("reset");
+        ReloadDataTable();
+    }
+
+    function UpdateDataTable() {
+
+        dtTable = $('#ApprovedPositionItemList').DataTable({
+
+            "processing": true,
+            "serverSide": true,
+            "method": "GET",
+
+            "ajax":
+                "@Url.Action("GetHrApprovedPositionItemList",
+                "HrApprovedPosition")?"
+                + $("#my-form").serialize(),
+
+            columns: [
+
+                { data: 'PositionId' },
+                { data: 'CompanyName' },
+                { data: 'DivisionName' },
+               /* { data: 'BranchName' },*/
+                { data: 'DepartmentName' },
+                /*{ data: 'EmployeeTypeName' },*/
+                { data: 'DesignationName' },
+                { data: 'ApprovedPost' },
+                { data: 'PositionRank' },
+
+                {
+                    "mData": "RowId",
+
+                    "mRender": function (data, type, row) {
+
+                        var retVal =
+
+                            "<div class='list-icons'>" +
+                            "<div class='dropdown'>" +
+
+                            "<a href='#' class='list-icons-item' data-toggle='dropdown'>" +
+                            "<i class='icon-menu9'></i>" +
+                            "</a>" +
+
+                            "<div class='dropdown-menu dropdown-menu-right'>" +
+
+                            "<a href='@Url.Action("Edit","HrApprovedPosition")/" + data + "' class='dropdown-item text-blue'>" +
+                            "<i class='icon-pencil7'></i> Edit Information</a>" +
+
+                            "<a href='@Url.Action("Delete","HrApprovedPosition")/" + data + "' class='dropdown-item text-danger'>" +
+                            "<i class='icon-cross'></i> Delete Information</a>" +
+
+                            "</div>" +
+                            "</div>" +
+                            "</div>";
+
+                        return retVal;
+                    }
+                }
+
+            ]
+
+        });
+    }
+
+    $(document).ready(function () {
+
+        UpdateDataTable();
+
+    });
+
+    </script>
+}

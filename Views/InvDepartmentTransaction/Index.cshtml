@@ -1,0 +1,622 @@
+﻿@using ERP.Models.Inventory.InvDepartmentTransaction
+
+@{
+    ViewBag.Title = "Department Transaction";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light">
+
+        <div class="breadcrumb">
+
+            <a href="@Url.Action("Index","Home")"
+               class="breadcrumb-item">
+
+                <i class="icon-home2 mr-2"></i>
+                Home
+
+            </a>
+
+            <span class="breadcrumb-item">
+                Inventory
+            </span>
+
+            <span class="breadcrumb-item active">
+                Department Transaction
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <div class="card">
+
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+                Department Requisition Workflow
+            </h5>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table id="DepartmentTransactionList"
+                       class="table table-bordered table-striped">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Transaction</th>
+
+                            <th>Requisition</th>
+
+                            <th>Date</th>
+
+                            <th>Department</th>
+
+                            <th>Total Amount</th>
+
+                            <th>Status</th>
+
+                            <th>Remarks</th>
+
+                            <th width="240">
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+    <script>
+
+$(document).ready(function () {
+
+    $('#DepartmentTransactionList')
+        .DataTable({
+
+        processing: true,
+
+        serverSide: true,
+
+        ajax: {
+
+            url:
+                '@Url.Action(
+                    "GetInvDepartmentTransactionList",
+                    "InvDepartmentTransaction")',
+
+            type: 'GET',
+
+            dataSrc: 'data'
+
+        },
+
+        columns: [
+
+            {
+                data: 'TransactionCode'
+            },
+
+            {
+                data: 'RequisitionNo'
+            },
+
+            {
+                data: 'TransactionDate',
+
+                render: function (data) {
+
+                    if (!data)
+                        return '';
+
+                    return moment(data)
+                        .format('DD-MM-YYYY HH:mm');
+                }
+            },
+
+            {
+                data: 'ToDepartmentName'
+            },
+
+            {
+                data: 'TotalAmount',
+
+                render: function (data) {
+
+                    return parseFloat(data || 0)
+                        .toFixed(2);
+                }
+            },
+
+            {
+                data: 'TransactionStatusText',
+
+                render: function (data) {
+
+                    if (data == 'Pending')
+                        return '<span class="badge badge-warning">' +
+                               data +
+                               '</span>';
+
+                    if (data == 'Forwarded')
+                        return '<span class="badge badge-info">' +
+                               data +
+                               '</span>';
+
+                    if (data == 'Approved')
+                        return '<span class="badge badge-success">' +
+                               data +
+                               '</span>';
+
+                    if (data == 'Rejected')
+                        return '<span class="badge badge-danger">' +
+                               data +
+                               '</span>';
+
+                    return data;
+                }
+            },
+
+            {
+                data: 'Remarks'
+            },
+
+            {
+                data: null,
+
+                orderable: false,
+
+                render: function (data) {
+
+                    var html = '';
+
+
+                    // EDIT
+                    if (data.TransactionStatus == 1)
+                    {
+                        html +=
+                            '<a href="' +
+                            '@Url.Action(
+                                "Edit",
+                                "InvDepartmentTransaction")' +
+                            '/' +
+                            data.TransactionId +
+                            '" ' +
+                            'class="btn btn-sm btn-light mr-1">' +
+
+                            '<i class="icon-pencil"></i>' +
+
+                            '</a>';
+                    }
+
+
+                    // FORWARD
+                    if (
+                        data.TransactionStatus == 1 ||
+                        data.TransactionStatus == 2
+                    )
+                    {
+                        html +=
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-info mr-1 ' +
+                            'btnForward" ' +
+                            'data-id="' +
+                            data.TransactionId +
+                            '">' +
+
+                            '<i class="icon-arrow-right8"></i>' +
+
+                            '</button>';
+                    }
+
+
+                    // APPROVE
+                    if (
+                        data.TransactionStatus == 1 ||
+                        data.TransactionStatus == 2
+                    )
+                    {
+                        html +=
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-success mr-1 ' +
+                            'btnApprove" ' +
+                            'data-id="' +
+                            data.TransactionId +
+                            '">' +
+
+                            '<i class="icon-checkmark"></i>' +
+
+                            '</button>';
+                    }
+
+
+                    // REJECT
+                    if (
+                        data.TransactionStatus == 1 ||
+                        data.TransactionStatus == 2
+                    )
+                    {
+                        html +=
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-danger mr-1 ' +
+                            'btnReject" ' +
+                            'data-id="' +
+                            data.TransactionId +
+                            '">' +
+
+                            '<i class="icon-cross"></i>' +
+
+                            '</button>';
+                    }
+
+
+                    // DELETE
+                    if (data.TransactionStatus == 1)
+                    {
+                        html +=
+                            '<button type="button" ' +
+                            'class="btn btn-sm btn-light ' +
+                            'btnDelete" ' +
+                            'data-id="' +
+                            data.TransactionId +
+                            '">' +
+
+                            '<i class="icon-trash"></i>' +
+
+                            '</button>';
+                    }
+
+
+                    return html;
+                }
+            }
+
+        ]
+
+    });
+
+
+    // ================================================================
+    // FORWARD
+    // ================================================================
+
+    $('#DepartmentTransactionList')
+        .on(
+            'click',
+            '.btnForward',
+            function () {
+
+                var id =
+                    $(this).data('id');
+
+
+                var remarks =
+                    prompt(
+                        'Forward remarks:',
+                        ''
+                    );
+
+
+                if (remarks === null)
+                    return;
+
+
+                $.post(
+                    '@Url.Action(
+                        "Forward",
+                        "InvDepartmentTransaction")',
+
+                    {
+                        TransactionId: id,
+
+                        Remarks: remarks
+                    },
+
+                    function (data) {
+
+                        if (
+                            data.ResponseStatus == -1
+                        ) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Logout",
+                                    "Login")';
+
+                            return;
+                        }
+
+
+                        if (
+                            data.ResponseStatus == 0
+                        ) {
+
+                            alert(
+                                data.ResponseMessage
+                            );
+
+                            return;
+                        }
+
+
+                        $('#DepartmentTransactionList')
+                            .DataTable()
+                            .ajax
+                            .reload(
+                                null,
+                                false
+                            );
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ================================================================
+    // APPROVE
+    // ================================================================
+
+    $('#DepartmentTransactionList')
+        .on(
+            'click',
+            '.btnApprove',
+            function () {
+
+                var id =
+                    $(this).data('id');
+
+
+                var remarks =
+                    prompt(
+                        'Approval remarks:',
+                        ''
+                    );
+
+
+                if (remarks === null)
+                    return;
+
+
+                if (!confirm(
+                    'Are you sure you want to approve this requisition?'
+                ))
+                    return;
+
+
+                $.post(
+                    '@Url.Action(
+                        "Approve",
+                        "InvDepartmentTransaction")',
+
+                    {
+                        TransactionId: id,
+
+                        Remarks: remarks
+                    },
+
+                    function (data) {
+
+                        if (
+                            data.ResponseStatus == -1
+                        ) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Logout",
+                                    "Login")';
+
+                            return;
+                        }
+
+
+                        if (
+                            data.ResponseStatus == 0
+                        ) {
+
+                            alert(
+                                data.ResponseMessage
+                            );
+
+                            return;
+                        }
+
+
+                        $('#DepartmentTransactionList')
+                            .DataTable()
+                            .ajax
+                            .reload(
+                                null,
+                                false
+                            );
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ================================================================
+    // REJECT
+    // ================================================================
+
+    $('#DepartmentTransactionList')
+        .on(
+            'click',
+            '.btnReject',
+            function () {
+
+                var id =
+                    $(this).data('id');
+
+
+                var remarks =
+                    prompt(
+                        'Reject reason:',
+                        ''
+                    );
+
+
+                if (
+                    remarks === null ||
+                    $.trim(remarks) === ''
+                )
+                {
+                    alert(
+                        'Reject reason is required.'
+                    );
+
+                    return;
+                }
+
+
+                if (!confirm(
+                    'Are you sure you want to reject this requisition?'
+                ))
+                    return;
+
+
+                $.post(
+                    '@Url.Action(
+                        "Reject",
+                        "InvDepartmentTransaction")',
+
+                    {
+                        TransactionId: id,
+
+                        Remarks: remarks
+                    },
+
+                    function (data) {
+
+                        if (
+                            data.ResponseStatus == -1
+                        ) {
+
+                            window.location.href =
+                                '@Url.Action(
+                                    "Logout",
+                                    "Login")';
+
+                            return;
+                        }
+
+
+                        if (
+                            data.ResponseStatus == 0
+                        ) {
+
+                            alert(
+                                data.ResponseMessage
+                            );
+
+                            return;
+                        }
+
+
+                        $('#DepartmentTransactionList')
+                            .DataTable()
+                            .ajax
+                            .reload(
+                                null,
+                                false
+                            );
+
+                    }
+                );
+
+            }
+        );
+
+
+    // ================================================================
+    // DELETE
+    // ================================================================
+
+    $('#DepartmentTransactionList')
+        .on(
+            'click',
+            '.btnDelete',
+            function () {
+
+                var id =
+                    $(this).data('id');
+
+
+                if (!confirm(
+                    'Delete this transaction?'
+                ))
+                    return;
+
+
+                $.post(
+                    '@Url.Action(
+                        "Delete",
+                        "InvDepartmentTransaction")',
+
+                    {
+                        TransactionId: id
+                    },
+
+                    function (data) {
+
+                        if (
+                            data.ResponseStatus == 0
+                        ) {
+
+                            alert(
+                                data.ResponseMessage
+                            );
+
+                            return;
+                        }
+
+
+                        $('#DepartmentTransactionList')
+                            .DataTable()
+                            .ajax
+                            .reload(
+                                null,
+                                false
+                            );
+
+                    }
+                );
+
+            }
+        );
+
+});
+
+    </script>
+}

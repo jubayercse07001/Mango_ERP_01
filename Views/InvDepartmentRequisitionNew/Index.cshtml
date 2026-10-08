@@ -1,0 +1,441 @@
+﻿@using ERP.Models.Inventory.InvDepartmentRequisition
+@{ ViewBag.Title = "Department Requisition";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+            <div class="breadcrumb">
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+                <span class="breadcrumb-item">Inventory</span>
+                <span class="breadcrumb-item active">Department Requisition</span>
+            </div>
+            <a href="#" class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+        </div>
+        <div class="header-elements d-none">
+            <div class="breadcrumb justify-content-center"></div>
+        </div>
+    </div>
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+    <div class="card">
+
+        <!-- Card header -->
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">List of Department Requisitions</h5>
+            <div class="header-elements">
+                <!-- Advance Search -->
+                <a href="javascript:$('#my-form').toggle();">
+                    <button type="button" class="btn btn-light mr-3 text-success">
+                        <i class="icon-search4 mr-2"></i> Advance Search
+                    </button>
+                </a>
+                <!-- Reset Search -->
+                <a href="javascript:ResetSearch();">
+                    <button type="button" class="btn btn-light mr-3 text-danger-300">
+                        <i class="icon-reset mr-2"></i> Reset Search
+                    </button>
+                </a>
+                <!-- Add New -->
+                <button type="button" class="btn btn-light">
+                    <a href="@Url.Action("Add")">
+                        <i class="icon-add mr-2"></i> Add New
+                    </a>
+                </button>
+            </div>
+        </div>
+        <!-- /card header -->
+        <!-- Search Form -->
+        <form id="my-form" style="display:none">
+            <div class="card-body">
+                <div class="row">
+                    <!-- Requisition Code -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Requisition Code</label>
+                            <input type="text" name="RequisitionCode" id="RequisitionCode"
+                                   class="form-control" placeholder="Requisition Code" />
+                        </div>
+                    </div>
+                    <!-- Requisition Name -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Requisition Name</label>
+                            <input type="text" name="RequisitionName" id="RequisitionName"
+                                   class="form-control" placeholder="Requisition Name" />
+                        </div>
+                    </div>
+                    <!-- Department -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Department</label>
+                            <select name="DepartmentId" id="DepartmentId" class="form-control">
+                                <option value="">-- Select Department --</option>
+                                @if (ViewBag.DepartmentList != null)
+                                {
+                                    foreach (var item in ViewBag.DepartmentList)
+                                    {
+                    <option value="@item.RowId">@item.DepartmentName</option>}
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <!-- Job No -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Job No</label>
+                            <input type="text" name="JobNo" id="JobNo"
+                                   class="form-control" placeholder="Job No" />
+                        </div>
+                    </div>
+                    <!-- Approval Status -->
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Approval Status</label>
+                            <select name="ApprovalStatus" id="ApprovalStatus" class="form-control">
+                                <option value="All">All</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Pending">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- From Date -->
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label>From Date</label>
+                            <input type="date" name="FromDate" id="FromDate" class="form-control" />
+                        </div>
+                    </div>
+                    <!-- To Date -->
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label>To Date</label>
+                            <input type="date" name="ToDate" id="ToDate" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Search Footer -->
+            <div class="card-footer bg-white">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <button type="button" class="btn btn-light text-brown-300"
+                                    onclick="$('#my-form').hide();">
+                                Close Search Panel
+                            </button>
+                            <div>
+                                <button type="button" class="btn btn-light text-danger-300 mr-2"
+                                        onclick="ResetSearch();">
+                                    <i class="icon-reset mr-2"></i> Reset Search
+                                </button>
+                                <button type="button" class="btn btn-primary"
+                                        onclick="ReloadDataTable();">
+                                    <i class="icon-search4 mr-2"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        </form>
+        <!-- /Search Form -->
+        <!-- DataTable -->
+        <table class="table dataTable datatable-column-search-inputs" id="RequisitionItemList">
+            <thead>
+                <tr>
+                    <th>Requisition ID</th>
+                    <th>Date</th>
+                    <th>Requested By</th>
+                    <th>Job No</th>
+                    <th>Status</th>
+                    <th>Approval</th>
+                    <th>Issued</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot>
+                <tr>
+                    <td>Requisition ID</td>
+                    <td>Date</td>
+                    <td>Requested By</td>
+                    <td>Job No</td>
+                    <td>Status</td>
+                    <td>Approval</td>
+                    <td>Issued</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+        <!-- /DataTable -->
+
+    </div>
+</div>
+<!-- /content -->
+
+@section ChildpageJavaScript
+{
+    <script>
+    var dtTable;
+
+    // ============================================================
+    // Status Badge  (matches DAL: 0=New, 1=Forwarded, 2=Approved, 3=Rejected, 4=Issued)
+    // ============================================================
+    function StatusBadge(status) {
+        if (status == 0) {
+            return "<span class='badge badge-secondary'>New</span>";
+        }
+        if (status == 1) {
+            return "<span class='badge badge-info'>Forwarded</span>";
+        }
+        if (status == 2) {
+            return "<span class='badge badge-success'>Approved</span>";
+        }
+        if (status == 3) {
+            return "<span class='badge badge-danger'>Rejected</span>";
+        }
+        if (status == 4) {
+            return "<span class='badge badge-primary'>Issued</span>";
+        }
+        return "<span class='badge badge-secondary'>Unknown</span>";
+    }
+
+    // ============================================================
+    // Approval Badge
+    // ============================================================
+    function ApprovalBadge(value) {
+        if (value == 1) {
+            return "<span class='badge badge-success'>" +
+                   "<i class='icon-checkmark3 mr-1'></i> Approved</span>";
+        }
+        return "<span class='badge badge-warning'>" +
+               "<i class='icon-hour-glass mr-1'></i> Pending</span>";
+    }
+
+    // ============================================================
+    // Issue Badge
+    // ============================================================
+    function IssueBadge(value) {
+        if (value == 1) {
+            return "<span class='badge badge-success'>" +
+                   "<i class='icon-checkmark3 mr-1'></i> Issued</span>";
+        }
+        return "<span class='badge badge-secondary'>Not Issued</span>";
+    }
+
+    // ============================================================
+    // Date Format (ASP.NET /Date(...)/ and ISO)
+    // ============================================================
+    function FormatDate(value) {
+        if (!value) return "";
+        var date;
+        var aspNetMatch = /\/Date\((\d+)\)\//.exec(value);
+        if (aspNetMatch) {
+            date = new Date(parseInt(aspNetMatch[1], 10));
+        } else {
+            date = new Date(value);
+        }
+        if (isNaN(date.getTime())) return value;
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var year = date.getFullYear();
+        return day + "-" + month + "-" + year;
+    }
+
+    // ============================================================
+    // Reload DataTable
+    // ============================================================
+    function ReloadDataTable() {
+        dtTable.ajax.url(
+            "@Url.Action("GetInvDepartmentRequisitionItemList")?" + $("#my-form").serialize()
+        ).load();
+    }
+
+    // ============================================================
+    // Reset Search
+    // ============================================================
+    function ResetSearch() {
+        $("#my-form")[0].reset();
+        ReloadDataTable();
+    }
+
+    // ============================================================
+    // Workflow AJAX helper
+    // ============================================================
+    function callWorkflow(url, id) {
+        if (!confirm("Are you sure?")) return;
+        $.post(url, { id: id }, function (res) {
+            if (res.ResponseStatus == 1) {
+                alert(res.ResponseMessage || "Success");
+                dtTable.ajax.reload(null, false);
+            } else {
+                alert(res.ResponseMessage || "Failed");
+            }
+        }).fail(function (xhr) {
+            alert("Request failed: " + (xhr.responseText || xhr.status));
+        });
+    }
+
+    // ============================================================
+    // Update DataTable
+    // ============================================================
+    function UpdateDataTable() {
+        dtTable = $('#RequisitionItemList').DataTable({
+            processing: true,
+            serverSide: true,
+            method: "GET",
+            ajax: {
+                url: "@Url.Action("GetInvDepartmentRequisitionItemList")?" + $("#my-form").serialize(),
+                type: "GET",
+                dataSrc: "data",
+                error: function (xhr, status, thrown) {
+                    console.error("Requisition list failed to load — HTTP", xhr.status, xhr.responseText);
+                }
+            },
+            columns: [
+                { data: 'RequisitionId' },
+                {
+                    data: 'RequisitionDate',
+                    render: function (data, type, row) {
+                        if (type === 'display' || type === 'filter') {
+                            return FormatDate(data);
+                        }
+                        return data;
+                    }
+                },
+                {
+                    data: 'RequestedByName',
+                    render: function (data, type, row) {
+                        return data || row.RequestedBy || "";
+                    }
+                },
+                {
+                    data: 'JobNo',
+                    render: function (data, type, row) {
+                        return data || "";
+                    }
+                },
+                {
+                    data: 'Status',
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        if (type === 'display') return StatusBadge(data);
+                        return data;
+                    }
+                },
+                {
+                    data: 'IsApproved',
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        if (type === 'display') return ApprovalBadge(data);
+                        return data;
+                    }
+                },
+                {
+                    data: 'IsIssued',
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        if (type === 'display') return IssueBadge(data);
+                        return data;
+                    }
+                },
+                // Actions (Edit / Delete + workflow buttons by Status)
+                {
+                    data: 'RowId',
+                    orderable: false,
+                    searchable: false,
+                    className: "text-center",
+                    render: function (data, type, row) {
+                        var html =
+                            "<div class='list-icons'>" +
+                            "<div class='dropdown'>" +
+                            "<a href='#' class='list-icons-item' data-toggle='dropdown'>" +
+                            "<i class='icon-menu9'></i></a>" +
+                            "<div class='dropdown-menu dropdown-menu-right'>" +
+
+                            // Edit
+                            "<a href='@Url.Action("Edit")/" + data + "' class='dropdown-item text-blue'>" +
+                            "<i class='icon-pencil7'></i> Edit Information</a>" +
+
+                            // Delete
+                            "<a href='javascript:void(0);' class='dropdown-item text-danger btn-delete' data-id='" + data + "'>" +
+                            "<i class='icon-cross'></i> Delete Information</a>";
+
+                        // Forward (Status = 0 New)
+                        if (row.Status == 0) {
+                            html +=
+                                "<a href='javascript:void(0);' class='dropdown-item text-warning btn-forward' data-id='" + data + "'>" +
+                                "<i class='icon-forward'></i> Forward</a>";
+                        }
+
+                        // Approve / Reject (Status = 1 Forwarded)
+                        if (row.Status == 1) {
+                            html +=
+                                "<a href='javascript:void(0);' class='dropdown-item text-success btn-approve' data-id='" + data + "'>" +
+                                "<i class='icon-checkmark3'></i> Approve</a>" +
+                                "<a href='javascript:void(0);' class='dropdown-item text-danger btn-reject' data-id='" + data + "'>" +
+                                "<i class='icon-cross2'></i> Reject</a>";
+                        }
+
+                        // Issue (Status = 2 Approved and not yet issued)
+                        if (row.Status == 2 && row.IsIssued == 0) {
+                            html +=
+                                "<a href='javascript:void(0);' class='dropdown-item text-primary btn-issue' data-id='" + data + "'>" +
+                                "<i class='icon-truck'></i> Issue</a>";
+                        }
+
+                        html += "</div></div></div>";
+                        return html;
+                    }
+                }
+            ]
+        });
+    }
+
+    // ============================================================
+    // Document Ready
+    // ============================================================
+    $(document).ready(function () {
+        UpdateDataTable();
+
+        // Delete (AJAX)
+        $(document).on('click', '.btn-delete', function () {
+            if (!confirm('Are you sure you want to delete this requisition?')) return;
+            var id = $(this).data('id');
+            $.post('@Url.Action("Delete")', { id: id }, function (res) {
+                if (res.ResponseStatus == 1) {
+                    dtTable.ajax.reload(null, false);
+                } else {
+                    alert(res.ResponseMessage || "Delete failed");
+                }
+            }).fail(function (xhr) {
+                // Fallback: navigate to Delete action if POST is not supported
+                window.location = '@Url.Action("Delete")/' + id;
+            });
+        });
+
+        // Workflow buttons
+        $(document).on('click', '.btn-forward', function () {
+            callWorkflow('@Url.Action("Forward")', $(this).data('id'));
+        });
+        $(document).on('click', '.btn-approve', function () {
+            callWorkflow('@Url.Action("Approve")', $(this).data('id'));
+        });
+        $(document).on('click', '.btn-reject', function () {
+            callWorkflow('@Url.Action("Reject")', $(this).data('id'));
+        });
+        $(document).on('click', '.btn-issue', function () {
+            callWorkflow('@Url.Action("Issue")', $(this).data('id'));
+        });
+    });
+    </script>
+}

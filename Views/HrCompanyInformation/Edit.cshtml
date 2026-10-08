@@ -1,0 +1,419 @@
+﻿@using ERP.Models.HR.Organization.HrCompanyInformation;
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")" class="breadcrumb-item">
+                    <i class="icon-home2 mr-2"></i> Home
+                </a>
+
+                <a href="@Url.Action("Index", "HrCompanyInformation")"
+                   class="breadcrumb-item">
+                    HrCompanyInformation
+                </a>
+
+                <span class="breadcrumb-item active">Edit</span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+                <i class="icon-more"></i>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Content area -->
+<div class="content">
+
+    <form action="#"
+          id="my-form"
+          enctype="multipart/form-data">
+
+        <div class="card"
+             id="maindiv">
+
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Edit Existing Company Information
+                </h6>
+
+                <input type="hidden"
+                       name="RowId"
+                       value="@ViewBag.HrCompanyInformation.RowId" />
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- LEFT COLUMN -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                <span class="text-danger">*</span>
+                                Company Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="CompanyName"
+                                       class="form-control"
+                                       placeholder="Company Name"
+                                       value="@ViewBag.HrCompanyInformation.CompanyName">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Short Name
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="ShortCompanyName"
+                                       class="form-control"
+                                       placeholder="Short Company Name"
+                                       value="@ViewBag.HrCompanyInformation.ShortCompanyName">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Address
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <textarea name="AddressLine1"
+                                          class="form-control"
+                                          rows="4"
+                                          placeholder="Enter full address">@ViewBag.HrCompanyInformation.AddressLine1</textarea>
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Phone
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="tel"
+                                       name="Phone1"
+                                       class="form-control"
+                                       placeholder="017XXXXXXXX"
+                                       value="@ViewBag.HrCompanyInformation.Phone1">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Mobile
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="tel"
+                                       name="Mobile1"
+                                       class="form-control"
+                                       placeholder="017XXXXXXXX"
+                                       value="@ViewBag.HrCompanyInformation.Mobile1">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN -->
+                    <div class="col-md-6">
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Fax
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="Fax"
+                                       class="form-control"
+                                       placeholder="Fax"
+                                       value="@ViewBag.HrCompanyInformation.Fax">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Email
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="email"
+                                       name="Email1"
+                                       class="form-control"
+                                       placeholder="Email"
+                                       value="@ViewBag.HrCompanyInformation.Email1">
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Website
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="Web"
+                                       class="form-control"
+                                       placeholder="Website"
+                                       value="@ViewBag.HrCompanyInformation.Web">
+
+                            </div>
+
+                        </div>
+
+                        <!-- LOGO -->
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Logo
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="file"
+                                       name="LogoFile"
+                                       id="LogoFile"
+                                       class="form-control-file"
+                                       accept="image/*">
+
+                                <small class="text-muted">
+                                    Upload company logo
+                                </small>
+
+                                @if (!string.IsNullOrEmpty(ViewBag.HrCompanyInformation.LogoUrl))
+                                {
+                                    <div class="mt-2">
+
+                                        <img src="@ViewBag.HrCompanyInformation.LogoUrl"
+                                             alt="Company Logo"
+                                             style="max-height:80px; border:1px solid #ddd; padding:5px;" />
+
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label class="col-lg-4 col-form-label">
+                                Logo URL
+                            </label>
+
+                            <div class="col-lg-8">
+
+                                <input type="text"
+                                       name="LogoUrl"
+                                       class="form-control"
+                                       placeholder="Logo URL"
+                                       value="@ViewBag.HrCompanyInformation.LogoUrl">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ERROR DIV -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SUCCESS DIV -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Company Information has been updated successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-blue">
+
+                                Submit
+                                <i class="icon-paperplane ml-2"></i>
+
+                            </button>
+
+                            <a href="@Url.Action("Index", "HrCompanyInformation")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section ChildpageJavaScript{
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#btnSubmit").click(function () {
+
+                var formData = new FormData($('#my-form')[0]);
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Edit", "HrCompanyInformation")',
+
+                    data: formData,
+
+                    processData: false,
+                    contentType: false,
+
+                    success: function (data) {
+
+                        if (data.ResponseStatus == -1) {
+
+                            window.location.href =
+                                '@Url.Action("Logout", "Login")';
+
+                        }
+                        else if (data.ResponseStatus == -2) {
+
+                            window.location.href =
+                                '@Url.Action("Index", "HrCompanyInformation")';
+
+                        }
+                        else if (data.ResponseStatus == 0) {
+
+                            $("#errormessage").html(data.ResponseMessage);
+
+                            $("#successdiv").hide();
+                            $("#errordiv").show();
+
+                        }
+                        else {
+
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+                            $("#successdiv").show();
+
+                        }
+                    },
+
+                    error: function (xhr, status, error) {
+
+                        console.log(xhr.responseText);
+
+                        $("#errormessage").html(xhr.responseText);
+
+                        $("#successdiv").hide();
+                        $("#errordiv").show();
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}

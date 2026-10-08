@@ -1,0 +1,410 @@
+﻿@using ERP.Models.Inventory.InvRefferenceInformation;
+
+@{
+    ViewBag.Title = "Inventory Reference Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page header -->
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Inventory Reference Information
+                </span>
+
+            </div>
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+        <div class="header-elements d-none">
+
+            <div class="breadcrumb justify-content-center">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- /page header -->
+<!-- Content area -->
+<div class="content">
+
+    <div class="card">
+
+        <!-- Card Header -->
+        <div class="card-header header-elements-inline">
+
+            <h5 class="card-title">
+                List of Reference Information
+            </h5>
+
+            <div class="header-elements">
+
+                <!-- Advance Search -->
+                <a href="javascript:$('#my-form').toggle();">
+
+                    <button type="button"
+                            class="btn btn-light mr-3 text-success">
+
+                        <i class="icon-search4 mr-2"></i>
+                        Advance Search
+
+                    </button>
+
+                </a>
+
+
+                <!-- Reset Search -->
+                <a href="@Url.Action("Index", "InvRefferenceInformation")">
+
+                    <button type="button"
+                            class="btn btn-light mr-3 text-danger-300">
+
+                        <i class="icon-reset mr-2"></i>
+                        Reset Search
+
+                    </button>
+
+                </a>
+
+
+                <!-- Add New -->
+                <button type="button"
+                        class="btn btn-light">
+
+                    <a href="@Url.Action("Add", "InvRefferenceInformation")">
+
+                        <i class="icon-add mr-2"></i>
+                        Add New
+
+                    </a>
+
+                </button>
+
+            </div>
+
+        </div>
+        <!-- /card header -->
+        <!-- Search Form -->
+        <form id="my-form"
+              style="display:none">
+
+            <div class="card-body row">
+
+                <!--
+                    Additional search fields can be added here
+                    in the future.
+                -->
+
+            </div>
+
+
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-12 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+
+                            <!-- Close Search -->
+                            <a href="javascript:$('#my-form').toggle();">
+
+                                <button type="button"
+                                        class="btn btn-light text-brown-300">
+
+                                    Close Search Panel
+
+                                </button>
+
+                            </a>
+
+
+                            <!-- Reset Search -->
+                            <a href="javascript:ResetSearch();">
+
+                                <button type="button"
+                                        class="btn btn-light text-danger-300">
+
+                                    Reset Search
+
+                                </button>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr />
+
+        </form>
+        <!-- /search form -->
+        <!-- DataTable -->
+        <table class="table dataTable datatable-column-search-inputs"
+               id="InvRefferenceInformationItemList">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Reference ID
+                    </th>
+
+                    <th>
+                        Reference Name
+                    </th>
+
+                    <th class="text-center">
+                        Actions
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+            </tbody>
+
+
+            <tfoot>
+
+                <tr>
+
+                    <td>
+                        Reference ID
+                    </td>
+
+                    <td>
+                        Reference Name
+                    </td>
+
+                    <td>
+                    </td>
+
+                </tr>
+
+            </tfoot>
+
+        </table>
+        <!-- /DataTable -->
+
+    </div>
+
+</div>
+<!-- /content area -->
+
+
+@section ChildpageJavaScript
+{
+    <script>
+
+        var dtTable;
+
+
+        // ============================================================
+        // Reload DataTable
+        // ============================================================
+        function ReloadDataTable() {
+
+            dtTable.ajax.url(
+
+                "@Url.Action(
+                    "GetInvRefferenceInformationItemList",
+                    "InvRefferenceInformation"
+                )?"
+                + $("#my-form").serialize()
+
+            ).load();
+
+        }
+
+
+        // ============================================================
+        // Reset Search
+        // ============================================================
+        function ResetSearch() {
+
+            $("#my-form").trigger("reset");
+
+            ReloadDataTable();
+
+        }
+
+
+        // ============================================================
+        // Initialize DataTable
+        // ============================================================
+        function UpdateDataTable() {
+
+            dtTable =
+                $('#InvRefferenceInformationItemList').DataTable({
+
+                    "processing": true,
+
+                    "serverSide": true,
+
+                    "method": "GET",
+
+
+                    // ------------------------------------------------
+                    // Ajax
+                    // ------------------------------------------------
+                    "ajax":
+
+                        "@Url.Action(
+                            "GetInvRefferenceInformationItemList",
+                            "InvRefferenceInformation"
+                        )?"
+                        + $("#my-form").serialize(),
+
+
+                    // ------------------------------------------------
+                    // Columns
+                    // ------------------------------------------------
+                    columns: [
+
+                        {
+                            data: 'RefferenceId'
+                        },
+
+
+                        {
+                            data: 'RefferenceName'
+                        },
+
+
+                        // ------------------------------------------------
+                        // Actions
+                        // ------------------------------------------------
+                        {
+
+                            "mData": "RowId",
+
+                            "className": "text-center",
+
+                            "mRender": function (
+                                data,
+                                type,
+                                row
+                            ) {
+
+                                var retVal =
+
+                                    "<div class='list-icons'>" +
+
+                                    "<div class='dropdown'>" +
+
+
+                                    // Menu button
+                                    "<a href='#' " +
+                                    "class='list-icons-item' " +
+                                    "data-toggle='dropdown'>" +
+
+                                    "<i class='icon-menu9'></i>" +
+
+                                    "</a>" +
+
+
+                                    // Dropdown menu
+                                    "<div class='dropdown-menu dropdown-menu-right'>" +
+
+
+                                    // Edit
+                                    "<a href='" +
+
+                                    '@Url.Action(
+                                        "Edit",
+                                        "InvRefferenceInformation"
+                                    )' +
+
+                                    "/" + data +
+
+                                    "' class='dropdown-item text-blue'>" +
+
+                                    "<i class='icon-pencil7'></i>" +
+
+                                    " Edit Information" +
+
+                                    "</a>" +
+
+
+                                    // Delete
+                                    "<a href='" +
+
+                                    '@Url.Action(
+                                        "Delete",
+                                        "InvRefferenceInformation"
+                                    )' +
+
+                                    "/" + data +
+
+                                    "' class='dropdown-item text-danger'>" +
+
+                                    "<i class='icon-cross'></i>" +
+
+                                    " Delete Information" +
+
+                                    "</a>" +
+
+
+                                    "</div>" +
+
+                                    "</div>" +
+
+                                    "</div>";
+
+
+                                return retVal;
+
+                            }
+
+                        }
+
+                    ]
+
+                });
+
+        }
+
+
+        // ============================================================
+        // Document Ready
+        // ============================================================
+        $(document).ready(function () {
+
+            UpdateDataTable();
+
+        });
+
+    </script>
+}

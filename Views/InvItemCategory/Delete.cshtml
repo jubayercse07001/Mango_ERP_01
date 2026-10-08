@@ -1,0 +1,362 @@
+﻿
+@using ERP.Models.Inventory.InvItemCategory
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Delete Item Category";
+}
+
+
+<div class="page-header page-header-light">
+
+    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+
+        <div class="d-flex">
+
+            <div class="breadcrumb">
+
+                <a href="@Url.Action("Index", "Home")"
+                   class="breadcrumb-item">
+
+                    <i class="icon-home2 mr-2"></i>
+                    Home
+
+                </a>
+
+                <a href="@Url.Action("Index", "InvItemCategory")"
+                   class="breadcrumb-item">
+
+                    InvItemCategory
+
+                </a>
+
+                <span class="breadcrumb-item active">
+                    Delete
+                </span>
+
+            </div>
+
+
+            <a href="#"
+               class="header-elements-toggle text-default d-md-none">
+
+                <i class="icon-more"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="content">
+
+    <form action="#"
+          id="my-form">
+
+        <div class="card"
+             id="maindiv">
+
+
+            <!-- HEADER -->
+            <div class="card-header bg-white header-elements-inline">
+
+                <h6 class="card-title">
+                    Delete Existing Item Category
+                </h6>
+
+
+                <!-- RowId -->
+                <input type="hidden"
+                       name="RowId"
+                       id="RowId"
+                       value="@ViewBag.InvItemCategory.RowId" />
+
+
+                <!-- CategoryId -->
+                <input type="hidden"
+                       name="CategoryId"
+                       id="CategoryId"
+                       value="@ViewBag.InvItemCategory.CategoryId" />
+
+            </div>
+
+
+            <!-- WARNING -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-danger">
+
+                        <h2>
+                            Are you sure you want to delete the
+                            following Item Category?
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY INFORMATION -->
+            <div class="card-body">
+
+
+                <!-- Category ID -->
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Category ID:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvItemCategory.CategoryId
+
+                    </div>
+
+                </div>
+
+
+                <!-- Category Name -->
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Category Name:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvItemCategory.CategoryName
+
+                    </div>
+
+                </div>
+
+
+                <!-- Description -->
+                <div class="form-group row mb-0">
+
+                    <label class="col-form-label col-lg-3">
+                        Description:
+                    </label>
+
+                    <div class="col-lg-9 pt-2">
+
+                        @ViewBag.InvItemCategory.Description
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- ERROR -->
+            <div class="card-footer bg-white"
+                 id="errordiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-warning"
+                         id="errormessage">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUCCESS -->
+            <div class="card-footer bg-white"
+                 id="successdiv"
+                 style="display:none">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto text-success">
+
+                        <h2>
+                            Item Category has been deleted successfully.
+                        </h2>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+            <div class="card-footer bg-white">
+
+                <div class="row">
+
+                    <div class="col-lg-10 ml-lg-auto">
+
+                        <div class="d-flex justify-content-between align-items-center">
+
+
+                            <!-- DELETE -->
+                            <button type="button"
+                                    id="btnSubmit"
+                                    class="btn bg-danger ml-3">
+
+                                Delete
+
+                                <i class="icon-cross ml-2"></i>
+
+                            </button>
+
+
+                            <!-- BACK -->
+                            <a href="@Url.Action("Index", "InvItemCategory")"
+                               class="btn btn-light">
+
+                                Back to List
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section ChildpageJavaScript
+{
+
+    <script>
+
+        $(document).ready(function () {
+
+
+            $("#btnSubmit").click(function () {
+
+
+                // Confirmation
+                var confirmed =
+                    confirm(
+                        "Are you sure you want to delete this Item Category?"
+                    );
+
+
+                if (!confirmed) {
+
+                    return false;
+
+                }
+
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Delete", "InvItemCategory")',
+
+                    data: $("#my-form").serialize(),
+
+
+                    success: function (data) {
+
+
+                        if (data.ResponseStatus == -1) {
+
+                            // Session expired
+                            window.location.href =
+                                '@Url.Action("Logout", "Login")';
+
+                        }
+
+
+                        else if (data.ResponseStatus == -2) {
+
+                            // Permission denied
+                            window.location.href =
+                                '@Url.Action("Index", "InvItemCategory")';
+
+                        }
+
+
+                        else if (data.ResponseStatus == 0) {
+
+                            // Delete failed
+                            $("#errormessage").html(
+                                data.ResponseMessage
+                            );
+
+                            $("#successdiv").hide();
+
+                            $("#errordiv").show();
+
+                        }
+
+
+                        else {
+
+                            // Delete successful
+                            $("#errormessage").html("");
+
+                            $("#errordiv").hide();
+
+                            $("#btnSubmit").hide();
+
+                            $("#successdiv").show();
+
+                        }
+
+                    },
+
+
+                    error: function (xhr) {
+
+
+                        var errorMessage =
+                            "An unexpected error occurred while deleting the Item Category.";
+
+
+                        if (xhr.responseText) {
+
+                            errorMessage =
+                                xhr.responseText;
+
+                        }
+
+
+                        $("#errormessage").html(
+                            errorMessage
+                        );
+
+                        $("#successdiv").hide();
+
+                        $("#errordiv").show();
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    </script>
+
+}
+
